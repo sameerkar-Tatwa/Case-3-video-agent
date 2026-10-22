@@ -1,0 +1,950 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CASE3 Technologies | AI-Native Guidewire Transformation</title>
+    
+    <!-- Tailwind CSS with Typography Plugin -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.tailwindcss.com?plugins=typography"></script>
+    
+    <!-- Google Fonts: Plus Jakarta Sans & JetBrains Mono -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <!-- Simple Anam Agent Embed Script (Zero SDK complexity) -->
+    <script src="https://unpkg.com/@anam-ai/agent-widget" async></script>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            scrollbar-width: none; /* Hide scrollbars for Firefox */
+            -ms-overflow-style: none; /* Hide scrollbars for IE/Edge */
+        }
+        *::-webkit-scrollbar {
+            display: none; /* Hide scrollbars for Chrome, Safari */
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+            overflow: hidden;
+            width: 100vw;
+            height: 100vh;
+        }
+
+        .font-mono {
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        /* Full container fit for the Anam Agent embed */
+        anam-agent {
+            width: 100% !important;
+            height: 100% !important;
+            display: block;
+        }
+
+        /* Subtle military/carrier precision grid inspired by CASE III naval precision */
+        .case3-grid-pattern {
+            background-color: #030712;
+            background-image: 
+                radial-gradient(circle at 50% 0%, rgba(30, 58, 138, 0.18) 0%, transparent 60%),
+                linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+            background-size: 100% 100%, 36px 36px, 36px 36px;
+        }
+
+        /* Smooth slide animation */
+        .slide-panel {
+            transition: opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1), transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            will-change: opacity, transform;
+        }
+
+        .slide-panel.active {
+            opacity: 1;
+            transform: scale(1) translateY(0);
+            pointer-events: auto;
+            display: flex;
+        }
+
+        .slide-panel.inactive {
+            opacity: 0;
+            transform: scale(0.97) translateY(8px);
+            pointer-events: none;
+            display: none;
+        }
+    </style>
+</head>
+<body class="bg-gray-950 text-gray-100 h-screen w-screen overflow-hidden flex flex-col case3-grid-pattern select-none">
+
+    <!-- =================================================================
+         TOP HEADER: CASE3 BRANDING & PARTNER CREDENTIALS
+         ================================================================= -->
+    <header class="h-14 border-b border-gray-800/80 bg-gray-950/90 backdrop-blur-md px-5 flex items-center justify-between shrink-0 z-30">
+        
+        <!-- Left: Case3 Logo & Partner Status -->
+        <div class="flex items-center gap-3">
+            <a href="https://www.case3tech.com/index.html" target="_blank" class="flex items-center gap-2 group">
+                <div class="h-8 px-2.5 py-1 bg-white rounded-lg flex items-center justify-center shadow-md shadow-blue-950 group-hover:ring-2 ring-blue-500 transition">
+                    <img src="https://www.case3tech.com/assets/case3-logo-navy.png" alt="CASE3 Technologies" class="h-5 w-auto object-contain">
+                </div>
+            </a>
+            <div class="h-5 w-px bg-gray-800 hidden sm:block"></div>
+            <div class="hidden sm:flex items-center gap-1.5 text-xs">
+                <span class="px-2 py-0.5 rounded bg-blue-950/80 border border-blue-800/60 text-blue-300 font-semibold tracking-wide text-[11px]">
+                    GUIDEWIRE SELECT
+                </span>
+                <span class="text-gray-400 text-xs">Consulting Partner</span>
+            </div>
+        </div>
+
+        <!-- Center: AI Specialist Identity -->
+        <div class="hidden md:flex items-center gap-3 text-xs text-gray-400">
+            <span>AI Ambassador: <strong class="text-white font-medium">Iris</strong></span>
+            <span class="text-gray-700">•</span>
+            <span class="text-gray-300 font-mono text-[11px]">200+ Yrs Guidewire Depth</span>
+        </div>
+
+        <!-- Right: Status Badge -->
+        <div class="flex items-center gap-3">
+            <div id="session-status" class="px-2.5 py-1 rounded-full bg-emerald-950/60 border border-emerald-800/60 text-xs font-medium flex items-center gap-2">
+                <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                <span class="text-emerald-300">Agent Ready</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- =================================================================
+         MAIN SPLIT LAYOUT: 50% LEFT (IRIS AGENT) | 50% RIGHT (MULTI-CARD SHOWCASE)
+         ================================================================= -->
+    <main class="flex-1 flex flex-col md:flex-row overflow-hidden relative min-h-0 w-full h-full">
+
+        <!-- =============================================================
+             LEFT PANEL: IRIS AGENT EMBED & FUNCTIONAL CONTROLS
+             ============================================================= -->
+        <section class="relative w-full md:w-1/2 h-1/2 md:h-full bg-black flex flex-col items-center justify-center border-b md:border-b-0 md:border-r border-gray-800/90 overflow-hidden">
+            
+            <!-- Persona Video Container -->
+            <div class="w-full h-full relative flex items-center justify-center bg-gradient-to-b from-gray-950 via-gray-900 to-black overflow-hidden">
+                
+                <!-- Simple Anam Web Component Embed (layout="inline") -->
+                <anam-agent 
+                    id="iris-agent"
+                    agent-id="603598a2-e60a-41fd-a5f3-4347900dd2e5" 
+                    api-base-url="https://lab.anam.ai"
+                    layout="inline">
+                </anam-agent>
+
+                <!-- Ambient Lighting Glow -->
+                <div class="pointer-events-none absolute -bottom-16 left-1/2 -translate-x-1/2 w-3/4 h-56 bg-blue-600/10 rounded-full blur-3xl"></div>
+            </div>
+
+            <!-- Top Left Persona Badge -->
+            <div class="absolute top-3 left-3 z-20 flex items-center gap-2 pointer-events-none">
+                <div class="px-2.5 py-1 rounded-xl bg-gray-950/80 backdrop-blur-md border border-white/10 text-xs font-medium text-gray-200 flex items-center gap-2 shadow-lg">
+                    <span class="w-2 h-2 rounded-full bg-blue-500 animate-ping"></span>
+                    <span>Iris • Case3 AI Agent</span>
+                </div>
+            </div>
+
+            <!-- Floating Control Bar -->
+            <div class="absolute bottom-4 left-1/2 -translate-x-1/2 z-20 flex items-center gap-2.5 px-4 py-2 bg-gray-900/95 backdrop-blur-xl border border-gray-700/80 rounded-full shadow-2xl">
+                
+                <!-- Mic / Mute Toggle -->
+                <button id="btn-mute" class="p-2 rounded-full hover:bg-gray-800 text-gray-200 hover:text-white transition active:scale-95 flex items-center gap-1.5 text-xs font-medium" title="Mute Microphone">
+                    <svg id="icon-mic-on" class="w-4 h-4 text-gray-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"></path>
+                    </svg>
+                    <svg id="icon-mic-off" class="w-4 h-4 text-red-400 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"></path>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4l16 16"></path>
+                    </svg>
+                    <span id="label-mute">Mute</span>
+                </button>
+
+                <div class="h-4 w-px bg-gray-700"></div>
+
+                <!-- Togglable Transcript Drawer Button (Slides over right panel) -->
+                <button id="btn-toggle-transcript" class="flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-600/20 text-blue-400 border border-blue-500/30 hover:bg-blue-600 hover:text-white transition active:scale-95 text-xs font-medium">
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"></path>
+                    </svg>
+                    <span id="label-transcript">Open Transcript</span>
+                </button>
+            </div>
+        </section>
+
+        <!-- =============================================================
+             RIGHT PANEL: ZERO-SCROLL MULTI-CARD SHOWCASE PALETTE
+             (Each card enhanced with relevant background image & minimal text)
+             ============================================================= -->
+        <section class="relative w-full md:w-1/2 h-1/2 md:h-full bg-gray-950 flex flex-col overflow-hidden min-h-0">
+            
+            <!-- MAIN VIEWPORT CONTAINER: ZERO SCROLLBAR, SCALED TO FIT -->
+            <div id="panel-elements-showcase" class="absolute inset-0 flex flex-col p-4 sm:p-5 overflow-hidden">
+                
+                <!-- CARDS VIEWPORT CONTAINER: Takes 100% of available height -->
+                <div class="flex-1 min-h-0 relative w-full h-full overflow-hidden flex flex-col justify-center">
+                    
+                    <!-- =====================================================
+                         SLIDE 1: GUIDEWIRE CORE (4 CARDS WITH RICH BACKGROUND IMAGES)
+                         ===================================================== -->
+                    <div id="slide-0" class="slide-panel active w-full h-full flex flex-col justify-between gap-3 overflow-hidden">
+                        
+                        <!-- Top Header Pill Strip -->
+                        <div class="shrink-0 flex items-center justify-between px-3.5 py-2 rounded-xl bg-gray-900/90 border border-gray-800">
+                            <div class="flex items-center gap-2">
+                                <span class="px-2 py-0.5 rounded bg-blue-900/80 text-blue-300 font-bold text-[10px] uppercase tracking-wider border border-blue-700/40">
+                                    Guidewire Depth
+                                </span>
+                                <span class="text-xs font-semibold text-white">InsuranceSuite & Cloud Delivery</span>
+                            </div>
+                            <span class="text-[11px] font-mono text-gray-400">200+ Yrs Depth</span>
+                        </div>
+
+                        <!-- 4-Card Module Grid with Background Images -->
+                        <div class="flex-1 min-h-0 grid grid-cols-2 gap-3">
+                            
+                            <!-- 1. PolicyCenter Card (with bg-policy.jpg) -->
+                            <div class="relative rounded-xl border border-gray-800/80 p-3.5 flex flex-col justify-between overflow-hidden hover:border-blue-500/50 transition group bg-gray-950">
+                                <!-- Background Image with High-Visibility Opacity & Protective Text Gradient -->
+                                <img src="assets/bg-policy.jpg" alt="" class="absolute inset-0 w-full h-full object-cover opacity-65 group-hover:opacity-85 transition-opacity duration-300 pointer-events-none">
+                                <div class="absolute inset-0 bg-gradient-to-t from-gray-950/95 via-gray-950/40 to-transparent pointer-events-none"></div>
+
+                                <div class="relative z-10 flex items-center justify-between">
+                                    <div class="w-8 h-8 rounded-lg bg-blue-950/80 border border-blue-700/60 flex items-center justify-center text-blue-400 shadow-md backdrop-blur-sm">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                                    </div>
+                                    <span class="text-[10px] font-mono text-blue-300 bg-blue-950/80 border border-blue-800/50 px-2 py-0.5 rounded backdrop-blur-sm">Policy</span>
+                                </div>
+                                <div class="relative z-10 mt-2">
+                                    <h4 class="text-sm font-bold text-white group-hover:text-blue-400 transition drop-shadow-md">PolicyCenter</h4>
+                                    <p class="text-[11px] text-gray-200 mt-1 leading-snug drop-shadow">Product modeling, APD configuration & commercial lines.</p>
+                                </div>
+                                <div class="relative z-10 flex items-center gap-1.5 mt-2">
+                                    <span class="text-[10px] px-2 py-0.5 rounded bg-gray-900/90 text-gray-200 border border-gray-700/60 backdrop-blur-sm shadow">APD Modeling</span>
+                                    <span class="text-[10px] px-2 py-0.5 rounded bg-gray-900/90 text-gray-200 border border-gray-700/60 backdrop-blur-sm shadow">Rating Engine</span>
+                                </div>
+                            </div>
+
+                            <!-- 2. ClaimCenter Card (with bg-claims.jpg) -->
+                            <div class="relative rounded-xl border border-gray-800/80 p-3.5 flex flex-col justify-between overflow-hidden hover:border-emerald-500/50 transition group bg-gray-950">
+                                <!-- Background Image with High-Visibility Opacity & Protective Text Gradient -->
+                                <img src="assets/bg-claims.jpg" alt="" class="absolute inset-0 w-full h-full object-cover opacity-65 group-hover:opacity-85 transition-opacity duration-300 pointer-events-none">
+                                <div class="absolute inset-0 bg-gradient-to-t from-gray-950/95 via-gray-950/40 to-transparent pointer-events-none"></div>
+
+                                <div class="relative z-10 flex items-center justify-between">
+                                    <div class="w-8 h-8 rounded-lg bg-emerald-950/80 border border-emerald-700/60 flex items-center justify-center text-emerald-400 shadow-md backdrop-blur-sm">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
+                                    </div>
+                                    <span class="text-[10px] font-mono text-emerald-300 bg-emerald-950/80 border border-emerald-800/50 px-2 py-0.5 rounded backdrop-blur-sm">Claims</span>
+                                </div>
+                                <div class="relative z-10 mt-2">
+                                    <h4 class="text-sm font-bold text-white group-hover:text-emerald-400 transition drop-shadow-md">ClaimCenter</h4>
+                                    <p class="text-[11px] text-gray-200 mt-1 leading-snug drop-shadow">Automated FNOL triage, litigation tracking & data migration.</p>
+                                </div>
+                                <div class="relative z-10 flex items-center gap-1.5 mt-2">
+                                    <span class="text-[10px] px-2 py-0.5 rounded bg-gray-900/90 text-gray-200 border border-gray-700/60 backdrop-blur-sm shadow">Automated FNOL</span>
+                                    <span class="text-[10px] px-2 py-0.5 rounded bg-gray-900/90 text-gray-200 border border-gray-700/60 backdrop-blur-sm shadow">Cloud Ops</span>
+                                </div>
+                            </div>
+
+                            <!-- 3. BillingCenter Card (with bg-billing.jpg) -->
+                            <div class="relative rounded-xl border border-gray-800/80 p-3.5 flex flex-col justify-between overflow-hidden hover:border-purple-500/50 transition group bg-gray-950">
+                                <!-- Background Image with High-Visibility Opacity & Protective Text Gradient -->
+                                <img src="assets/bg-billing.jpg" alt="" class="absolute inset-0 w-full h-full object-cover opacity-65 group-hover:opacity-85 transition-opacity duration-300 pointer-events-none">
+                                <div class="absolute inset-0 bg-gradient-to-t from-gray-950/95 via-gray-950/40 to-transparent pointer-events-none"></div>
+
+                                <div class="relative z-10 flex items-center justify-between">
+                                    <div class="w-8 h-8 rounded-lg bg-purple-950/80 border border-purple-700/60 flex items-center justify-center text-purple-400 shadow-md backdrop-blur-sm">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"></path></svg>
+                                    </div>
+                                    <span class="text-[10px] font-mono text-purple-300 bg-purple-950/80 border border-purple-800/50 px-2 py-0.5 rounded backdrop-blur-sm">Billing</span>
+                                </div>
+                                <div class="relative z-10 mt-2">
+                                    <h4 class="text-sm font-bold text-white group-hover:text-purple-400 transition drop-shadow-md">BillingCenter</h4>
+                                    <p class="text-[11px] text-gray-200 mt-1 leading-snug drop-shadow">Commissions, payment gateways & automated ledger sync.</p>
+                                </div>
+                                <div class="relative z-10 flex items-center gap-1.5 mt-2">
+                                    <span class="text-[10px] px-2 py-0.5 rounded bg-gray-900/90 text-gray-200 border border-gray-700/60 backdrop-blur-sm shadow">Delinquency</span>
+                                    <span class="text-[10px] px-2 py-0.5 rounded bg-gray-900/90 text-gray-200 border border-gray-700/60 backdrop-blur-sm shadow">Payments</span>
+                                </div>
+                            </div>
+
+                            <!-- 4. Guidewire Cloud (with bg-cloud.jpg) -->
+                            <div class="relative rounded-xl border border-gray-800/80 p-3.5 flex flex-col justify-between overflow-hidden hover:border-amber-500/50 transition group bg-gray-950">
+                                <!-- Background Image with High-Visibility Opacity & Protective Text Gradient -->
+                                <img src="assets/bg-cloud.jpg" alt="" class="absolute inset-0 w-full h-full object-cover opacity-65 group-hover:opacity-85 transition-opacity duration-300 pointer-events-none">
+                                <div class="absolute inset-0 bg-gradient-to-t from-gray-950/95 via-gray-950/40 to-transparent pointer-events-none"></div>
+
+                                <div class="relative z-10 flex items-center justify-between">
+                                    <div class="w-8 h-8 rounded-lg bg-amber-950/80 border border-amber-700/60 flex items-center justify-center text-amber-400 shadow-md backdrop-blur-sm">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 00-9.78 2.096A4.001 4.001 0 003 15z"></path></svg>
+                                    </div>
+                                    <span class="text-[10px] font-mono text-amber-300 bg-amber-950/80 border border-amber-800/50 px-2 py-0.5 rounded backdrop-blur-sm">Cloud</span>
+                                </div>
+                                <div class="relative z-10 mt-2">
+                                    <h4 class="text-sm font-bold text-white group-hover:text-amber-400 transition drop-shadow-md">Guidewire Cloud</h4>
+                                    <p class="text-[11px] text-gray-200 mt-1 leading-snug drop-shadow">Cloud APIs, Integration Gateway & GCU consumption control.</p>
+                                </div>
+                                <div class="relative z-10 flex items-center gap-1.5 mt-2">
+                                    <span class="text-[10px] px-2 py-0.5 rounded bg-gray-900/90 text-gray-200 border border-gray-700/60 backdrop-blur-sm shadow">GCU Opt</span>
+                                    <span class="text-[10px] px-2 py-0.5 rounded bg-gray-900/90 text-gray-200 border border-gray-700/60 backdrop-blur-sm shadow">Integration Gateway</span>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <!-- Bottom Stat Badges -->
+                        <div class="shrink-0 p-2.5 rounded-xl bg-gray-900/70 border border-gray-800 flex items-center justify-around text-center text-xs">
+                            <div><strong class="text-white font-bold">Guidewire Select</strong> <span class="text-gray-400 text-[11px]">Consulting Partner</span></div>
+                            <span class="text-gray-700">•</span>
+                            <div><strong class="text-blue-400 font-bold">12+ Yrs</strong> <span class="text-gray-400 text-[11px]">Avg Experience</span></div>
+                            <span class="text-gray-700">•</span>
+                            <div><strong class="text-emerald-400 font-bold">100%</strong> <span class="text-gray-400 text-[11px]">Human Accountability</span></div>
+                        </div>
+                    </div>
+
+                    <!-- =====================================================
+                         SLIDE 2: CASE3 APEX™ PLATFORM (BACKGROUND IMAGES ON ALL CARDS)
+                         ===================================================== -->
+                    <div id="slide-1" class="slide-panel inactive w-full h-full flex flex-col justify-between gap-3 overflow-hidden">
+                        
+                        <!-- Top Header Strip -->
+                        <div class="shrink-0 flex items-center justify-between px-3.5 py-2 rounded-xl bg-gray-900/90 border border-gray-800">
+                            <div class="flex items-center gap-2">
+                                <span class="px-2 py-0.5 rounded bg-indigo-900/80 text-indigo-300 font-bold text-[10px] uppercase tracking-wider border border-indigo-700/40">
+                                    CASE3 APEX™
+                                </span>
+                                <span class="text-xs font-semibold text-white">Autonomous Platform for Enterprise Execution</span>
+                            </div>
+                            <span class="text-[11px] font-bold text-emerald-400 flex items-center gap-1.5">
+                                <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                                Human In The Loop
+                            </span>
+                        </div>
+
+                        <!-- Visual + 3 Command Elements Row -->
+                        <div class="flex-1 min-h-0 flex flex-col sm:flex-row gap-3">
+                            
+                            <!-- Left: Interactive APEX Platform Graphic Window -->
+                            <div class="sm:w-1/2 h-full rounded-xl overflow-hidden border border-gray-800 bg-black relative flex items-center justify-center group shadow-xl">
+                                <img src="assets/apex-platform.jpg" alt="CASE3 APEX Command Center" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
+                                <div class="absolute inset-0 bg-gradient-to-t from-gray-950 via-transparent to-transparent"></div>
+                                <div class="absolute bottom-2.5 left-3">
+                                    <span class="text-xs font-bold text-white drop-shadow">Governed Agentic Loop</span>
+                                    <div class="text-[10px] text-gray-300 font-mono mt-0.5">Sense → Plan → Act → Validate</div>
+                                </div>
+                            </div>
+
+                            <!-- Right: 3 Core Capabilities with Ambient Backgrounds -->
+                            <div class="sm:w-1/2 h-full flex flex-col justify-between gap-2">
+                                
+                                <div class="relative flex-1 p-3 rounded-xl border border-gray-800 flex items-start gap-2.5 overflow-hidden bg-gray-950 group">
+                                    <img src="assets/bg-policy.jpg" alt="" class="absolute inset-0 w-full h-full object-cover opacity-55 group-hover:opacity-75 transition-opacity duration-300 pointer-events-none">
+                                    <div class="absolute inset-0 bg-gradient-to-r from-gray-950 via-gray-950/75 to-transparent pointer-events-none"></div>
+                                    <div class="relative z-10 w-7 h-7 rounded-lg bg-blue-950/90 border border-blue-800/80 flex items-center justify-center text-blue-400 shrink-0 text-xs font-bold shadow-md">
+                                        01
+                                    </div>
+                                    <div class="relative z-10 min-w-0">
+                                        <h5 class="text-xs font-bold text-white drop-shadow">Agentic Force Multiplier</h5>
+                                        <p class="text-[11px] text-gray-200 mt-0.5 leading-snug drop-shadow">Automates repetitive code generation, testing & verification within Guidewire toolchains.</p>
+                                    </div>
+                                </div>
+
+                                <div class="relative flex-1 p-3 rounded-xl border border-gray-800 flex items-start gap-2.5 overflow-hidden bg-gray-950 group">
+                                    <img src="assets/apex-platform.jpg" alt="" class="absolute inset-0 w-full h-full object-cover opacity-55 group-hover:opacity-75 transition-opacity duration-300 pointer-events-none">
+                                    <div class="absolute inset-0 bg-gradient-to-r from-gray-950 via-gray-950/75 to-transparent pointer-events-none"></div>
+                                    <div class="relative z-10 w-7 h-7 rounded-lg bg-purple-950/90 border border-purple-800/80 flex items-center justify-center text-purple-400 shrink-0 text-xs font-bold shadow-md">
+                                        02
+                                    </div>
+                                    <div class="relative z-10 min-w-0">
+                                        <h5 class="text-xs font-bold text-white drop-shadow">CRUX System Intelligence</h5>
+                                        <p class="text-[11px] text-gray-200 mt-0.5 leading-snug drop-shadow">Repository of Understanding maps complex legacy estates & architectural evidence before change.</p>
+                                    </div>
+                                </div>
+
+                                <div class="relative flex-1 p-3 rounded-xl border border-gray-800 flex items-start gap-2.5 overflow-hidden bg-gray-950 group">
+                                    <img src="assets/bg-claims.jpg" alt="" class="absolute inset-0 w-full h-full object-cover opacity-55 group-hover:opacity-75 transition-opacity duration-300 pointer-events-none">
+                                    <div class="absolute inset-0 bg-gradient-to-r from-gray-950 via-gray-950/75 to-transparent pointer-events-none"></div>
+                                    <div class="relative z-10 w-7 h-7 rounded-lg bg-emerald-950/90 border border-emerald-800/80 flex items-center justify-center text-emerald-400 shrink-0 text-xs font-bold shadow-md">
+                                        03
+                                    </div>
+                                    <div class="relative z-10 min-w-0">
+                                        <h5 class="text-xs font-bold text-white drop-shadow">Deterministic Governance</h5>
+                                        <p class="text-[11px] text-gray-200 mt-0.5 leading-snug drop-shadow">Bounded permissions, continuous audit logs, and expert leader sign-offs on all outputs.</p>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <!-- Bottom Summary Strip -->
+                        <div class="shrink-0 p-2.5 rounded-xl bg-gray-900/70 border border-gray-800 flex items-center justify-between text-xs text-gray-400">
+                            <span>Specialized AI agents accelerate execution while human leaders remain accountable for outcomes.</span>
+                            <span class="text-blue-400 font-semibold text-[11px] font-mono">Precision Delivery</span>
+                        </div>
+                    </div>
+
+                    <!-- =====================================================
+                         SLIDE 3: THREE EXECUTION MODELS (BACKGROUND IMAGES ON EACH PILLAR)
+                         ===================================================== -->
+                    <div id="slide-2" class="slide-panel inactive w-full h-full flex flex-col justify-between gap-3 overflow-hidden">
+                        
+                        <!-- Top Header Strip -->
+                        <div class="shrink-0 flex items-center justify-between px-3.5 py-2 rounded-xl bg-gray-900/90 border border-gray-800">
+                            <div class="flex items-center gap-2">
+                                <span class="px-2 py-0.5 rounded bg-gray-950 text-white font-bold text-[10px] uppercase tracking-wider border border-white/20">
+                                    Execution Models
+                                </span>
+                                <span class="text-xs font-semibold text-white">One Delivery Platform. Three Dedicated Services.</span>
+                            </div>
+                            <span class="text-[11px] font-mono text-blue-400">P&C Lifecycle</span>
+                        </div>
+
+                        <!-- 3 Sleek Cards with Background Images (Build, Upgrade, Run) -->
+                        <div class="flex-1 min-h-0 grid grid-cols-1 sm:grid-cols-3 gap-3">
+                            
+                            <!-- 01 BUILD (with bg-policy.jpg) -->
+                            <div class="relative rounded-xl border border-blue-900/40 p-4 flex flex-col justify-between overflow-hidden hover:border-blue-500/50 transition group bg-gray-950 shadow-xl">
+                                <img src="assets/bg-policy.jpg" alt="" class="absolute inset-0 w-full h-full object-cover opacity-60 group-hover:opacity-85 transition-opacity duration-300 pointer-events-none">
+                                <div class="absolute inset-0 bg-gradient-to-t from-gray-950 via-gray-950/50 to-transparent pointer-events-none"></div>
+
+                                <div class="relative z-10">
+                                    <div class="flex items-center justify-between mb-3">
+                                        <span class="w-7 h-7 rounded-lg bg-blue-600 text-white font-mono text-xs font-bold flex items-center justify-center shadow-md">01</span>
+                                        <span class="text-[10px] uppercase font-bold text-blue-400 tracking-wider">Inception</span>
+                                    </div>
+                                    <h4 class="text-sm font-bold text-white group-hover:text-blue-400 transition drop-shadow-md">APEX BUILD</h4>
+                                    <p class="text-xs text-gray-200 mt-2 leading-relaxed drop-shadow">
+                                        Deliver product and process change with connected context and fewer manual handoffs.
+                                    </p>
+                                </div>
+                                <div class="relative z-10 space-y-1.5 pt-3 border-t border-gray-800/80">
+                                    <div class="text-[11px] text-gray-200 flex items-center gap-2 drop-shadow"><span class="w-1.5 h-1.5 rounded-full bg-blue-500 shadow-sm"></span> Discovery & Inception</div>
+                                    <div class="text-[11px] text-gray-200 flex items-center gap-2 drop-shadow"><span class="w-1.5 h-1.5 rounded-full bg-blue-500 shadow-sm"></span> APD Product Modeling</div>
+                                    <div class="text-[11px] text-gray-200 flex items-center gap-2 drop-shadow"><span class="w-1.5 h-1.5 rounded-full bg-blue-500 shadow-sm"></span> Cloud Integration</div>
+                                </div>
+                            </div>
+
+                            <!-- 02 UPGRADE (with bg-cloud.jpg) -->
+                            <div class="relative rounded-xl border border-emerald-900/40 p-4 flex flex-col justify-between overflow-hidden hover:border-emerald-500/50 transition group bg-gray-950 shadow-xl">
+                                <img src="assets/bg-cloud.jpg" alt="" class="absolute inset-0 w-full h-full object-cover opacity-60 group-hover:opacity-85 transition-opacity duration-300 pointer-events-none">
+                                <div class="absolute inset-0 bg-gradient-to-t from-gray-950 via-gray-950/50 to-transparent pointer-events-none"></div>
+
+                                <div class="relative z-10">
+                                    <div class="flex items-center justify-between mb-3">
+                                        <span class="w-7 h-7 rounded-lg bg-emerald-600 text-white font-mono text-xs font-bold flex items-center justify-center shadow-md">02</span>
+                                        <span class="text-[10px] uppercase font-bold text-emerald-400 tracking-wider">Modernize</span>
+                                    </div>
+                                    <h4 class="text-sm font-bold text-white group-hover:text-emerald-400 transition drop-shadow-md">APEX UPGRADE</h4>
+                                    <p class="text-xs text-gray-200 mt-2 leading-relaxed drop-shadow">
+                                        Lower modernization risk through automated estate understanding & regression validation.
+                                    </p>
+                                </div>
+                                <div class="relative z-10 space-y-1.5 pt-3 border-t border-gray-800/80">
+                                    <div class="text-[11px] text-gray-200 flex items-center gap-2 drop-shadow"><span class="w-1.5 h-1.5 rounded-full bg-emerald-500 shadow-sm"></span> Change Impact Analysis</div>
+                                    <div class="text-[11px] text-gray-200 flex items-center gap-2 drop-shadow"><span class="w-1.5 h-1.5 rounded-full bg-emerald-500 shadow-sm"></span> Code Remediation</div>
+                                    <div class="text-[11px] text-gray-200 flex items-center gap-2 drop-shadow"><span class="w-1.5 h-1.5 rounded-full bg-emerald-500 shadow-sm"></span> Transition & Cutover</div>
+                                </div>
+                            </div>
+
+                            <!-- 03 RUN (with bg-billing.jpg) -->
+                            <div class="relative rounded-xl border border-purple-900/40 p-4 flex flex-col justify-between overflow-hidden hover:border-purple-500/50 transition group bg-gray-950 shadow-xl">
+                                <img src="assets/bg-billing.jpg" alt="" class="absolute inset-0 w-full h-full object-cover opacity-60 group-hover:opacity-85 transition-opacity duration-300 pointer-events-none">
+                                <div class="absolute inset-0 bg-gradient-to-t from-gray-950 via-gray-950/50 to-transparent pointer-events-none"></div>
+
+                                <div class="relative z-10">
+                                    <div class="flex items-center justify-between mb-3">
+                                        <span class="w-7 h-7 rounded-lg bg-purple-600 text-white font-mono text-xs font-bold flex items-center justify-center shadow-md">03</span>
+                                        <span class="text-[10px] uppercase font-bold text-purple-400 tracking-wider">Operations</span>
+                                    </div>
+                                    <h4 class="text-sm font-bold text-white group-hover:text-purple-400 transition drop-shadow-md">APEX RUN</h4>
+                                    <p class="text-xs text-gray-200 mt-2 leading-relaxed drop-shadow">
+                                        Reduce service disruptions. Shorten path from operational signal to diagnosis and resolution.
+                                    </p>
+                                </div>
+                                <div class="relative z-10 space-y-1.5 pt-3 border-t border-gray-800/80">
+                                    <div class="text-[11px] text-gray-200 flex items-center gap-2 drop-shadow"><span class="w-1.5 h-1.5 rounded-full bg-purple-500 shadow-sm"></span> Incident Observability</div>
+                                    <div class="text-[11px] text-gray-200 flex items-center gap-2 drop-shadow"><span class="w-1.5 h-1.5 rounded-full bg-purple-500 shadow-sm"></span> GCU Optimization</div>
+                                    <div class="text-[11px] text-gray-200 flex items-center gap-2 drop-shadow"><span class="w-1.5 h-1.5 rounded-full bg-purple-500 shadow-sm"></span> Continuous Governance</div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <!-- Bottom Summary Strip -->
+                        <div class="shrink-0 p-2.5 rounded-xl bg-gray-900/70 border border-gray-800 flex items-center justify-between text-xs text-gray-400">
+                            <span>Flexible delivery pod models designed for complex P&C insurance transformations.</span>
+                            <span class="text-emerald-400 font-mono text-[11px]">Precision Execution</span>
+                        </div>
+                    </div>
+
+                    <!-- =====================================================
+                         SLIDE 4: EXECUTIVE CONTACT (USER BADGE + AMBIENT BG)
+                         ===================================================== -->
+                    <div id="slide-3" class="slide-panel inactive w-full h-full flex flex-col justify-between gap-3 overflow-hidden">
+                        
+                        <!-- Top Header Strip -->
+                        <div class="shrink-0 flex items-center justify-between px-3.5 py-2 rounded-xl bg-gray-900/90 border border-gray-800">
+                            <div class="flex items-center gap-2">
+                                <span class="px-2 py-0.5 rounded bg-blue-950 text-blue-300 font-bold text-[10px] uppercase tracking-wider border border-blue-800">
+                                    Leadership Contact
+                                </span>
+                                <span class="text-xs font-semibold text-white">Guidewire Connections Executive Connect</span>
+                            </div>
+                            <span class="text-[11px] font-mono text-emerald-400 flex items-center gap-1.5">
+                                <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
+                                Verified Speaker
+                            </span>
+                        </div>
+
+                        <!-- Split Card: Left Badge Image + Right Context Details -->
+                        <div class="flex-1 min-h-0 flex flex-col sm:flex-row gap-4 items-center overflow-hidden">
+                            
+                            <!-- Left: User-Attached Manas Mishra Guidewire Connections Badge -->
+                            <div class="h-full flex items-center justify-center shrink-0 max-w-[45%]">
+                                <img src="assets/manas-mishra-id.jpg" 
+                                     alt="Manas Mishra - Chief AI Officer, CASE3 Technologies" 
+                                     class="h-full max-h-full w-auto object-contain rounded-xl shadow-2xl border border-gray-700/60">
+                            </div>
+
+                            <!-- Right: Contact Cards with Subtle Ambient Tech Background -->
+                            <div class="flex-1 h-full flex flex-col justify-between gap-2.5 min-w-0">
+                                
+                                <!-- Leader Bio Card (with subtle ambient background) -->
+                                <div class="relative p-3.5 rounded-xl border border-gray-800 overflow-hidden bg-gray-950 group">
+                                    <img src="assets/guidewire-core.jpg" alt="" class="absolute inset-0 w-full h-full object-cover opacity-50 group-hover:opacity-75 transition-opacity duration-300 pointer-events-none">
+                                    <div class="absolute inset-0 bg-gradient-to-r from-gray-950 via-gray-950/75 to-transparent pointer-events-none"></div>
+
+                                    <div class="relative z-10 flex items-center justify-between mb-1">
+                                        <h4 class="text-sm font-bold text-white drop-shadow">Manas Mishra</h4>
+                                        <span class="text-[10px] font-mono text-blue-400 bg-blue-950/80 px-2 py-0.5 rounded shadow-sm">CAIO</span>
+                                    </div>
+                                    <p class="relative z-10 text-xs font-semibold text-blue-400 drop-shadow">Chief AI Officer • CASE3 Technologies</p>
+                                    <p class="relative z-10 text-xs text-gray-200 mt-2 leading-relaxed drop-shadow">
+                                        Leads agentic AI delivery architecture and the CASE3 APEX™ platform, empowering insurers with human-in-the-loop autonomous execution.
+                                    </p>
+                                </div>
+
+                                <!-- Hubs & Practice Card -->
+                                <div class="p-3 rounded-xl bg-gray-900/60 border border-gray-800 grid grid-cols-2 gap-2 text-xs">
+                                    <div>
+                                        <div class="text-[10px] text-gray-500 uppercase font-semibold">Specialization</div>
+                                        <div class="text-gray-200 font-medium mt-0.5 text-[11px]">AI-First Guidewire & APEX</div>
+                                    </div>
+                                    <div>
+                                        <div class="text-[10px] text-gray-500 uppercase font-semibold">Presence</div>
+                                        <div class="text-gray-200 font-medium mt-0.5 text-[11px]">New York • Sydney • Chennai</div>
+                                    </div>
+                                </div>
+
+                                <!-- Direct Action Buttons -->
+                                <div class="space-y-2">
+                                    <a href="mailto:contactus@case3tech.com?subject=Meeting%20with%20Manas%20Mishra%20-%20CASE3%20Technologies" class="w-full py-2 px-3 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-medium text-xs flex items-center justify-center gap-2 transition active:scale-95 shadow-md shadow-blue-600/20">
+                                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+                                        <span>Email Manas: contactus@case3tech.com</span>
+                                    </a>
+                                    
+                                    <a href="https://www.linkedin.com/in/manasranjanmishra" target="_blank" class="w-full py-2 px-3 rounded-xl bg-gray-800 hover:bg-gray-700 text-gray-200 hover:text-white font-medium text-xs flex items-center justify-center gap-1.5 transition">
+                                        <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+                                        <span>Connect on LinkedIn</span>
+                                    </a>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <!-- Bottom Prompt Alignment Note -->
+                        <div class="shrink-0 p-2.5 rounded-xl bg-gray-900/70 border border-gray-800 flex items-center justify-between text-xs text-gray-400">
+                            <span>Iris will collect attendee contact details to schedule follow-ups with Manas and the delivery team.</span>
+                            <span class="text-blue-400 font-mono text-[11px]">Expo Follow-up</span>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- =========================================================
+                     BOTTOM CONTROLS: SLEEK DOTS, PREV/NEXT & AUTO-TOUR
+                     ========================================================= -->
+                <div class="shrink-0 mt-3 pt-2.5 border-t border-gray-800/80 flex items-center justify-between text-xs text-gray-400">
+                    
+                    <!-- Left: Slide Dots Indicator -->
+                    <div class="flex items-center gap-2">
+                        <button onclick="goToSlide(0)" id="dot-0" class="w-2.5 h-2.5 rounded-full bg-blue-500 transition-all"></button>
+                        <button onclick="goToSlide(1)" id="dot-1" class="w-2 h-2 rounded-full bg-gray-700 hover:bg-gray-500 transition-all"></button>
+                        <button onclick="goToSlide(2)" id="dot-2" class="w-2 h-2 rounded-full bg-gray-700 hover:bg-gray-500 transition-all"></button>
+                        <button onclick="goToSlide(3)" id="dot-3" class="w-2 h-2 rounded-full bg-gray-700 hover:bg-gray-500 transition-all"></button>
+                        <span id="slide-number" class="text-xs font-mono text-gray-500 ml-2">Slide 1 of 4</span>
+                    </div>
+
+                    <!-- Right: Arrows and Auto-Play -->
+                    <div class="flex items-center gap-2">
+                        <button onclick="autoAdvanceSlides()" id="btn-auto-play" class="text-blue-400 hover:text-blue-300 font-medium text-xs flex items-center gap-1">
+                            <span>Auto-Tour</span>
+                            <span>▶</span>
+                        </button>
+                        <div class="h-3.5 w-px bg-gray-800"></div>
+                        <button id="btn-prev-slide" class="p-1 rounded-lg bg-gray-900 hover:bg-gray-800 text-gray-300 hover:text-white border border-gray-800 transition" title="Previous Slide">
+                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
+                        </button>
+                        <button id="btn-next-slide" class="p-1 rounded-lg bg-gray-900 hover:bg-gray-800 text-gray-300 hover:text-white border border-gray-800 transition" title="Next Slide">
+                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- =========================================================
+                 VIEW B: TOGGLABLE LIVE TRANSCRIPT DRAWER
+                 (Slides over right panel when triggered, zero scroll outer layout)
+                 ========================================================= -->
+            <div id="panel-transcript" class="absolute inset-0 flex flex-col bg-gray-950 hidden transition-all duration-300 z-30">
+                <!-- Transcript Header -->
+                <div class="p-3.5 px-5 border-b border-gray-800 bg-gray-900/60 flex justify-between items-center shrink-0">
+                    <div class="flex items-center gap-2">
+                        <span class="w-2 h-2 rounded-full bg-blue-400"></span>
+                        <h3 class="font-semibold text-xs text-white uppercase tracking-wider">Live Conversation Transcript</h3>
+                        <span id="message-badge" class="text-[10px] text-gray-400 bg-gray-800 px-2 py-0.5 rounded-full">1 msg</span>
+                    </div>
+                    <!-- Close button returns back to the Visual Showcase -->
+                    <button id="btn-close-transcript" class="text-gray-400 hover:text-white p-1 rounded-lg hover:bg-gray-800 transition">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                    </button>
+                </div>
+
+                <!-- Chat Feed -->
+                <div id="transcript-feed" class="flex-1 overflow-y-auto p-4 space-y-3 min-h-0">
+                    <div class="flex flex-col gap-1 items-start">
+                        <span class="text-[11px] text-blue-400 font-medium ml-1">Iris (Agent)</span>
+                        <div class="bg-gray-900 border border-gray-800 text-gray-200 px-3.5 py-2 rounded-xl rounded-tl-sm text-xs leading-relaxed max-w-[85%]">
+                            Welcome to Case3 Technologies. My name is Iris. How can I help you navigate your P&C insurance technology needs today?
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Message Input -->
+                <form id="chat-form" class="p-3 border-t border-gray-800 bg-gray-900/40 flex gap-2 shrink-0">
+                    <input id="chat-input" type="text" placeholder="Type a response or question..." class="flex-1 bg-gray-950 border border-gray-800 rounded-lg px-3 py-1.5 text-xs text-gray-100 placeholder-gray-500 focus:outline-none focus:border-blue-500">
+                    <button type="submit" class="bg-blue-600 hover:bg-blue-500 text-white px-3 py-1.5 rounded-lg text-xs font-medium transition">
+                        Send
+                    </button>
+                </form>
+            </div>
+
+        </section>
+    </main>
+
+    <!-- =========================================================
+         JAVASCRIPT CONTROLLER: SLIDESHOW & NATIVE ANAM HOOKS
+         ========================================================= -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Panels
+            const panelElements = document.getElementById('panel-elements-showcase');
+            const panelTranscript = document.getElementById('panel-transcript');
+            const btnToggleTranscript = document.getElementById('btn-toggle-transcript');
+            const btnCloseTranscript = document.getElementById('btn-close-transcript');
+            const labelTranscript = document.getElementById('label-transcript');
+
+            // Mute controls
+            const btnMute = document.getElementById('btn-mute');
+            const iconMicOn = document.getElementById('icon-mic-on');
+            const iconMicOff = document.getElementById('icon-mic-off');
+            const labelMute = document.getElementById('label-mute');
+            let isMuted = false;
+
+            // Slideshow state
+            let currentSlide = 0;
+            const totalSlides = 4;
+            const slideNumberText = document.getElementById('slide-number');
+
+            // Anam Agent Web Component
+            const agent = document.getElementById('iris-agent');
+
+            // =========================================================
+            // 1. SLIDESHOW / CAROUSEL CONTROLLER
+            // =========================================================
+            window.goToSlide = function(index) {
+                if (index < 0) index = totalSlides - 1;
+                if (index >= totalSlides) index = 0;
+                currentSlide = index;
+
+                // Toggle active slide
+                for (let i = 0; i < totalSlides; i++) {
+                    const slide = document.getElementById(`slide-${i}`);
+                    const dot = document.getElementById(`dot-${i}`);
+
+                    if (i === currentSlide) {
+                        slide.classList.remove('inactive');
+                        slide.classList.add('active');
+                        dot.className = 'w-2.5 h-2.5 rounded-full bg-blue-500 transition-all shadow-sm';
+                    } else {
+                        slide.classList.remove('active');
+                        slide.classList.add('inactive');
+                        dot.className = 'w-2 h-2 rounded-full bg-gray-700 hover:bg-gray-500 transition-all';
+                    }
+                }
+
+                slideNumberText.textContent = `Slide ${currentSlide + 1} of ${totalSlides}`;
+            };
+
+            document.getElementById('btn-prev-slide').addEventListener('click', () => {
+                goToSlide(currentSlide - 1);
+            });
+
+            document.getElementById('btn-next-slide').addEventListener('click', () => {
+                goToSlide(currentSlide + 1);
+            });
+
+            // Auto-Tour controller
+            let autoTimer = null;
+            window.autoAdvanceSlides = function() {
+                const btn = document.getElementById('btn-auto-play');
+                if (autoTimer) {
+                    clearInterval(autoTimer);
+                    autoTimer = null;
+                    btn.innerHTML = '<span>Auto-Tour</span> <span>▶</span>';
+                } else {
+                    autoTimer = setInterval(() => {
+                        goToSlide(currentSlide + 1);
+                    }, 5000);
+                    btn.innerHTML = '<span>Pause</span> <span>⏸</span>';
+                }
+            };
+
+            // =========================================================
+            // 2. TOGGLE TRANSCRIPT DRAWER (Zero-scroll overlay)
+            // =========================================================
+            function toggleTranscript(show) {
+                const shouldOpen = (show !== undefined) ? show : panelTranscript.classList.contains('hidden');
+                
+                if (shouldOpen) {
+                    panelElements.classList.add('hidden');
+                    panelTranscript.classList.remove('hidden');
+                    labelTranscript.textContent = 'Close Transcript';
+                    btnToggleTranscript.classList.add('bg-blue-600', 'text-white');
+                    btnToggleTranscript.classList.remove('bg-blue-600/20', 'text-blue-400');
+                    document.getElementById('transcript-feed').scrollTop = document.getElementById('transcript-feed').scrollHeight;
+                } else {
+                    panelTranscript.classList.add('hidden');
+                    panelElements.classList.remove('hidden');
+                    labelTranscript.textContent = 'Open Transcript';
+                    btnToggleTranscript.classList.remove('bg-blue-600', 'text-white');
+                    btnToggleTranscript.classList.add('bg-blue-600/20', 'text-blue-400');
+                }
+            }
+
+            btnToggleTranscript.addEventListener('click', () => toggleTranscript());
+            btnCloseTranscript.addEventListener('click', () => toggleTranscript(false));
+
+            // =========================================================
+            // 3. MUTE TOGGLE
+            // =========================================================
+            btnMute.addEventListener('click', () => {
+                isMuted = !isMuted;
+                if (isMuted) {
+                    iconMicOn.classList.add('hidden');
+                    iconMicOff.classList.remove('hidden');
+                    labelMute.textContent = 'Unmute';
+                    btnMute.classList.add('text-red-400');
+                } else {
+                    iconMicOff.classList.add('hidden');
+                    iconMicOn.classList.remove('hidden');
+                    labelMute.textContent = 'Mute';
+                    btnMute.classList.remove('text-red-400');
+                }
+            });
+
+            // =========================================================
+            // 4. TRANSCRIPT FEED
+            // =========================================================
+            const transcriptFeed = document.getElementById('transcript-feed');
+            const chatForm = document.getElementById('chat-form');
+            const chatInput = document.getElementById('chat-input');
+            let messageCount = 1;
+
+            function addMessage(role, text) {
+                const isUser = role === 'user';
+                messageCount++;
+                document.getElementById('message-badge').textContent = `${messageCount} msgs`;
+
+                const wrapper = document.createElement('div');
+                wrapper.className = `flex flex-col gap-1 ${isUser ? 'items-end' : 'items-start'}`;
+
+                const sender = document.createElement('span');
+                sender.className = `text-[10px] font-medium ml-1 ${isUser ? 'text-purple-400 mr-1' : 'text-blue-400'}`;
+                sender.textContent = isUser ? 'You' : 'Iris (Agent)';
+
+                const bubble = document.createElement('div');
+                bubble.className = `px-3.5 py-2 rounded-xl text-xs leading-relaxed max-w-[85%] ${
+                    isUser 
+                        ? 'bg-blue-600 text-white rounded-tr-sm' 
+                        : 'bg-gray-900 border border-gray-800 text-gray-200 rounded-tl-sm'
+                }`;
+                bubble.textContent = text;
+
+                wrapper.appendChild(sender);
+                wrapper.appendChild(bubble);
+                transcriptFeed.appendChild(wrapper);
+                transcriptFeed.scrollTop = transcriptFeed.scrollHeight;
+            }
+
+            chatForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const text = chatInput.value.trim();
+                if (!text) return;
+                addMessage('user', text);
+                chatInput.value = '';
+            });
+
+            // =========================================================
+            // 5. NATIVE ANAM AGENT DOM HOOKS & ENVIRONMENT DIAGNOSTICS
+            // =========================================================
+            const sessionStatus = document.getElementById('session-status');
+
+            // WebRTC & Mic require HTTP/HTTPS (browsers disallow WebRTC on file:///)
+            if (window.location.protocol === 'file:') {
+                if (sessionStatus) {
+                    sessionStatus.innerHTML = `
+                        <span class="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span>
+                        <span class="text-amber-300">Serve via HTTP (e.g. localhost:8000)</span>
+                    `;
+                    sessionStatus.title = "Browsers block WebRTC and mic permissions on file:/// protocol. Run via 'npx serve' or python -m http.server 8000";
+                }
+            }
+
+            if (agent) {
+                agent.addEventListener('anam-agent:message-received', (e) => {
+                    if (e.detail && e.detail.content) {
+                        addMessage(e.detail.role, e.detail.content);
+                    }
+                });
+
+                agent.addEventListener('anam-agent:session-started', () => {
+                    if (sessionStatus) {
+                        sessionStatus.innerHTML = `
+                            <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                            <span class="text-emerald-300">Session Connected</span>
+                        `;
+                    }
+                });
+
+                agent.addEventListener('anam-agent:error', (e) => {
+                    console.warn('Anam Agent error event:', e);
+                    if (sessionStatus) {
+                        sessionStatus.innerHTML = `
+                            <span class="w-2 h-2 rounded-full bg-red-400"></span>
+                            <span class="text-red-300">Domain Auth Required</span>
+                        `;
+                    }
+                });
+
+                agent.addEventListener('anam-agent:mic-muted', () => {
+                    isMuted = true;
+                    iconMicOn.classList.add('hidden');
+                    iconMicOff.classList.remove('hidden');
+                    labelMute.textContent = 'Unmute';
+                });
+
+                agent.addEventListener('anam-agent:mic-unmuted', () => {
+                    isMuted = false;
+                    iconMicOff.classList.add('hidden');
+                    iconMicOn.classList.remove('hidden');
+                    labelMute.textContent = 'Mute';
+                });
+            }
+
+            // =========================================================
+            // 6. RED CLOSE / CROSS BUTTON STYLING FOR ANAM WIDGET
+            // Customizes the top-right dismiss button to be vivid red
+            // so it is immediately visible against the bright background
+            // =========================================================
+            function styleAnamCloseButton() {
+                if (!agent) return;
+
+                function injectShadowStyles(root) {
+                    if (!root) return;
+
+                    // 1. Inject or verify stylesheet inside shadowRoot
+                    let customStyle = root.getElementById('anam-red-close-style');
+                    if (!customStyle) {
+                        customStyle = document.createElement('style');
+                        customStyle.id = 'anam-red-close-style';
+                        customStyle.textContent = `
+                            .anam-close-btn,
+                            button[aria-label="Close"],
+                            button[aria-label="End call"] {
+                                background: #ef4444 !important;
+                                border: 2px solid #ffffff !important;
+                                color: #ffffff !important;
+                                opacity: 1 !important;
+                                box-shadow: 0 4px 14px rgba(239, 68, 68, 0.65), 0 2px 6px rgba(0, 0, 0, 0.45) !important;
+                                cursor: pointer !important;
+                                transition: transform 0.15s ease, background-color 0.15s ease !important;
+                            }
+                            .anam-close-btn:hover,
+                            button[aria-label="Close"]:hover,
+                            button[aria-label="End call"]:hover {
+                                background: #dc2626 !important;
+                                transform: scale(1.1) !important;
+                                box-shadow: 0 6px 18px rgba(220, 38, 38, 0.85) !important;
+                            }
+                            .anam-close-btn svg,
+                            button[aria-label="Close"] svg,
+                            button[aria-label="End call"] svg {
+                                stroke: #ffffff !important;
+                                stroke-width: 3.5 !important;
+                                color: #ffffff !important;
+                            }
+                        `;
+                        root.appendChild(customStyle);
+                    }
+
+                    // 2. Direct inline styling on elements for instant override
+                    const closeBtns = root.querySelectorAll('.anam-close-btn, button[aria-label="Close"], button[aria-label="End call"]');
+                    closeBtns.forEach(btn => {
+                        btn.style.setProperty('background', '#ef4444', 'important');
+                        btn.style.setProperty('border', '2px solid #ffffff', 'important');
+                        btn.style.setProperty('color', '#ffffff', 'important');
+                        btn.style.setProperty('opacity', '1', 'important');
+                        btn.style.setProperty('box-shadow', '0 4px 14px rgba(239, 68, 68, 0.65), 0 2px 6px rgba(0, 0, 0, 0.45)', 'important');
+                        const svg = btn.querySelector('svg');
+                        if (svg) {
+                            svg.style.setProperty('stroke', '#ffffff', 'important');
+                            svg.style.setProperty('color', '#ffffff', 'important');
+                        }
+                    });
+                }
+
+                // Check continuously for when shadowRoot is mounted
+                const observerTimer = setInterval(() => {
+                    if (agent.shadowRoot) {
+                        injectShadowStyles(agent.shadowRoot);
+
+                        if (!agent._hasCloseBtnObserver) {
+                            agent._hasCloseBtnObserver = true;
+                            const mo = new MutationObserver(() => {
+                                injectShadowStyles(agent.shadowRoot);
+                            });
+                            mo.observe(agent.shadowRoot, { childList: true, subtree: true, attributes: true });
+                        }
+                    }
+                }, 150);
+
+                // Run for 30 seconds to catch delayed script loads, and re-check on interaction
+                setTimeout(() => clearInterval(observerTimer), 30000);
+                agent.addEventListener('click', () => {
+                    if (agent.shadowRoot) injectShadowStyles(agent.shadowRoot);
+                });
+            }
+
+            styleAnamCloseButton();
+        });
+    </script>
+</body>
+</html>
