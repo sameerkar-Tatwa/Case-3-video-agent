@@ -127,22 +127,29 @@
             <div id="video-container" class="w-full h-full relative flex items-center justify-center bg-black overflow-hidden">
                 
                 <!-- Direct WebRTC Video Stream from Anam JS SDK -->
-                <video id="iris-video" class="w-full h-full object-cover hidden" autoplay playsinline></video>
+                <video id="iris-video" class="w-full h-full object-cover" autoplay playsinline></video>
 
-                <!-- Initial Idle / Poster State with "Talk to Iris" CTA -->
+                <!-- Initial Idle / Standby State (Pure UI/CSS, NO static images) -->
                 <div id="iris-idle-poster" class="absolute inset-0 flex flex-col items-center justify-center bg-gradient-to-b from-gray-950 via-gray-900 to-black z-10 transition-opacity duration-300 overflow-hidden">
-                    <img src="assets/executive-ashwin.jpg" alt="Iris Persona" class="absolute inset-0 w-full h-full object-cover opacity-50">
-                    <div class="absolute inset-0 bg-gradient-to-t from-gray-950 via-gray-950/40 to-transparent"></div>
-
-                    <!-- Ambient Glow -->
-                    <div class="pointer-events-none absolute -bottom-16 left-1/2 -translate-x-1/2 w-3/4 h-56 bg-blue-600/20 rounded-full blur-3xl"></div>
+                    
+                    <!-- Ambient Cybernetic Glow & Audio Waves (CSS/SVG only - NO static photos) -->
+                    <div class="relative flex items-center justify-center mb-6">
+                        <div class="w-36 h-36 rounded-full bg-gradient-to-tr from-blue-600/25 to-indigo-600/25 blur-2xl animate-pulse"></div>
+                        <div class="absolute w-24 h-24 rounded-full border border-blue-500/20 animate-ping" style="animation-duration: 3s;"></div>
+                        <div class="absolute w-20 h-20 rounded-full border border-blue-400/40 flex items-center justify-center bg-gray-900/90 backdrop-blur-md shadow-2xl">
+                            <!-- High-tech AI Voice / Waveform Icon -->
+                            <svg class="w-9 h-9 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"></path>
+                            </svg>
+                        </div>
+                    </div>
 
                     <!-- Interactive Start Session Button -->
-                    <button id="btn-start-session" class="relative z-10 px-6 py-3 rounded-full bg-blue-600 hover:bg-blue-500 text-white font-semibold text-sm flex items-center gap-2.5 shadow-2xl hover:scale-105 active:scale-95 transition backdrop-blur-md border border-white/20">
+                    <button id="btn-start-session" class="relative z-10 px-7 py-3.5 rounded-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-semibold text-sm flex items-center gap-2.5 shadow-2xl hover:scale-105 active:scale-95 transition backdrop-blur-md border border-white/20">
                         <svg class="w-4 h-4 fill-current text-white" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
                         <span>Talk to Iris</span>
                     </button>
-                    <span class="relative z-10 text-[11px] text-gray-300 mt-2.5 font-medium tracking-wide">Real-time dynamic voice & visuals</span>
+                    <span class="relative z-10 text-[11px] text-gray-400 mt-3 font-medium tracking-wide">Real-time voice, video persona & dynamic visuals</span>
                 </div>
 
                 <!-- Custom Red End-Call / Cross Button (Top Right Corner) -->
@@ -199,9 +206,138 @@
                 <div class="flex-1 min-h-0 relative w-full h-full overflow-hidden flex flex-col justify-center">
                     
                     <!-- =====================================================
-                         SLIDE 1 (Topic: guidewire): GUIDEWIRE CORE SUITE
+                         SLIDE 0 (Topic: overview / welcome): CASE3 WELCOME DASHBOARD
+                         (Screen 00 — CASE3 Overview per Showcase Specification)
                          ===================================================== -->
                     <div id="slide-0" class="slide-panel active w-full h-full flex flex-col justify-between gap-3 overflow-hidden">
+                        
+                        <!-- Top Header Pill Strip -->
+                        <div class="shrink-0 flex items-center justify-between px-3.5 py-2 rounded-xl bg-gray-900/90 border border-gray-800">
+                            <div class="flex items-center gap-2">
+                                <span class="px-2 py-0.5 rounded bg-blue-900/80 text-blue-300 font-bold text-[10px] uppercase tracking-wider border border-blue-700/40">
+                                    CASE3 Overview
+                                </span>
+                                <span class="text-xs font-semibold text-white">AI-First P&C Insurance Modernization</span>
+                            </div>
+                            <span class="text-[11px] font-mono text-blue-400 flex items-center gap-1.5">
+                                <span class="w-1.5 h-1.5 rounded-full bg-blue-400 animate-pulse"></span>
+                                Guidewire Select Partner
+                            </span>
+                        </div>
+
+                        <!-- Brand Statement & Architecture Banner -->
+                        <div class="shrink-0 px-4 py-3 rounded-xl bg-gradient-to-r from-blue-950/60 via-gray-900/80 to-purple-950/50 border border-blue-900/40 flex flex-col sm:flex-row sm:items-center justify-between gap-2 shadow-lg">
+                            <div>
+                                <h3 class="text-sm font-bold text-white tracking-tight flex items-center gap-2">
+                                    <span>Engineering the Future of P&C Insurance</span>
+                                    <span class="text-[10px] font-mono font-normal px-2 py-0.5 rounded bg-blue-600/30 text-blue-300 border border-blue-500/40">Tier-1 Ready</span>
+                                </h3>
+                                <p class="text-xs text-gray-300 mt-0.5">Experienced specialists + autonomous agentic platforms + 100% human accountability for outcomes.</p>
+                            </div>
+                            <div class="shrink-0 flex items-center gap-2">
+                                <span class="px-2.5 py-1 rounded-lg bg-gray-900 border border-gray-700 text-[11px] font-mono text-gray-200">200+ Yrs Depth</span>
+                            </div>
+                        </div>
+
+                        <!-- 3 Core Delivery Pillars: BUILD · UPGRADE · RUN -->
+                        <div class="flex-1 min-h-0 grid grid-cols-1 sm:grid-cols-3 gap-3">
+                            
+                            <!-- 1. BUILD Pillar -->
+                            <div class="relative rounded-xl border border-blue-900/50 p-3.5 flex flex-col justify-between overflow-hidden bg-gray-950 hover:border-blue-500/60 transition group shadow-md">
+                                <div class="absolute inset-0 bg-gradient-to-b from-blue-950/20 via-transparent to-transparent pointer-events-none"></div>
+                                <div class="relative z-10">
+                                    <div class="flex items-center justify-between mb-2">
+                                        <div class="w-7 h-7 rounded-lg bg-blue-900/70 border border-blue-700/50 flex items-center justify-center text-blue-300">
+                                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/></svg>
+                                        </div>
+                                        <span class="text-[10px] font-mono uppercase tracking-wider text-blue-400 font-bold bg-blue-950/80 px-2 py-0.5 rounded border border-blue-800/40">BUILD</span>
+                                    </div>
+                                    <h4 class="text-xs font-bold text-white group-hover:text-blue-300 transition">Implementation & APD</h4>
+                                    <p class="text-[11px] text-gray-300 mt-1.5 leading-relaxed">
+                                        Cloud Inception, APD product modeling, commercial lines configuration, and complex downstream integrations.
+                                    </p>
+                                </div>
+                                <div class="relative z-10 mt-3 pt-2.5 border-t border-gray-800/80 flex flex-wrap gap-1">
+                                    <span class="text-[10px] px-1.5 py-0.5 rounded bg-gray-900 text-gray-300 border border-gray-800">Inception</span>
+                                    <span class="text-[10px] px-1.5 py-0.5 rounded bg-gray-900 text-gray-300 border border-gray-800">APD Modeling</span>
+                                    <span class="text-[10px] px-1.5 py-0.5 rounded bg-gray-900 text-gray-300 border border-gray-800">CoreSuite</span>
+                                </div>
+                            </div>
+
+                            <!-- 2. UPGRADE Pillar -->
+                            <div class="relative rounded-xl border border-emerald-900/50 p-3.5 flex flex-col justify-between overflow-hidden bg-gray-950 hover:border-emerald-500/60 transition group shadow-md">
+                                <div class="absolute inset-0 bg-gradient-to-b from-emerald-950/20 via-transparent to-transparent pointer-events-none"></div>
+                                <div class="relative z-10">
+                                    <div class="flex items-center justify-between mb-2">
+                                        <div class="w-7 h-7 rounded-lg bg-emerald-900/70 border border-emerald-700/50 flex items-center justify-center text-emerald-300">
+                                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/></svg>
+                                        </div>
+                                        <span class="text-[10px] font-mono uppercase tracking-wider text-emerald-400 font-bold bg-emerald-950/80 px-2 py-0.5 rounded border border-emerald-800/40">UPGRADE</span>
+                                    </div>
+                                    <h4 class="text-xs font-bold text-white group-hover:text-emerald-300 transition">Cloud Transition</h4>
+                                    <p class="text-[11px] text-gray-300 mt-1.5 leading-relaxed">
+                                        On-prem to Guidewire Cloud migrations, legacy code remediation, automated testing and seamless cutover assurance.
+                                    </p>
+                                </div>
+                                <div class="relative z-10 mt-3 pt-2.5 border-t border-gray-800/80 flex flex-wrap gap-1">
+                                    <span class="text-[10px] px-1.5 py-0.5 rounded bg-gray-900 text-gray-300 border border-gray-800">Cloud Migration</span>
+                                    <span class="text-[10px] px-1.5 py-0.5 rounded bg-gray-900 text-gray-300 border border-gray-800">Remediation</span>
+                                    <span class="text-[10px] px-1.5 py-0.5 rounded bg-gray-900 text-gray-300 border border-gray-800">Auto-Test</span>
+                                </div>
+                            </div>
+
+                            <!-- 3. RUN Pillar -->
+                            <div class="relative rounded-xl border border-purple-900/50 p-3.5 flex flex-col justify-between overflow-hidden bg-gray-950 hover:border-purple-500/60 transition group shadow-md">
+                                <div class="absolute inset-0 bg-gradient-to-b from-purple-950/20 via-transparent to-transparent pointer-events-none"></div>
+                                <div class="relative z-10">
+                                    <div class="flex items-center justify-between mb-2">
+                                        <div class="w-7 h-7 rounded-lg bg-purple-900/70 border border-purple-700/50 flex items-center justify-center text-purple-300">
+                                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+                                        </div>
+                                        <span class="text-[10px] font-mono uppercase tracking-wider text-purple-400 font-bold bg-purple-950/80 px-2 py-0.5 rounded border border-purple-800/40">RUN</span>
+                                    </div>
+                                    <h4 class="text-xs font-bold text-white group-hover:text-purple-300 transition">Platform Operations</h4>
+                                    <p class="text-[11px] text-gray-300 mt-1.5 leading-relaxed">
+                                        24/7 proactive platform monitoring, SLA guarantees, defect resolution, performance tuning, and GCU optimization.
+                                    </p>
+                                </div>
+                                <div class="relative z-10 mt-3 pt-2.5 border-t border-gray-800/80 flex flex-wrap gap-1">
+                                    <span class="text-[10px] px-1.5 py-0.5 rounded bg-gray-900 text-gray-300 border border-gray-800">24/7 Ops</span>
+                                    <span class="text-[10px] px-1.5 py-0.5 rounded bg-gray-900 text-gray-300 border border-gray-800">SLA Guarantee</span>
+                                    <span class="text-[10px] px-1.5 py-0.5 rounded bg-gray-900 text-gray-300 border border-gray-800">GCU Opt</span>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <!-- APEX & CRUX Acceleration Strip -->
+                        <div class="shrink-0 p-3 rounded-xl bg-gray-900/90 border border-gray-800 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs">
+                            <div class="flex items-center gap-3">
+                                <div class="px-2 py-1 rounded bg-indigo-600 text-white font-mono font-bold text-[10px]">APEX™ + CRUX™</div>
+                                <div class="text-[11px] text-gray-300">
+                                    <strong class="text-white">Proprietary AI Acceleration:</strong> Up to 40% faster execution with 100% human architect verification.
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <span class="px-2 py-0.5 rounded bg-gray-800 text-[10px] font-mono text-emerald-400 border border-emerald-800/40">Zero-Hallucination Guardrails</span>
+                            </div>
+                        </div>
+
+                        <!-- Bottom Credentials Strip -->
+                        <div class="shrink-0 p-2.5 rounded-xl bg-gray-900/60 border border-gray-800 flex items-center justify-around text-center text-xs">
+                            <div><strong class="text-white font-bold">PolicyCenter</strong> <span class="text-gray-400 text-[11px]">• ClaimCenter</span></div>
+                            <span class="text-gray-700">•</span>
+                            <div><strong class="text-blue-400 font-bold">BillingCenter</strong> <span class="text-gray-400 text-[11px]">• Guidewire Cloud</span></div>
+                            <span class="text-gray-700">•</span>
+                            <div><strong class="text-emerald-400 font-bold">Enterprise Ready</strong> <span class="text-gray-400 text-[11px]">SOC2 Compliant</span></div>
+                        </div>
+
+                    </div>
+
+                    <!-- =====================================================
+                         SLIDE 1 (Topic: guidewire): GUIDEWIRE CORE SUITE
+                         ===================================================== -->
+                    <div id="slide-1" class="slide-panel inactive w-full h-full flex flex-col justify-between gap-3 overflow-hidden">
                         
                         <!-- Top Header Pill Strip -->
                         <div class="shrink-0 flex items-center justify-between px-3.5 py-2 rounded-xl bg-gray-900/90 border border-gray-800">
@@ -316,7 +452,7 @@
                     <!-- =====================================================
                          SLIDE 2 (Topic: apex): CASE3 APEX™ PLATFORM
                          ===================================================== -->
-                    <div id="slide-1" class="slide-panel inactive w-full h-full flex flex-col justify-between gap-3 overflow-hidden">
+                    <div id="slide-2" class="slide-panel inactive w-full h-full flex flex-col justify-between gap-3 overflow-hidden">
                         
                         <!-- Top Header Strip -->
                         <div class="shrink-0 flex items-center justify-between px-3.5 py-2 rounded-xl bg-gray-900/90 border border-gray-800">
@@ -397,7 +533,7 @@
                     <!-- =====================================================
                          SLIDE 3 (Topic: execution): THREE EXECUTION MODELS
                          ===================================================== -->
-                    <div id="slide-2" class="slide-panel inactive w-full h-full flex flex-col justify-between gap-3 overflow-hidden">
+                    <div id="slide-3" class="slide-panel inactive w-full h-full flex flex-col justify-between gap-3 overflow-hidden">
                         
                         <!-- Top Header Strip -->
                         <div class="shrink-0 flex items-center justify-between px-3.5 py-2 rounded-xl bg-gray-900/90 border border-gray-800">
@@ -491,7 +627,7 @@
                     <!-- =====================================================
                          SLIDE 4 (Topic: leadership): EXECUTIVE CONTACT & QR
                          ===================================================== -->
-                    <div id="slide-3" class="slide-panel inactive w-full h-full flex flex-col justify-between gap-3 overflow-hidden">
+                    <div id="slide-4" class="slide-panel inactive w-full h-full flex flex-col justify-between gap-3 overflow-hidden">
                         
                         <!-- Top Header Strip -->
                         <div class="shrink-0 flex items-center justify-between px-3.5 py-2 rounded-xl bg-gray-900/90 border border-gray-800">
@@ -578,7 +714,7 @@
                     <!-- =====================================================
                          SLIDE 5 (Topic: security): DETERMINISTIC GOVERNANCE
                          ===================================================== -->
-                    <div id="slide-4" class="slide-panel inactive w-full h-full flex flex-col justify-between gap-3 overflow-hidden">
+                    <div id="slide-5" class="slide-panel inactive w-full h-full flex flex-col justify-between gap-3 overflow-hidden">
                         
                         <!-- Top Header Strip -->
                         <div class="shrink-0 flex items-center justify-between px-3.5 py-2 rounded-xl bg-gray-900/90 border border-gray-800">
@@ -679,14 +815,15 @@
                      ========================================================= -->
                 <div class="shrink-0 mt-3 pt-2.5 border-t border-gray-800/80 flex items-center justify-between text-xs text-gray-400">
                     
-                    <!-- Left: Slide Dots Indicator (5 Slides) -->
+                    <!-- Left: Slide Dots Indicator (6 Slides) -->
                     <div class="flex items-center gap-2">
                         <button onclick="goToSlide(0)" id="dot-0" class="w-2.5 h-2.5 rounded-full bg-blue-500 transition-all"></button>
                         <button onclick="goToSlide(1)" id="dot-1" class="w-2 h-2 rounded-full bg-gray-700 hover:bg-gray-500 transition-all"></button>
                         <button onclick="goToSlide(2)" id="dot-2" class="w-2 h-2 rounded-full bg-gray-700 hover:bg-gray-500 transition-all"></button>
                         <button onclick="goToSlide(3)" id="dot-3" class="w-2 h-2 rounded-full bg-gray-700 hover:bg-gray-500 transition-all"></button>
                         <button onclick="goToSlide(4)" id="dot-4" class="w-2 h-2 rounded-full bg-gray-700 hover:bg-gray-500 transition-all"></button>
-                        <span id="slide-number" class="text-xs font-mono text-gray-500 ml-2">Slide 1 of 5</span>
+                        <button onclick="goToSlide(5)" id="dot-5" class="w-2 h-2 rounded-full bg-gray-700 hover:bg-gray-500 transition-all"></button>
+                        <span id="slide-number" class="text-xs font-mono text-gray-500 ml-2">Slide 1 of 6</span>
                     </div>
 
                     <!-- Right: Arrows and Auto-Play -->
@@ -830,7 +967,7 @@
 
         // Global slideshow and session state
         let currentSlide = 0;
-        const totalSlides = 5;
+        const totalSlides = 6;
         let autoTimer = null;
         let anamClient = null;
         let isMuted = false;
@@ -1065,11 +1202,20 @@
                         const topic = (payload?.arguments?.topic || "").toLowerCase();
                         
                         const topicMap = {
-                            "guidewire": 0,
-                            "apex": 1,
-                            "execution": 2,
-                            "leadership": 3,
-                            "security": 4
+                            "overview": 0,
+                            "welcome": 0,
+                            "company": 0,
+                            "guidewire": 1,
+                            "apex": 2,
+                            "crux": 2,
+                            "execution": 3,
+                            "build": 3,
+                            "upgrade": 3,
+                            "run": 3,
+                            "leadership": 4,
+                            "followup": 4,
+                            "security": 5,
+                            "governance": 5
                         };
 
                         // Non-blocking asynchronous UI update
@@ -1077,11 +1223,13 @@
                             const targetSlide = topicMap[topic];
                             if (targetSlide !== undefined) {
                                 window.goToSlide(targetSlide);
+                            } else {
+                                window.goToSlide(0); // Fallback to Welcome Overview Dashboard
                             }
                             if (topic === 'leadership') {
                                 window.toggleQrModal(true);
                             }
-                            addSystemNotice(`Visual context shifted to: ${topic.toUpperCase()}`);
+                            addSystemNotice(`Visual context shifted to: ${(topic || 'overview').toUpperCase()}`);
                         });
 
                         // INSTANT RETURN: Informs the Anam engine in 1ms so Iris never pauses speech
