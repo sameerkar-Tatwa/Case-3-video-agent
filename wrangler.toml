@@ -1,0 +1,12 @@
+name = "case-3-video-agent"
+main = "backend/worker.js"
+compatibility_date = "2026-10-23"
+
+# Environmental variables (Non-sensitive)
+[vars]
+ANAM_PERSONA_ID = "603598a2-e60a-41fd-a5f3-4347900dd2e5"
+
+# Static Assets (serves frontend/index.html & assets directly from Cloudflare edge)
+[assets]
+directory = "frontend"
+binding = "ASSETS"

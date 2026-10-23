@@ -1,0 +1,11 @@
+node_modules/
+.git/
+.wrangler/
+backend/
+docs/
+*.md
+package.json
+package-lock.json
+wrangler.toml
+.dev.vars
+.dev.vars.*

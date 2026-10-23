@@ -1,11 +1,16 @@
 {
-  "name": "case3-iris-workspace",
+  "name": "case-3-video-agent",
   "version": "1.0.0",
   "description": "CASE3 Technologies Iris AI Studio with Anam JS SDK and Dynamic Non-Blocking Client Tool",
   "scripts": {
+    "build": "",
+    "deploy": "wrangler deploy",
+    "dev": "wrangler dev",
     "dev:frontend": "npx serve frontend -l 3000",
     "dev:backend": "cd backend && npm run dev",
-    "dev:tunnel": "cd backend && npm run dev:tunnel",
-    "deploy:backend": "cd backend && npm run deploy"
+    "preview": "wrangler dev"
+  },
+  "devDependencies": {
+    "wrangler": "^3.109.0"
   }
 }
