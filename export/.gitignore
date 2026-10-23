@@ -1,0 +1,12 @@
+# Environment & Secrets
+.env
+.env.local
+.env.*.local
+*.secret
+*.token
+
+# OS & Editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
