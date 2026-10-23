@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <base href="/">
     <title>CASE3 Technologies | AI-Native Guidewire Transformation</title>
     
     <!-- Tailwind CSS with Typography Plugin -->
@@ -1029,8 +1030,14 @@
             sessionStatus.innerHTML = `<span class="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span><span class="text-amber-300">Connecting...</span>`;
 
             try {
-                // Determine worker URL (saved in localStorage or default to localhost:8787)
-                const workerUrl = localStorage.getItem('case3_worker_url') || "http://localhost:8787";
+                // Determine worker URL:
+                // Auto-detect: If loaded directly from Cloudflare (e.g. /visualizer), use current origin!
+                // If local development, default to http://localhost:8787
+                const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+                const defaultWorkerUrl = (window.location.protocol.startsWith('http') && !isLocal)
+                    ? window.location.origin
+                    : "http://localhost:8787";
+                const workerUrl = localStorage.getItem('case3_worker_url') || defaultWorkerUrl;
 
                 // 1. Fetch Session Token from Cloudflare Worker
                 const res = await fetch(`${workerUrl}/api/session-token`, { 

@@ -1,5 +1,5 @@
 // Cloudflare Worker: worker.js
-// Secure Anam Session Token Minter for CASE3 Iris Dynamic UI
+// Secure Anam Session Token Minter & Visualizer Host for CASE3 Iris Dynamic UI
 
 export default {
   async fetch(request, env) {
@@ -16,7 +16,34 @@ export default {
 
     const url = new URL(request.url);
 
-    // Endpoint: POST /api/session-token
+    // =========================================================================
+    // 1. VISUALIZER & STATIC ASSETS ROUTING (Directly viewable on /visualizer)
+    // =========================================================================
+    if (url.pathname === "/visualizer" || url.pathname === "/visualizer/" || url.pathname === "/" || url.pathname === "/index.html") {
+      if (env.ASSETS) {
+        const assetUrl = new URL("/index.html", request.url);
+        return env.ASSETS.fetch(new Request(assetUrl, request));
+      }
+    }
+
+    // Static asset handling (e.g. /assets/... or /visualizer/assets/...)
+    if (url.pathname.startsWith("/visualizer/assets/")) {
+      if (env.ASSETS) {
+        const cleanPath = url.pathname.replace(/^\/visualizer/, "");
+        const assetUrl = new URL(cleanPath, request.url);
+        return env.ASSETS.fetch(new Request(assetUrl, request));
+      }
+    }
+
+    if (url.pathname.startsWith("/assets/")) {
+      if (env.ASSETS) {
+        return env.ASSETS.fetch(request);
+      }
+    }
+
+    // =========================================================================
+    // 2. ENDPOINT: POST /api/session-token (Token Minter)
+    // =========================================================================
     if (url.pathname === "/api/session-token" && request.method === "POST") {
       try {
         if (!env.ANAM_API_KEY) {
@@ -65,12 +92,19 @@ export default {
       }
     }
 
-    // Health check
-    if (url.pathname === "/" || url.pathname === "/health") {
+    // =========================================================================
+    // 3. HEALTH CHECK
+    // =========================================================================
+    if (url.pathname === "/health") {
       return Response.json(
-        { status: "ok", service: "CASE3 Iris Session Token Minter" },
+        { status: "ok", service: "CASE3 Iris Session Token Minter & Visualizer" },
         { headers: corsHeaders }
       );
+    }
+
+    // Fallback: If ASSETS binding is present, try resolving against static assets
+    if (env.ASSETS) {
+      return env.ASSETS.fetch(request);
     }
 
     return new Response("Not Found", { status: 404, headers: corsHeaders });
