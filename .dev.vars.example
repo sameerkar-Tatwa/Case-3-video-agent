@@ -1,0 +1,4 @@
+# Local Cloudflare Worker Secrets (DO NOT commit your real .dev.vars to git)
+# Copy this file to .dev.vars and paste your actual Anam API key:
+ANAM_API_KEY="your_anam_api_key_here"
+ANAM_PERSONA_ID="603598a2-e60a-41fd-a5f3-4347900dd2e5"

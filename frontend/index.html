@@ -14,9 +14,6 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 
-    <!-- Simple Anam Agent Embed Script (Zero SDK complexity) -->
-    <script src="https://unpkg.com/@anam-ai/agent-widget" async></script>
-
     <style>
         * {
             box-sizing: border-box;
@@ -36,13 +33,6 @@
 
         .font-mono {
             font-family: 'JetBrains Mono', monospace;
-        }
-
-        /* Full container fit for the Anam Agent embed */
-        anam-agent {
-            width: 100% !important;
-            height: 100% !important;
-            display: block;
         }
 
         /* Subtle military/carrier precision grid inspired by CASE III naval precision */
@@ -106,11 +96,18 @@
             <span class="text-gray-300 font-mono text-[11px]">200+ Yrs Guidewire Depth</span>
         </div>
 
-        <!-- Right: Status Badge -->
-        <div class="flex items-center gap-3">
+        <!-- Right: Status Badge & Worker Config -->
+        <div class="flex items-center gap-2.5">
+            <!-- Settings button for Cloudflare Worker URL -->
+            <button id="btn-settings-toggle" class="p-1.5 rounded-lg bg-gray-900 hover:bg-gray-800 text-gray-400 hover:text-white border border-gray-800 transition text-xs flex items-center gap-1.5" title="Configure Cloudflare Worker Token Endpoint">
+                <svg class="w-3.5 h-3.5 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                <span class="hidden sm:inline text-[11px] font-mono text-gray-300">Worker</span>
+            </button>
+
+            <!-- Agent Session Status Pill -->
             <div id="session-status" class="px-2.5 py-1 rounded-full bg-emerald-950/60 border border-emerald-800/60 text-xs font-medium flex items-center gap-2">
-                <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-                <span class="text-emerald-300">Agent Ready</span>
+                <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+                <span class="text-emerald-300">Ready</span>
             </div>
         </div>
     </header>
@@ -121,29 +118,42 @@
     <main class="flex-1 flex flex-col md:flex-row overflow-hidden relative min-h-0 w-full h-full">
 
         <!-- =============================================================
-             LEFT PANEL: IRIS AGENT EMBED & FUNCTIONAL CONTROLS
+             LEFT PANEL: IRIS AGENT (ANAM JS SDK WEBRTC STREAMING)
              ============================================================= -->
         <section class="relative w-full md:w-1/2 h-1/2 md:h-full bg-black flex flex-col items-center justify-center border-b md:border-b-0 md:border-r border-gray-800/90 overflow-hidden">
             
             <!-- Persona Video Container -->
-            <div class="w-full h-full relative flex items-center justify-center bg-gradient-to-b from-gray-950 via-gray-900 to-black overflow-hidden">
+            <div id="video-container" class="w-full h-full relative flex items-center justify-center bg-black overflow-hidden">
                 
-                <!-- Simple Anam Web Component Embed (Replace YOUR_ANAM_AGENT_ID with your Anam Agent ID) -->
-                <anam-agent 
-                    id="iris-agent"
-                    agent-id="YOUR_ANAM_AGENT_ID" 
-                    api-base-url="https://lab.anam.ai"
-                    layout="inline">
-                </anam-agent>
+                <!-- Direct WebRTC Video Stream from Anam JS SDK -->
+                <video id="iris-video" class="w-full h-full object-cover hidden" autoplay playsinline></video>
 
-                <!-- Ambient Lighting Glow -->
-                <div class="pointer-events-none absolute -bottom-16 left-1/2 -translate-x-1/2 w-3/4 h-56 bg-blue-600/10 rounded-full blur-3xl"></div>
+                <!-- Initial Idle / Poster State with "Talk to Iris" CTA -->
+                <div id="iris-idle-poster" class="absolute inset-0 flex flex-col items-center justify-center bg-gradient-to-b from-gray-950 via-gray-900 to-black z-10 transition-opacity duration-300 overflow-hidden">
+                    <img src="assets/executive-ashwin.jpg" alt="Iris Persona" class="absolute inset-0 w-full h-full object-cover opacity-50">
+                    <div class="absolute inset-0 bg-gradient-to-t from-gray-950 via-gray-950/40 to-transparent"></div>
+
+                    <!-- Ambient Glow -->
+                    <div class="pointer-events-none absolute -bottom-16 left-1/2 -translate-x-1/2 w-3/4 h-56 bg-blue-600/20 rounded-full blur-3xl"></div>
+
+                    <!-- Interactive Start Session Button -->
+                    <button id="btn-start-session" class="relative z-10 px-6 py-3 rounded-full bg-blue-600 hover:bg-blue-500 text-white font-semibold text-sm flex items-center gap-2.5 shadow-2xl hover:scale-105 active:scale-95 transition backdrop-blur-md border border-white/20">
+                        <svg class="w-4 h-4 fill-current text-white" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                        <span>Talk to Iris</span>
+                    </button>
+                    <span class="relative z-10 text-[11px] text-gray-300 mt-2.5 font-medium tracking-wide">Real-time dynamic voice & visuals</span>
+                </div>
+
+                <!-- Custom Red End-Call / Cross Button (Top Right Corner) -->
+                <button id="btn-end-session" class="absolute top-3.5 right-3.5 z-30 w-8 h-8 rounded-full bg-red-600 hover:bg-red-700 text-white border-2 border-white flex items-center justify-center shadow-xl hover:scale-110 active:scale-95 transition hidden" title="End Call">
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+                </button>
             </div>
 
             <!-- Top Left Persona Badge -->
-            <div class="absolute top-3 left-3 z-20 flex items-center gap-2 pointer-events-none">
+            <div class="absolute top-3.5 left-3.5 z-20 flex items-center gap-2 pointer-events-none">
                 <div class="px-2.5 py-1 rounded-xl bg-gray-950/80 backdrop-blur-md border border-white/10 text-xs font-medium text-gray-200 flex items-center gap-2 shadow-lg">
-                    <span class="w-2 h-2 rounded-full bg-blue-500 animate-ping"></span>
+                    <span id="iris-pulse-dot" class="w-2 h-2 rounded-full bg-blue-500"></span>
                     <span>Iris • Case3 AI Agent</span>
                 </div>
             </div>
@@ -177,7 +187,7 @@
 
         <!-- =============================================================
              RIGHT PANEL: ZERO-SCROLL MULTI-CARD SHOWCASE PALETTE
-             (Each card enhanced with relevant background image & minimal text)
+             (Dynamically updated via Non-Blocking Client Tool)
              ============================================================= -->
         <section class="relative w-full md:w-1/2 h-1/2 md:h-full bg-gray-950 flex flex-col overflow-hidden min-h-0">
             
@@ -188,7 +198,7 @@
                 <div class="flex-1 min-h-0 relative w-full h-full overflow-hidden flex flex-col justify-center">
                     
                     <!-- =====================================================
-                         SLIDE 1: GUIDEWIRE CORE (4 CARDS WITH RICH BACKGROUND IMAGES)
+                         SLIDE 1 (Topic: guidewire): GUIDEWIRE CORE SUITE
                          ===================================================== -->
                     <div id="slide-0" class="slide-panel active w-full h-full flex flex-col justify-between gap-3 overflow-hidden">
                         
@@ -206,9 +216,8 @@
                         <!-- 4-Card Module Grid with Background Images -->
                         <div class="flex-1 min-h-0 grid grid-cols-2 gap-3">
                             
-                            <!-- 1. PolicyCenter Card (with bg-policy.jpg) -->
+                            <!-- 1. PolicyCenter Card -->
                             <div class="relative rounded-xl border border-gray-800/80 p-3.5 flex flex-col justify-between overflow-hidden hover:border-blue-500/50 transition group bg-gray-950">
-                                <!-- Background Image with High-Visibility Opacity & Protective Text Gradient -->
                                 <img src="assets/bg-policy.jpg" alt="" class="absolute inset-0 w-full h-full object-cover opacity-65 group-hover:opacity-85 transition-opacity duration-300 pointer-events-none">
                                 <div class="absolute inset-0 bg-gradient-to-t from-gray-950/95 via-gray-950/40 to-transparent pointer-events-none"></div>
 
@@ -228,9 +237,8 @@
                                 </div>
                             </div>
 
-                            <!-- 2. ClaimCenter Card (with bg-claims.jpg) -->
+                            <!-- 2. ClaimCenter Card -->
                             <div class="relative rounded-xl border border-gray-800/80 p-3.5 flex flex-col justify-between overflow-hidden hover:border-emerald-500/50 transition group bg-gray-950">
-                                <!-- Background Image with High-Visibility Opacity & Protective Text Gradient -->
                                 <img src="assets/bg-claims.jpg" alt="" class="absolute inset-0 w-full h-full object-cover opacity-65 group-hover:opacity-85 transition-opacity duration-300 pointer-events-none">
                                 <div class="absolute inset-0 bg-gradient-to-t from-gray-950/95 via-gray-950/40 to-transparent pointer-events-none"></div>
 
@@ -250,9 +258,8 @@
                                 </div>
                             </div>
 
-                            <!-- 3. BillingCenter Card (with bg-billing.jpg) -->
+                            <!-- 3. BillingCenter Card -->
                             <div class="relative rounded-xl border border-gray-800/80 p-3.5 flex flex-col justify-between overflow-hidden hover:border-purple-500/50 transition group bg-gray-950">
-                                <!-- Background Image with High-Visibility Opacity & Protective Text Gradient -->
                                 <img src="assets/bg-billing.jpg" alt="" class="absolute inset-0 w-full h-full object-cover opacity-65 group-hover:opacity-85 transition-opacity duration-300 pointer-events-none">
                                 <div class="absolute inset-0 bg-gradient-to-t from-gray-950/95 via-gray-950/40 to-transparent pointer-events-none"></div>
 
@@ -272,9 +279,8 @@
                                 </div>
                             </div>
 
-                            <!-- 4. Guidewire Cloud (with bg-cloud.jpg) -->
+                            <!-- 4. Guidewire Cloud -->
                             <div class="relative rounded-xl border border-gray-800/80 p-3.5 flex flex-col justify-between overflow-hidden hover:border-amber-500/50 transition group bg-gray-950">
-                                <!-- Background Image with High-Visibility Opacity & Protective Text Gradient -->
                                 <img src="assets/bg-cloud.jpg" alt="" class="absolute inset-0 w-full h-full object-cover opacity-65 group-hover:opacity-85 transition-opacity duration-300 pointer-events-none">
                                 <div class="absolute inset-0 bg-gradient-to-t from-gray-950/95 via-gray-950/40 to-transparent pointer-events-none"></div>
 
@@ -307,7 +313,7 @@
                     </div>
 
                     <!-- =====================================================
-                         SLIDE 2: CASE3 APEX™ PLATFORM (BACKGROUND IMAGES ON ALL CARDS)
+                         SLIDE 2 (Topic: apex): CASE3 APEX™ PLATFORM
                          ===================================================== -->
                     <div id="slide-1" class="slide-panel inactive w-full h-full flex flex-col justify-between gap-3 overflow-hidden">
                         
@@ -388,7 +394,7 @@
                     </div>
 
                     <!-- =====================================================
-                         SLIDE 3: THREE EXECUTION MODELS (BACKGROUND IMAGES ON EACH PILLAR)
+                         SLIDE 3 (Topic: execution): THREE EXECUTION MODELS
                          ===================================================== -->
                     <div id="slide-2" class="slide-panel inactive w-full h-full flex flex-col justify-between gap-3 overflow-hidden">
                         
@@ -406,7 +412,7 @@
                         <!-- 3 Sleek Cards with Background Images (Build, Upgrade, Run) -->
                         <div class="flex-1 min-h-0 grid grid-cols-1 sm:grid-cols-3 gap-3">
                             
-                            <!-- 01 BUILD (with bg-policy.jpg) -->
+                            <!-- 01 BUILD -->
                             <div class="relative rounded-xl border border-blue-900/40 p-4 flex flex-col justify-between overflow-hidden hover:border-blue-500/50 transition group bg-gray-950 shadow-xl">
                                 <img src="assets/bg-policy.jpg" alt="" class="absolute inset-0 w-full h-full object-cover opacity-60 group-hover:opacity-85 transition-opacity duration-300 pointer-events-none">
                                 <div class="absolute inset-0 bg-gradient-to-t from-gray-950 via-gray-950/50 to-transparent pointer-events-none"></div>
@@ -428,7 +434,7 @@
                                 </div>
                             </div>
 
-                            <!-- 02 UPGRADE (with bg-cloud.jpg) -->
+                            <!-- 02 UPGRADE -->
                             <div class="relative rounded-xl border border-emerald-900/40 p-4 flex flex-col justify-between overflow-hidden hover:border-emerald-500/50 transition group bg-gray-950 shadow-xl">
                                 <img src="assets/bg-cloud.jpg" alt="" class="absolute inset-0 w-full h-full object-cover opacity-60 group-hover:opacity-85 transition-opacity duration-300 pointer-events-none">
                                 <div class="absolute inset-0 bg-gradient-to-t from-gray-950 via-gray-950/50 to-transparent pointer-events-none"></div>
@@ -450,7 +456,7 @@
                                 </div>
                             </div>
 
-                            <!-- 03 RUN (with bg-billing.jpg) -->
+                            <!-- 03 RUN -->
                             <div class="relative rounded-xl border border-purple-900/40 p-4 flex flex-col justify-between overflow-hidden hover:border-purple-500/50 transition group bg-gray-950 shadow-xl">
                                 <img src="assets/bg-billing.jpg" alt="" class="absolute inset-0 w-full h-full object-cover opacity-60 group-hover:opacity-85 transition-opacity duration-300 pointer-events-none">
                                 <div class="absolute inset-0 bg-gradient-to-t from-gray-950 via-gray-950/50 to-transparent pointer-events-none"></div>
@@ -482,7 +488,7 @@
                     </div>
 
                     <!-- =====================================================
-                         SLIDE 4: EXECUTIVE CONTACT (USER BADGE + AMBIENT BG)
+                         SLIDE 4 (Topic: leadership): EXECUTIVE CONTACT & QR
                          ===================================================== -->
                     <div id="slide-3" class="slide-panel inactive w-full h-full flex flex-col justify-between gap-3 overflow-hidden">
                         
@@ -513,7 +519,7 @@
                             <!-- Right: Contact Cards with Subtle Ambient Tech Background -->
                             <div class="flex-1 h-full flex flex-col justify-between gap-2.5 min-w-0">
                                 
-                                <!-- Leader Bio Card (with subtle ambient background) -->
+                                <!-- Leader Bio Card -->
                                 <div class="relative p-3.5 rounded-xl border border-gray-800 overflow-hidden bg-gray-950 group">
                                     <img src="assets/guidewire-core.jpg" alt="" class="absolute inset-0 w-full h-full object-cover opacity-50 group-hover:opacity-75 transition-opacity duration-300 pointer-events-none">
                                     <div class="absolute inset-0 bg-gradient-to-r from-gray-950 via-gray-950/75 to-transparent pointer-events-none"></div>
@@ -540,8 +546,13 @@
                                     </div>
                                 </div>
 
-                                <!-- Direct Action Buttons -->
-                                <div class="space-y-2">
+                                <!-- Direct Action Buttons with QR Code Trigger -->
+                                <div class="space-y-1.5">
+                                    <button onclick="toggleQrModal(true)" class="w-full py-2 px-3 rounded-xl bg-indigo-600/30 hover:bg-indigo-600 text-indigo-300 hover:text-white font-medium text-xs flex items-center justify-center gap-1.5 border border-indigo-500/40 transition active:scale-95 shadow-sm">
+                                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z"/></svg>
+                                        <span>Scan Executive QR Code</span>
+                                    </button>
+
                                     <a href="mailto:contactus@case3tech.com?subject=Meeting%20with%20Manas%20Mishra%20-%20CASE3%20Technologies" class="w-full py-2 px-3 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-medium text-xs flex items-center justify-center gap-2 transition active:scale-95 shadow-md shadow-blue-600/20">
                                         <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
                                         <span>Email Manas: contactus@case3tech.com</span>
@@ -563,20 +574,118 @@
                         </div>
                     </div>
 
+                    <!-- =====================================================
+                         SLIDE 5 (Topic: security): DETERMINISTIC GOVERNANCE
+                         ===================================================== -->
+                    <div id="slide-4" class="slide-panel inactive w-full h-full flex flex-col justify-between gap-3 overflow-hidden">
+                        
+                        <!-- Top Header Strip -->
+                        <div class="shrink-0 flex items-center justify-between px-3.5 py-2 rounded-xl bg-gray-900/90 border border-gray-800">
+                            <div class="flex items-center gap-2">
+                                <span class="px-2 py-0.5 rounded bg-red-950 text-red-300 font-bold text-[10px] uppercase tracking-wider border border-red-800/60">
+                                    Enterprise Security
+                                </span>
+                                <span class="text-xs font-semibold text-white">Deterministic Governance & Safe Execution</span>
+                            </div>
+                            <span class="text-[11px] font-mono text-emerald-400 flex items-center gap-1.5">
+                                <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                                Zero-Hallucination Policy
+                            </span>
+                        </div>
+
+                        <!-- 3 Security Architecture Pillars with Rich Visual Artwork -->
+                        <div class="flex-1 min-h-0 grid grid-cols-1 sm:grid-cols-3 gap-3">
+                            
+                            <!-- 01: Zero Data Leakage -->
+                            <div class="relative rounded-xl border border-emerald-900/40 p-4 flex flex-col justify-between overflow-hidden hover:border-emerald-500/50 transition group bg-gray-950 shadow-xl">
+                                <img src="assets/bg-claims.jpg" alt="" class="absolute inset-0 w-full h-full object-cover opacity-60 group-hover:opacity-85 transition-opacity duration-300 pointer-events-none">
+                                <div class="absolute inset-0 bg-gradient-to-t from-gray-950 via-gray-950/50 to-transparent pointer-events-none"></div>
+
+                                <div class="relative z-10">
+                                    <div class="flex items-center justify-between mb-3">
+                                        <span class="w-7 h-7 rounded-lg bg-emerald-600 text-white font-mono text-xs font-bold flex items-center justify-center shadow-md">01</span>
+                                        <span class="text-[10px] uppercase font-bold text-emerald-400 tracking-wider">Data Privacy</span>
+                                    </div>
+                                    <h4 class="text-sm font-bold text-white group-hover:text-emerald-400 transition drop-shadow-md">Zero Data Leakage</h4>
+                                    <p class="text-xs text-gray-200 mt-2 leading-relaxed drop-shadow">
+                                        Strict memory isolation pods. Customer code, schemas, and policyholder data never train public models.
+                                    </p>
+                                </div>
+                                <div class="relative z-10 space-y-1.5 pt-3 border-t border-gray-800/80">
+                                    <div class="text-[11px] text-gray-200 flex items-center gap-2 drop-shadow"><span class="w-1.5 h-1.5 rounded-full bg-emerald-500 shadow-sm"></span> Isolated Memory Pods</div>
+                                    <div class="text-[11px] text-gray-200 flex items-center gap-2 drop-shadow"><span class="w-1.5 h-1.5 rounded-full bg-emerald-500 shadow-sm"></span> Ephemeral Tokens Only</div>
+                                    <div class="text-[11px] text-gray-200 flex items-center gap-2 drop-shadow"><span class="w-1.5 h-1.5 rounded-full bg-emerald-500 shadow-sm"></span> SOC2 / ISO Compliant</div>
+                                </div>
+                            </div>
+
+                            <!-- 02: Human-in-the-Loop -->
+                            <div class="relative rounded-xl border border-blue-900/40 p-4 flex flex-col justify-between overflow-hidden hover:border-blue-500/50 transition group bg-gray-950 shadow-xl">
+                                <img src="assets/apex-platform.jpg" alt="" class="absolute inset-0 w-full h-full object-cover opacity-60 group-hover:opacity-85 transition-opacity duration-300 pointer-events-none">
+                                <div class="absolute inset-0 bg-gradient-to-t from-gray-950 via-gray-950/50 to-transparent pointer-events-none"></div>
+
+                                <div class="relative z-10">
+                                    <div class="flex items-center justify-between mb-3">
+                                        <span class="w-7 h-7 rounded-lg bg-blue-600 text-white font-mono text-xs font-bold flex items-center justify-center shadow-md">02</span>
+                                        <span class="text-[10px] uppercase font-bold text-blue-400 tracking-wider">Oversight</span>
+                                    </div>
+                                    <h4 class="text-sm font-bold text-white group-hover:text-blue-400 transition drop-shadow-md">Human Accountability</h4>
+                                    <p class="text-xs text-gray-200 mt-2 leading-relaxed drop-shadow">
+                                        Agents accelerate repetitive tasks; certified Guidewire delivery leads verify and approve all generated code.
+                                    </p>
+                                </div>
+                                <div class="relative z-10 space-y-1.5 pt-3 border-t border-gray-800/80">
+                                    <div class="text-[11px] text-gray-200 flex items-center gap-2 drop-shadow"><span class="w-1.5 h-1.5 rounded-full bg-blue-500 shadow-sm"></span> Mandatory PR Reviews</div>
+                                    <div class="text-[11px] text-gray-200 flex items-center gap-2 drop-shadow"><span class="w-1.5 h-1.5 rounded-full bg-blue-500 shadow-sm"></span> Cutover Sign-offs</div>
+                                    <div class="text-[11px] text-gray-200 flex items-center gap-2 drop-shadow"><span class="w-1.5 h-1.5 rounded-full bg-blue-500 shadow-sm"></span> 100% Human Ownership</div>
+                                </div>
+                            </div>
+
+                            <!-- 03: Deterministic Guardrails -->
+                            <div class="relative rounded-xl border border-purple-900/40 p-4 flex flex-col justify-between overflow-hidden hover:border-purple-500/50 transition group bg-gray-950 shadow-xl">
+                                <img src="assets/bg-policy.jpg" alt="" class="absolute inset-0 w-full h-full object-cover opacity-60 group-hover:opacity-85 transition-opacity duration-300 pointer-events-none">
+                                <div class="absolute inset-0 bg-gradient-to-t from-gray-950 via-gray-950/50 to-transparent pointer-events-none"></div>
+
+                                <div class="relative z-10">
+                                    <div class="flex items-center justify-between mb-3">
+                                        <span class="w-7 h-7 rounded-lg bg-purple-600 text-white font-mono text-xs font-bold flex items-center justify-center shadow-md">03</span>
+                                        <span class="text-[10px] uppercase font-bold text-purple-400 tracking-wider">Compliance</span>
+                                    </div>
+                                    <h4 class="text-sm font-bold text-white group-hover:text-purple-400 transition drop-shadow-md">Deterministic Guardrails</h4>
+                                    <p class="text-xs text-gray-200 mt-2 leading-relaxed drop-shadow">
+                                        Hard guardrails prevent hallucinated claims. Immutable execution logs provide transparent auditability.
+                                    </p>
+                                </div>
+                                <div class="relative z-10 space-y-1.5 pt-3 border-t border-gray-800/80">
+                                    <div class="text-[11px] text-gray-200 flex items-center gap-2 drop-shadow"><span class="w-1.5 h-1.5 rounded-full bg-purple-500 shadow-sm"></span> Zero Hallucinations</div>
+                                    <div class="text-[11px] text-gray-200 flex items-center gap-2 drop-shadow"><span class="w-1.5 h-1.5 rounded-full bg-purple-500 shadow-sm"></span> Immutable Audit Logs</div>
+                                    <div class="text-[11px] text-gray-200 flex items-center gap-2 drop-shadow"><span class="w-1.5 h-1.5 rounded-full bg-purple-500 shadow-sm"></span> Bounded Toolchains</div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <!-- Bottom Summary Strip -->
+                        <div class="shrink-0 p-2.5 rounded-xl bg-gray-900/70 border border-gray-800 flex items-center justify-between text-xs text-gray-400">
+                            <span>Engineered for mission-critical Tier-1 insurance compliance and enterprise governance.</span>
+                            <span class="text-emerald-400 font-mono text-[11px]">Audit-Ready</span>
+                        </div>
+                    </div>
+
                 </div>
 
                 <!-- =========================================================
-                     BOTTOM CONTROLS: SLEEK DOTS, PREV/NEXT & AUTO-TOUR
+                     BOTTOM CONTROLS: 5 DOTS, PREV/NEXT & AUTO-TOUR
                      ========================================================= -->
                 <div class="shrink-0 mt-3 pt-2.5 border-t border-gray-800/80 flex items-center justify-between text-xs text-gray-400">
                     
-                    <!-- Left: Slide Dots Indicator -->
+                    <!-- Left: Slide Dots Indicator (5 Slides) -->
                     <div class="flex items-center gap-2">
                         <button onclick="goToSlide(0)" id="dot-0" class="w-2.5 h-2.5 rounded-full bg-blue-500 transition-all"></button>
                         <button onclick="goToSlide(1)" id="dot-1" class="w-2 h-2 rounded-full bg-gray-700 hover:bg-gray-500 transition-all"></button>
                         <button onclick="goToSlide(2)" id="dot-2" class="w-2 h-2 rounded-full bg-gray-700 hover:bg-gray-500 transition-all"></button>
                         <button onclick="goToSlide(3)" id="dot-3" class="w-2 h-2 rounded-full bg-gray-700 hover:bg-gray-500 transition-all"></button>
-                        <span id="slide-number" class="text-xs font-mono text-gray-500 ml-2">Slide 1 of 4</span>
+                        <button onclick="goToSlide(4)" id="dot-4" class="w-2 h-2 rounded-full bg-gray-700 hover:bg-gray-500 transition-all"></button>
+                        <span id="slide-number" class="text-xs font-mono text-gray-500 ml-2">Slide 1 of 5</span>
                     </div>
 
                     <!-- Right: Arrows and Auto-Play -->
@@ -599,7 +708,6 @@
 
             <!-- =========================================================
                  VIEW B: TOGGLABLE LIVE TRANSCRIPT DRAWER
-                 (Slides over right panel when triggered, zero scroll outer layout)
                  ========================================================= -->
             <div id="panel-transcript" class="absolute inset-0 flex flex-col bg-gray-950 hidden transition-all duration-300 z-30">
                 <!-- Transcript Header -->
@@ -639,320 +747,427 @@
         </section>
     </main>
 
+    <!-- =================================================================
+         EXECUTIVE QR CODE MODAL (Triggered via Tool 'leadership' or Click)
+         ================================================================= -->
+    <div id="modal-qr" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-4 hidden">
+        <div class="relative bg-gray-950 border border-gray-800 rounded-2xl max-w-sm w-full p-6 flex flex-col items-center text-center shadow-2xl">
+            <!-- Close Button -->
+            <button onclick="toggleQrModal(false)" class="absolute top-3.5 right-3.5 text-gray-400 hover:text-white p-1 rounded-lg hover:bg-gray-800 transition">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+            </button>
+
+            <!-- Leader Avatar / Badge -->
+            <div class="w-16 h-16 rounded-full border-2 border-blue-500 p-0.5 mb-2.5 shadow-lg overflow-hidden">
+                <img src="assets/manas-mishra-id.jpg" alt="Manas Mishra" class="w-full h-full object-cover">
+            </div>
+            
+            <h3 class="text-base font-bold text-white">Manas Mishra</h3>
+            <p class="text-xs text-blue-400 font-medium mt-0.5">Chief AI Officer • CASE3 Technologies</p>
+
+            <!-- High-Contrast QR Code Card -->
+            <div class="mt-4 p-4 bg-white rounded-xl shadow-inner flex flex-col items-center">
+                <img src="https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=https%3A%2F%2Fwww.linkedin.com%2Fin%2Fmanasranjanmishra" 
+                     alt="Scan to Connect with Manas Mishra" 
+                     class="w-36 h-36 object-contain rounded">
+                <span class="text-[10px] text-gray-800 font-mono mt-2 font-bold tracking-wide">SCAN TO CONNECT ON LINKEDIN</span>
+            </div>
+
+            <div class="mt-4 flex items-center gap-2 w-full">
+                <a href="https://www.linkedin.com/in/manasranjanmishra" target="_blank" class="flex-1 py-2 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-xs font-semibold flex items-center justify-center gap-1.5 transition shadow">
+                    <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+                    <span>LinkedIn</span>
+                </a>
+                <button onclick="toggleQrModal(false)" class="px-4 py-2 rounded-xl bg-gray-800 hover:bg-gray-700 text-gray-200 text-xs font-medium transition">
+                    Close
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- =================================================================
+         BACKEND WORKER CONFIGURATION MODAL
+         ================================================================= -->
+    <div id="modal-settings" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-4 hidden">
+        <div class="relative bg-gray-950 border border-gray-800 rounded-2xl max-w-md w-full p-6 shadow-2xl">
+            <div class="flex items-center justify-between pb-3 border-b border-gray-800">
+                <div class="flex items-center gap-2">
+                    <span class="w-2.5 h-2.5 rounded-full bg-blue-500"></span>
+                    <h3 class="text-sm font-bold text-white">Backend Worker Endpoint</h3>
+                </div>
+                <button onclick="toggleSettingsModal(false)" class="text-gray-400 hover:text-white p-1 rounded-lg hover:bg-gray-800">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                </button>
+            </div>
+
+            <div class="mt-4 space-y-3 text-xs">
+                <div>
+                    <label class="text-gray-300 font-medium block mb-1">Cloudflare Worker URL</label>
+                    <input id="input-worker-url" type="text" placeholder="http://localhost:8787" class="w-full bg-gray-900 border border-gray-700 rounded-lg px-3 py-2 text-gray-100 font-mono text-xs focus:outline-none focus:border-blue-500">
+                    <p class="text-[11px] text-gray-400 mt-1">Use <code class="text-blue-300">http://localhost:8787</code> for local testing, or your deployed Cloudflare Worker URL.</p>
+                </div>
+                
+                <div class="p-3 rounded-lg bg-blue-950/40 border border-blue-800/40 text-[11px] text-gray-300 space-y-1">
+                    <strong class="text-blue-300">Security Architecture:</strong>
+                    <p>The frontend requests a session token from <code class="text-white">POST /api/session-token</code>. Your <code class="text-white">ANAM_API_KEY</code> is safely held in your Worker environment and is never exposed to browser clients.</p>
+                </div>
+            </div>
+
+            <div class="mt-5 flex gap-2 justify-end">
+                <button onclick="saveWorkerSettings()" class="px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-medium text-xs transition">
+                    Save Configuration
+                </button>
+            </div>
+        </div>
+    </div>
+
     <!-- =========================================================
-         JAVASCRIPT CONTROLLER: SLIDESHOW & NATIVE ANAM HOOKS
+         JAVASCRIPT CONTROLLER: ANAM JS SDK & CLIENT TOOL PIPELINE
          ========================================================= -->
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            // Panels
-            const panelElements = document.getElementById('panel-elements-showcase');
-            const panelTranscript = document.getElementById('panel-transcript');
-            const btnToggleTranscript = document.getElementById('btn-toggle-transcript');
-            const btnCloseTranscript = document.getElementById('btn-close-transcript');
-            const labelTranscript = document.getElementById('label-transcript');
+    <script type="module">
+        import { createClient, AnamEvent } from "https://esm.sh/@anam-ai/js-sdk";
 
-            // Mute controls
-            const btnMute = document.getElementById('btn-mute');
-            const iconMicOn = document.getElementById('icon-mic-on');
-            const iconMicOff = document.getElementById('icon-mic-off');
-            const labelMute = document.getElementById('label-mute');
-            let isMuted = false;
+        // Global slideshow and session state
+        let currentSlide = 0;
+        const totalSlides = 5;
+        let autoTimer = null;
+        let anamClient = null;
+        let isMuted = false;
+        let isSessionActive = false;
 
-            // Slideshow state
-            let currentSlide = 0;
-            const totalSlides = 4;
-            const slideNumberText = document.getElementById('slide-number');
+        // Elements
+        const panelElements = document.getElementById('panel-elements-showcase');
+        const panelTranscript = document.getElementById('panel-transcript');
+        const btnToggleTranscript = document.getElementById('btn-toggle-transcript');
+        const btnCloseTranscript = document.getElementById('btn-close-transcript');
+        const labelTranscript = document.getElementById('label-transcript');
+        const sessionStatus = document.getElementById('session-status');
+        const idlePoster = document.getElementById('iris-idle-poster');
+        const videoEl = document.getElementById('iris-video');
+        const btnStartSession = document.getElementById('btn-start-session');
+        const btnEndSession = document.getElementById('btn-end-session');
+        const pulseDot = document.getElementById('iris-pulse-dot');
+        const btnMute = document.getElementById('btn-mute');
+        const iconMicOn = document.getElementById('icon-mic-on');
+        const iconMicOff = document.getElementById('icon-mic-off');
+        const labelMute = document.getElementById('label-mute');
+        const slideNumberText = document.getElementById('slide-number');
 
-            // Anam Agent Web Component
-            const agent = document.getElementById('iris-agent');
+        // =========================================================
+        // 1. SLIDESHOW / CAROUSEL CONTROLLER
+        // =========================================================
+        window.goToSlide = function(index) {
+            if (index < 0) index = totalSlides - 1;
+            if (index >= totalSlides) index = 0;
+            currentSlide = index;
 
-            // =========================================================
-            // 1. SLIDESHOW / CAROUSEL CONTROLLER
-            // =========================================================
-            window.goToSlide = function(index) {
-                if (index < 0) index = totalSlides - 1;
-                if (index >= totalSlides) index = 0;
-                currentSlide = index;
+            for (let i = 0; i < totalSlides; i++) {
+                const slide = document.getElementById(`slide-${i}`);
+                const dot = document.getElementById(`dot-${i}`);
 
-                // Toggle active slide
-                for (let i = 0; i < totalSlides; i++) {
-                    const slide = document.getElementById(`slide-${i}`);
-                    const dot = document.getElementById(`dot-${i}`);
-
-                    if (i === currentSlide) {
+                if (i === currentSlide) {
+                    if (slide) {
                         slide.classList.remove('inactive');
                         slide.classList.add('active');
-                        dot.className = 'w-2.5 h-2.5 rounded-full bg-blue-500 transition-all shadow-sm';
-                    } else {
+                    }
+                    if (dot) dot.className = 'w-2.5 h-2.5 rounded-full bg-blue-500 transition-all shadow-sm';
+                } else {
+                    if (slide) {
                         slide.classList.remove('active');
                         slide.classList.add('inactive');
-                        dot.className = 'w-2 h-2 rounded-full bg-gray-700 hover:bg-gray-500 transition-all';
                     }
+                    if (dot) dot.className = 'w-2 h-2 rounded-full bg-gray-700 hover:bg-gray-500 transition-all';
                 }
+            }
 
+            if (slideNumberText) {
                 slideNumberText.textContent = `Slide ${currentSlide + 1} of ${totalSlides}`;
-            };
-
-            document.getElementById('btn-prev-slide').addEventListener('click', () => {
-                goToSlide(currentSlide - 1);
-            });
-
-            document.getElementById('btn-next-slide').addEventListener('click', () => {
-                goToSlide(currentSlide + 1);
-            });
-
-            // Auto-Tour controller
-            let autoTimer = null;
-            window.autoAdvanceSlides = function() {
-                const btn = document.getElementById('btn-auto-play');
-                if (autoTimer) {
-                    clearInterval(autoTimer);
-                    autoTimer = null;
-                    btn.innerHTML = '<span>Auto-Tour</span> <span>▶</span>';
-                } else {
-                    autoTimer = setInterval(() => {
-                        goToSlide(currentSlide + 1);
-                    }, 5000);
-                    btn.innerHTML = '<span>Pause</span> <span>⏸</span>';
-                }
-            };
-
-            // =========================================================
-            // 2. TOGGLE TRANSCRIPT DRAWER (Zero-scroll overlay)
-            // =========================================================
-            function toggleTranscript(show) {
-                const shouldOpen = (show !== undefined) ? show : panelTranscript.classList.contains('hidden');
-                
-                if (shouldOpen) {
-                    panelElements.classList.add('hidden');
-                    panelTranscript.classList.remove('hidden');
-                    labelTranscript.textContent = 'Close Transcript';
-                    btnToggleTranscript.classList.add('bg-blue-600', 'text-white');
-                    btnToggleTranscript.classList.remove('bg-blue-600/20', 'text-blue-400');
-                    document.getElementById('transcript-feed').scrollTop = document.getElementById('transcript-feed').scrollHeight;
-                } else {
-                    panelTranscript.classList.add('hidden');
-                    panelElements.classList.remove('hidden');
-                    labelTranscript.textContent = 'Open Transcript';
-                    btnToggleTranscript.classList.remove('bg-blue-600', 'text-white');
-                    btnToggleTranscript.classList.add('bg-blue-600/20', 'text-blue-400');
-                }
             }
+        };
 
-            btnToggleTranscript.addEventListener('click', () => toggleTranscript());
-            btnCloseTranscript.addEventListener('click', () => toggleTranscript(false));
+        document.getElementById('btn-prev-slide').addEventListener('click', () => {
+            goToSlide(currentSlide - 1);
+        });
 
-            // =========================================================
-            // 3. MUTE TOGGLE
-            // =========================================================
-            btnMute.addEventListener('click', () => {
-                isMuted = !isMuted;
-                if (isMuted) {
-                    iconMicOn.classList.add('hidden');
-                    iconMicOff.classList.remove('hidden');
-                    labelMute.textContent = 'Unmute';
-                    btnMute.classList.add('text-red-400');
-                } else {
-                    iconMicOff.classList.add('hidden');
-                    iconMicOn.classList.remove('hidden');
-                    labelMute.textContent = 'Mute';
-                    btnMute.classList.remove('text-red-400');
-                }
-            });
+        document.getElementById('btn-next-slide').addEventListener('click', () => {
+            goToSlide(currentSlide + 1);
+        });
 
-            // =========================================================
-            // 4. TRANSCRIPT FEED
-            // =========================================================
-            const transcriptFeed = document.getElementById('transcript-feed');
-            const chatForm = document.getElementById('chat-form');
-            const chatInput = document.getElementById('chat-input');
-            let messageCount = 1;
-
-            function addMessage(role, text) {
-                const isUser = role === 'user';
-                messageCount++;
-                document.getElementById('message-badge').textContent = `${messageCount} msgs`;
-
-                const wrapper = document.createElement('div');
-                wrapper.className = `flex flex-col gap-1 ${isUser ? 'items-end' : 'items-start'}`;
-
-                const sender = document.createElement('span');
-                sender.className = `text-[10px] font-medium ml-1 ${isUser ? 'text-purple-400 mr-1' : 'text-blue-400'}`;
-                sender.textContent = isUser ? 'You' : 'Iris (Agent)';
-
-                const bubble = document.createElement('div');
-                bubble.className = `px-3.5 py-2 rounded-xl text-xs leading-relaxed max-w-[85%] ${
-                    isUser 
-                        ? 'bg-blue-600 text-white rounded-tr-sm' 
-                        : 'bg-gray-900 border border-gray-800 text-gray-200 rounded-tl-sm'
-                }`;
-                bubble.textContent = text;
-
-                wrapper.appendChild(sender);
-                wrapper.appendChild(bubble);
-                transcriptFeed.appendChild(wrapper);
-                transcriptFeed.scrollTop = transcriptFeed.scrollHeight;
+        // Auto-Tour controller
+        window.autoAdvanceSlides = function() {
+            const btn = document.getElementById('btn-auto-play');
+            if (autoTimer) {
+                clearInterval(autoTimer);
+                autoTimer = null;
+                btn.innerHTML = '<span>Auto-Tour</span> <span>▶</span>';
+            } else {
+                autoTimer = setInterval(() => {
+                    goToSlide(currentSlide + 1);
+                }, 5000);
+                btn.innerHTML = '<span>Pause</span> <span>⏸</span>';
             }
+        };
 
-            chatForm.addEventListener('submit', (e) => {
-                e.preventDefault();
-                const text = chatInput.value.trim();
-                if (!text) return;
-                addMessage('user', text);
-                chatInput.value = '';
-            });
-
-            // =========================================================
-            // 5. NATIVE ANAM AGENT DOM HOOKS & ENVIRONMENT DIAGNOSTICS
-            // =========================================================
-            const sessionStatus = document.getElementById('session-status');
-
-            // Check if placeholder agent ID needs to be configured
-            if (agent && agent.getAttribute('agent-id') === 'YOUR_ANAM_AGENT_ID') {
-                if (sessionStatus) {
-                    sessionStatus.innerHTML = `
-                        <span class="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span>
-                        <span class="text-amber-300">Set Anam Agent ID</span>
-                    `;
-                    sessionStatus.title = "Configure your Anam Persona Agent ID in index.html (replace YOUR_ANAM_AGENT_ID)";
-                }
-            } else if (window.location.protocol === 'file:') {
-                // WebRTC & Mic require HTTP/HTTPS (browsers disallow WebRTC on file:///)
-                if (sessionStatus) {
-                    sessionStatus.innerHTML = `
-                        <span class="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span>
-                        <span class="text-amber-300">Serve via HTTP (e.g. localhost:8000)</span>
-                    `;
-                    sessionStatus.title = "Browsers block WebRTC and mic permissions on file:/// protocol. Run via 'npx serve' or python -m http.server 8000";
-                }
+        // =========================================================
+        // 2. MODAL CONTROLLERS (QR & SETTINGS)
+        // =========================================================
+        window.toggleQrModal = function(show) {
+            const modal = document.getElementById('modal-qr');
+            if (!modal) return;
+            if (show) {
+                modal.classList.remove('hidden');
+            } else {
+                modal.classList.add('hidden');
             }
+        };
 
-            if (agent) {
-                agent.addEventListener('anam-agent:message-received', (e) => {
-                    if (e.detail && e.detail.content) {
-                        addMessage(e.detail.role, e.detail.content);
-                    }
-                });
-
-                agent.addEventListener('anam-agent:session-started', () => {
-                    if (sessionStatus) {
-                        sessionStatus.innerHTML = `
-                            <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-                            <span class="text-emerald-300">Session Connected</span>
-                        `;
-                    }
-                });
-
-                agent.addEventListener('anam-agent:error', (e) => {
-                    console.warn('Anam Agent error event:', e);
-                    if (sessionStatus) {
-                        sessionStatus.innerHTML = `
-                            <span class="w-2 h-2 rounded-full bg-red-400"></span>
-                            <span class="text-red-300">Domain Auth Required</span>
-                        `;
-                    }
-                });
-
-                agent.addEventListener('anam-agent:mic-muted', () => {
-                    isMuted = true;
-                    iconMicOn.classList.add('hidden');
-                    iconMicOff.classList.remove('hidden');
-                    labelMute.textContent = 'Unmute';
-                });
-
-                agent.addEventListener('anam-agent:mic-unmuted', () => {
-                    isMuted = false;
-                    iconMicOff.classList.add('hidden');
-                    iconMicOn.classList.remove('hidden');
-                    labelMute.textContent = 'Mute';
-                });
+        window.toggleSettingsModal = function(show) {
+            const modal = document.getElementById('modal-settings');
+            if (!modal) return;
+            if (show) {
+                document.getElementById('input-worker-url').value = localStorage.getItem('case3_worker_url') || 'http://localhost:8787';
+                modal.classList.remove('hidden');
+            } else {
+                modal.classList.add('hidden');
             }
+        };
 
-            // =========================================================
-            // 6. RED CLOSE / CROSS BUTTON STYLING FOR ANAM WIDGET
-            // Customizes the top-right dismiss button to be vivid red
-            // so it is immediately visible against the bright background
-            // =========================================================
-            function styleAnamCloseButton() {
-                if (!agent) return;
+        document.getElementById('btn-settings-toggle').addEventListener('click', () => toggleSettingsModal(true));
 
-                function injectShadowStyles(root) {
-                    if (!root) return;
+        window.saveWorkerSettings = function() {
+            const inputVal = document.getElementById('input-worker-url').value.trim();
+            if (inputVal) {
+                localStorage.setItem('case3_worker_url', inputVal.replace(/\/+$/, ''));
+            }
+            toggleSettingsModal(false);
+        };
 
-                    // 1. Inject or verify stylesheet inside shadowRoot
-                    let customStyle = root.getElementById('anam-red-close-style');
-                    if (!customStyle) {
-                        customStyle = document.createElement('style');
-                        customStyle.id = 'anam-red-close-style';
-                        customStyle.textContent = `
-                            .anam-close-btn,
-                            button[aria-label="Close"],
-                            button[aria-label="End call"] {
-                                background: #ef4444 !important;
-                                border: 2px solid #ffffff !important;
-                                color: #ffffff !important;
-                                opacity: 1 !important;
-                                box-shadow: 0 4px 14px rgba(239, 68, 68, 0.65), 0 2px 6px rgba(0, 0, 0, 0.45) !important;
-                                cursor: pointer !important;
-                                transition: transform 0.15s ease, background-color 0.15s ease !important;
+        // =========================================================
+        // 3. TOGGLE TRANSCRIPT DRAWER
+        // =========================================================
+        function toggleTranscript(show) {
+            const shouldOpen = (show !== undefined) ? show : panelTranscript.classList.contains('hidden');
+            
+            if (shouldOpen) {
+                panelElements.classList.add('hidden');
+                panelTranscript.classList.remove('hidden');
+                labelTranscript.textContent = 'Close Transcript';
+                btnToggleTranscript.classList.add('bg-blue-600', 'text-white');
+                btnToggleTranscript.classList.remove('bg-blue-600/20', 'text-blue-400');
+                document.getElementById('transcript-feed').scrollTop = document.getElementById('transcript-feed').scrollHeight;
+            } else {
+                panelTranscript.classList.add('hidden');
+                panelElements.classList.remove('hidden');
+                labelTranscript.textContent = 'Open Transcript';
+                btnToggleTranscript.classList.remove('bg-blue-600', 'text-white');
+                btnToggleTranscript.classList.add('bg-blue-600/20', 'text-blue-400');
+            }
+        }
+
+        btnToggleTranscript.addEventListener('click', () => toggleTranscript());
+        btnCloseTranscript.addEventListener('click', () => toggleTranscript(false));
+
+        // =========================================================
+        // 4. TRANSCRIPT FEED CONTROLLER
+        // =========================================================
+        const transcriptFeed = document.getElementById('transcript-feed');
+        const chatForm = document.getElementById('chat-form');
+        const chatInput = document.getElementById('chat-input');
+        let messageCount = 1;
+
+        function addMessage(role, text) {
+            const isUser = role === 'user';
+            messageCount++;
+            document.getElementById('message-badge').textContent = `${messageCount} msgs`;
+
+            const wrapper = document.createElement('div');
+            wrapper.className = `flex flex-col gap-1 ${isUser ? 'items-end' : 'items-start'}`;
+
+            const sender = document.createElement('span');
+            sender.className = `text-[10px] font-medium ml-1 ${isUser ? 'text-purple-400 mr-1' : 'text-blue-400'}`;
+            sender.textContent = isUser ? 'You' : 'Iris (Agent)';
+
+            const bubble = document.createElement('div');
+            bubble.className = `px-3.5 py-2 rounded-xl text-xs leading-relaxed max-w-[85%] ${
+                isUser 
+                    ? 'bg-blue-600 text-white rounded-tr-sm' 
+                    : 'bg-gray-900 border border-gray-800 text-gray-200 rounded-tl-sm'
+            }`;
+            bubble.textContent = text;
+
+            wrapper.appendChild(sender);
+            wrapper.appendChild(bubble);
+            transcriptFeed.appendChild(wrapper);
+            transcriptFeed.scrollTop = transcriptFeed.scrollHeight;
+        }
+
+        function addSystemNotice(text) {
+            const notice = document.createElement('div');
+            notice.className = 'flex justify-center my-1.5';
+            notice.innerHTML = `<span class="px-2.5 py-0.5 rounded-full bg-blue-950/80 border border-blue-800/60 text-[10px] font-mono text-blue-300">⚡ ${text}</span>`;
+            transcriptFeed.appendChild(notice);
+            transcriptFeed.scrollTop = transcriptFeed.scrollHeight;
+        }
+
+        chatForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const text = chatInput.value.trim();
+            if (!text) return;
+            addMessage('user', text);
+            chatInput.value = '';
+
+            // If session is active and Anam client supports text message
+            if (anamClient && typeof anamClient.sendTextMessage === 'function') {
+                anamClient.sendTextMessage(text);
+            }
+        });
+
+        // =========================================================
+        // 5. ANAM JS SDK & NON-BLOCKING CLIENT TOOL PIPELINE
+        // =========================================================
+        async function startIrisSession() {
+            sessionStatus.innerHTML = `<span class="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span><span class="text-amber-300">Connecting...</span>`;
+
+            try {
+                // Determine worker URL (saved in localStorage or default to localhost:8787)
+                const workerUrl = localStorage.getItem('case3_worker_url') || "http://localhost:8787";
+
+                // 1. Fetch Session Token from Cloudflare Worker
+                const res = await fetch(`${workerUrl}/api/session-token`, { 
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" }
+                });
+
+                if (!res.ok) {
+                    const errBody = await res.json().catch(() => ({}));
+                    throw new Error(errBody.error || `Worker returned HTTP ${res.status}`);
+                }
+
+                const data = await res.json();
+                if (!data.sessionToken) {
+                    throw new Error("No sessionToken received from worker");
+                }
+
+                // 2. Initialize Anam SDK Client with Session Token
+                anamClient = createClient(data.sessionToken);
+
+                // 3. Register Non-Blocking Client Tool: update_visual_showcase
+                anamClient.registerToolCallHandler("update_visual_showcase", {
+                    onStart: (payload) => {
+                        console.log("🎯 [Anam Client Tool Received]:", payload);
+                        const topic = (payload?.arguments?.topic || "").toLowerCase();
+                        
+                        const topicMap = {
+                            "guidewire": 0,
+                            "apex": 1,
+                            "execution": 2,
+                            "leadership": 3,
+                            "security": 4
+                        };
+
+                        // Non-blocking asynchronous UI update
+                        requestAnimationFrame(() => {
+                            const targetSlide = topicMap[topic];
+                            if (targetSlide !== undefined) {
+                                window.goToSlide(targetSlide);
                             }
-                            .anam-close-btn:hover,
-                            button[aria-label="Close"]:hover,
-                            button[aria-label="End call"]:hover {
-                                background: #dc2626 !important;
-                                transform: scale(1.1) !important;
-                                box-shadow: 0 6px 18px rgba(220, 38, 38, 0.85) !important;
+                            if (topic === 'leadership') {
+                                window.toggleQrModal(true);
                             }
-                            .anam-close-btn svg,
-                            button[aria-label="Close"] svg,
-                            button[aria-label="End call"] svg {
-                                stroke: #ffffff !important;
-                                stroke-width: 3.5 !important;
-                                color: #ffffff !important;
-                            }
-                        `;
-                        root.appendChild(customStyle);
+                            addSystemNotice(`Visual context shifted to: ${topic.toUpperCase()}`);
+                        });
+
+                        // INSTANT RETURN: Informs the Anam engine in 1ms so Iris never pauses speech
+                        return `Visuals updated to ${topic}.`;
                     }
-
-                    // 2. Direct inline styling on elements for instant override
-                    const closeBtns = root.querySelectorAll('.anam-close-btn, button[aria-label="Close"], button[aria-label="End call"]');
-                    closeBtns.forEach(btn => {
-                        btn.style.setProperty('background', '#ef4444', 'important');
-                        btn.style.setProperty('border', '2px solid #ffffff', 'important');
-                        btn.style.setProperty('color', '#ffffff', 'important');
-                        btn.style.setProperty('opacity', '1', 'important');
-                        btn.style.setProperty('box-shadow', '0 4px 14px rgba(239, 68, 68, 0.65), 0 2px 6px rgba(0, 0, 0, 0.45)', 'important');
-                        const svg = btn.querySelector('svg');
-                        if (svg) {
-                            svg.style.setProperty('stroke', '#ffffff', 'important');
-                            svg.style.setProperty('color', '#ffffff', 'important');
-                        }
-                    });
-                }
-
-                // Check continuously for when shadowRoot is mounted
-                const observerTimer = setInterval(() => {
-                    if (agent.shadowRoot) {
-                        injectShadowStyles(agent.shadowRoot);
-
-                        if (!agent._hasCloseBtnObserver) {
-                            agent._hasCloseBtnObserver = true;
-                            const mo = new MutationObserver(() => {
-                                injectShadowStyles(agent.shadowRoot);
-                            });
-                            mo.observe(agent.shadowRoot, { childList: true, subtree: true, attributes: true });
-                        }
-                    }
-                }, 150);
-
-                // Run for 30 seconds to catch delayed script loads, and re-check on interaction
-                setTimeout(() => clearInterval(observerTimer), 30000);
-                agent.addEventListener('click', () => {
-                    if (agent.shadowRoot) injectShadowStyles(agent.shadowRoot);
                 });
+
+                // 4. Attach Anam Event Listeners
+                anamClient.addListener(AnamEvent.MESSAGE_RECEIVED, (msg) => {
+                    if (msg && msg.content) {
+                        addMessage(msg.role === 'agent' ? 'agent' : 'user', msg.content);
+                    }
+                });
+
+                anamClient.addListener(AnamEvent.CONNECTION_ESTABLISHED, () => {
+                    sessionStatus.innerHTML = `<span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span><span class="text-emerald-300">Agent Live</span>`;
+                    isSessionActive = true;
+                    idlePoster.classList.add('hidden');
+                    videoEl.classList.remove('hidden');
+                    btnEndSession.classList.remove('hidden');
+                    pulseDot.classList.add('animate-pulse');
+                });
+
+                anamClient.addListener(AnamEvent.SESSION_ENDED, () => {
+                    resetSessionUI();
+                });
+
+                anamClient.addListener(AnamEvent.TALK_STARTED, () => {
+                    pulseDot.classList.remove('bg-blue-500');
+                    pulseDot.classList.add('bg-emerald-400');
+                });
+
+                anamClient.addListener(AnamEvent.TALK_STOPPED, () => {
+                    pulseDot.classList.remove('bg-emerald-400');
+                    pulseDot.classList.add('bg-blue-500');
+                });
+
+                // 5. Stream WebRTC to video element
+                await anamClient.streamToVideoElement("iris-video");
+
+            } catch (err) {
+                console.error("Session failed:", err);
+                sessionStatus.innerHTML = `<span class="w-2 h-2 rounded-full bg-red-400"></span><span class="text-red-300">Connection Failed</span>`;
+                alert(`Iris Connection Error: ${err.message}\n\nPlease verify that your Cloudflare Worker is running (run 'npm run worker:dev' or configure your live worker URL via the 'Worker' button in the top bar).`);
+            }
+        }
+
+        // End Call Controller
+        function resetSessionUI() {
+            isSessionActive = false;
+            sessionStatus.innerHTML = `<span class="w-2 h-2 rounded-full bg-emerald-400"></span><span class="text-emerald-300">Agent Ready</span>`;
+            idlePoster.classList.remove('hidden');
+            videoEl.classList.add('hidden');
+            btnEndSession.classList.add('hidden');
+            pulseDot.classList.remove('animate-pulse');
+        }
+
+        window.endIrisSession = function() {
+            if (anamClient) {
+                try {
+                    anamClient.stopStreaming();
+                } catch (e) {
+                    console.warn(e);
+                }
+            }
+            resetSessionUI();
+        };
+
+        btnStartSession.addEventListener('click', startIrisSession);
+        btnEndSession.addEventListener('click', window.endIrisSession);
+
+        // Mute Microphone Controller
+        btnMute.addEventListener('click', () => {
+            isMuted = !isMuted;
+            if (anamClient && isSessionActive) {
+                try {
+                    anamClient.setAudioMuted(isMuted);
+                } catch (e) {
+                    console.warn(e);
+                }
             }
 
-            styleAnamCloseButton();
+            if (isMuted) {
+                iconMicOn.classList.add('hidden');
+                iconMicOff.classList.remove('hidden');
+                labelMute.textContent = 'Unmute';
+                btnMute.classList.add('text-red-400');
+            } else {
+                iconMicOff.classList.add('hidden');
+                iconMicOn.classList.remove('hidden');
+                labelMute.textContent = 'Mute';
+                btnMute.classList.remove('text-red-400');
+            }
         });
     </script>
 </body>

@@ -1,0 +1,14 @@
+{
+  "name": "case3-iris-backend",
+  "version": "1.0.0",
+  "description": "Secure Cloudflare Worker token minter and tool backend for CASE3 Iris Dynamic UI",
+  "main": "worker.js",
+  "scripts": {
+    "dev": "wrangler dev",
+    "dev:tunnel": "wrangler dev --tunnel",
+    "deploy": "wrangler deploy"
+  },
+  "devDependencies": {
+    "wrangler": "^3.109.0"
+  }
+}

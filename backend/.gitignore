@@ -1,0 +1,8 @@
+# Local secrets (NEVER COMMIT)
+.dev.vars
+.env
+.env.*
+
+# Build cache & dependencies
+.wrangler/
+node_modules/

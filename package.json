@@ -1,0 +1,11 @@
+{
+  "name": "case3-iris-workspace",
+  "version": "1.0.0",
+  "description": "CASE3 Technologies Iris AI Studio with Anam JS SDK and Dynamic Non-Blocking Client Tool",
+  "scripts": {
+    "dev:frontend": "npx serve frontend -l 3000",
+    "dev:backend": "cd backend && npm run dev",
+    "dev:tunnel": "cd backend && npm run dev:tunnel",
+    "deploy:backend": "cd backend && npm run deploy"
+  }
+}

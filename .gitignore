@@ -1,10 +1,19 @@
-# Environment variables & secrets
+# Environment variables & secrets (CRITICAL: NEVER COMMIT)
 .env
 .env.*
+.dev.vars
 *.secret
 *.token
 *.pem
 *.key
+backend/.dev.vars
+backend/.dev.vars.*
+
+# Dependencies & Build Cache
+node_modules/
+backend/node_modules/
+.wrangler/
+backend/.wrangler/
 
 # Editor & OS files
 .DS_Store
