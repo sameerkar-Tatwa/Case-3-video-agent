@@ -15,7 +15,17 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 
+    <!-- Anam Agent Web Component Embed Script -->
+    <script src="https://unpkg.com/@anam-ai/agent-widget" async></script>
+
     <style>
+        /* Full container fit for the native Anam Agent embed */
+        anam-agent {
+            width: 100% !important;
+            height: 100% !important;
+            display: block;
+        }
+
         * {
             box-sizing: border-box;
             scrollbar-width: none; /* Hide scrollbars for Firefox */
@@ -119,43 +129,21 @@
     <main class="flex-1 flex flex-col md:flex-row overflow-hidden relative min-h-0 w-full h-full">
 
         <!-- =============================================================
-             LEFT PANEL: IRIS AGENT (ANAM JS SDK WEBRTC STREAMING)
+             LEFT PANEL: DIRECT EMBEDDED ANAM AGENT ELEMENT
              ============================================================= -->
         <section class="relative w-full md:w-1/2 h-1/2 md:h-full bg-black flex flex-col items-center justify-center border-b md:border-b-0 md:border-r border-gray-800/90 overflow-hidden">
             
-            <!-- Persona Video Container -->
-            <div id="video-container" class="w-full h-full relative flex items-center justify-center bg-black overflow-hidden">
-                
-                <!-- Direct WebRTC Video Stream from Anam JS SDK -->
-                <video id="iris-video" class="w-full h-full object-cover" autoplay playsinline></video>
+            <!-- Direct Anam Web Component Embed (layout="inline", zero placeholders) -->
+            <div class="w-full h-full relative flex items-center justify-center bg-gradient-to-b from-gray-950 via-gray-900 to-black overflow-hidden">
+                <anam-agent 
+                    id="iris-agent"
+                    agent-id="603598a2-e60a-41fd-a5f3-4347900dd2e5" 
+                    api-base-url="https://lab.anam.ai"
+                    layout="inline">
+                </anam-agent>
 
-                <!-- Initial Idle / Standby State (Pure UI/CSS, NO static images) -->
-                <div id="iris-idle-poster" class="absolute inset-0 flex flex-col items-center justify-center bg-gradient-to-b from-gray-950 via-gray-900 to-black z-10 transition-opacity duration-300 overflow-hidden">
-                    
-                    <!-- Ambient Cybernetic Glow & Audio Waves (CSS/SVG only - NO static photos) -->
-                    <div class="relative flex items-center justify-center mb-6">
-                        <div class="w-36 h-36 rounded-full bg-gradient-to-tr from-blue-600/25 to-indigo-600/25 blur-2xl animate-pulse"></div>
-                        <div class="absolute w-24 h-24 rounded-full border border-blue-500/20 animate-ping" style="animation-duration: 3s;"></div>
-                        <div class="absolute w-20 h-20 rounded-full border border-blue-400/40 flex items-center justify-center bg-gray-900/90 backdrop-blur-md shadow-2xl">
-                            <!-- High-tech AI Voice / Waveform Icon -->
-                            <svg class="w-9 h-9 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"></path>
-                            </svg>
-                        </div>
-                    </div>
-
-                    <!-- Interactive Start Session Button -->
-                    <button id="btn-start-session" class="relative z-10 px-7 py-3.5 rounded-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-semibold text-sm flex items-center gap-2.5 shadow-2xl hover:scale-105 active:scale-95 transition backdrop-blur-md border border-white/20">
-                        <svg class="w-4 h-4 fill-current text-white" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
-                        <span>Talk to Iris</span>
-                    </button>
-                    <span class="relative z-10 text-[11px] text-gray-400 mt-3 font-medium tracking-wide">Real-time voice, video persona & dynamic visuals</span>
-                </div>
-
-                <!-- Custom Red End-Call / Cross Button (Top Right Corner) -->
-                <button id="btn-end-session" class="absolute top-3.5 right-3.5 z-30 w-8 h-8 rounded-full bg-red-600 hover:bg-red-700 text-white border-2 border-white flex items-center justify-center shadow-xl hover:scale-110 active:scale-95 transition hidden" title="End Call">
-                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
-                </button>
+                <!-- Ambient Lighting Glow -->
+                <div class="pointer-events-none absolute -bottom-16 left-1/2 -translate-x-1/2 w-3/4 h-56 bg-blue-600/10 rounded-full blur-3xl"></div>
             </div>
 
             <!-- Top Left Persona Badge -->
@@ -960,18 +948,14 @@
     </div>
 
     <!-- =========================================================
-         JAVASCRIPT CONTROLLER: ANAM JS SDK & CLIENT TOOL PIPELINE
+         JAVASCRIPT CONTROLLER: NATIVE ANAM AGENT & SHOWCASE CONTROLLER
          ========================================================= -->
-    <script type="module">
-        import { createClient, AnamEvent } from "https://esm.sh/@anam-ai/js-sdk";
-
-        // Global slideshow and session state
+    <script>
+        // Global slideshow state
         let currentSlide = 0;
         const totalSlides = 6;
         let autoTimer = null;
-        let anamClient = null;
         let isMuted = false;
-        let isSessionActive = false;
 
         // Elements
         const panelElements = document.getElementById('panel-elements-showcase');
@@ -980,16 +964,13 @@
         const btnCloseTranscript = document.getElementById('btn-close-transcript');
         const labelTranscript = document.getElementById('label-transcript');
         const sessionStatus = document.getElementById('session-status');
-        const idlePoster = document.getElementById('iris-idle-poster');
-        const videoEl = document.getElementById('iris-video');
-        const btnStartSession = document.getElementById('btn-start-session');
-        const btnEndSession = document.getElementById('btn-end-session');
         const pulseDot = document.getElementById('iris-pulse-dot');
         const btnMute = document.getElementById('btn-mute');
         const iconMicOn = document.getElementById('icon-mic-on');
         const iconMicOff = document.getElementById('icon-mic-off');
         const labelMute = document.getElementById('label-mute');
         const slideNumberText = document.getElementById('slide-number');
+        const agent = document.getElementById('iris-agent');
 
         // =========================================================
         // 1. SLIDESHOW / CAROUSEL CONTROLLER
@@ -1154,176 +1135,124 @@
             addMessage('user', text);
             chatInput.value = '';
 
-            // If session is active and Anam client supports text message
-            if (anamClient && typeof anamClient.sendTextMessage === 'function') {
-                anamClient.sendTextMessage(text);
+            if (agent && typeof agent.sendTextMessage === 'function') {
+                agent.sendTextMessage(text);
             }
         });
 
         // =========================================================
-        // 5. ANAM JS SDK & NON-BLOCKING CLIENT TOOL PIPELINE
+        // 5. NATIVE ANAM AGENT DOM HOOKS & NON-BLOCKING CLIENT TOOL PIPELINE
         // =========================================================
-        async function startIrisSession() {
-            sessionStatus.innerHTML = `<span class="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span><span class="text-amber-300">Connecting...</span>`;
-
+        async function attachWorkerToken() {
             try {
-                // Determine worker URL:
-                // Auto-detect: If loaded directly from Cloudflare (e.g. /visualizer), use current origin!
-                // If local development, default to http://localhost:8787
                 const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
                 const defaultWorkerUrl = (window.location.protocol.startsWith('http') && !isLocal)
                     ? window.location.origin
                     : "http://localhost:8787";
                 const workerUrl = localStorage.getItem('case3_worker_url') || defaultWorkerUrl;
 
-                // 1. Fetch Session Token from Cloudflare Worker
                 const res = await fetch(`${workerUrl}/api/session-token`, { 
                     method: "POST",
                     headers: { "Content-Type": "application/json" }
                 });
-
-                if (!res.ok) {
-                    const errBody = await res.json().catch(() => ({}));
-                    throw new Error(errBody.error || `Worker returned HTTP ${res.status}`);
-                }
-
-                const data = await res.json();
-                if (!data.sessionToken) {
-                    throw new Error("No sessionToken received from worker");
-                }
-
-                // 2. Initialize Anam SDK Client with Session Token
-                anamClient = createClient(data.sessionToken);
-
-                // 3. Register Non-Blocking Client Tool: update_visual_showcase
-                anamClient.registerToolCallHandler("update_visual_showcase", {
-                    onStart: (payload) => {
-                        console.log("🎯 [Anam Client Tool Received]:", payload);
-                        const topic = (payload?.arguments?.topic || "").toLowerCase();
-                        
-                        const topicMap = {
-                            "overview": 0,
-                            "welcome": 0,
-                            "company": 0,
-                            "guidewire": 1,
-                            "apex": 2,
-                            "crux": 2,
-                            "execution": 3,
-                            "build": 3,
-                            "upgrade": 3,
-                            "run": 3,
-                            "leadership": 4,
-                            "followup": 4,
-                            "security": 5,
-                            "governance": 5
-                        };
-
-                        // Non-blocking asynchronous UI update
-                        requestAnimationFrame(() => {
-                            const targetSlide = topicMap[topic];
-                            if (targetSlide !== undefined) {
-                                window.goToSlide(targetSlide);
-                            } else {
-                                window.goToSlide(0); // Fallback to Welcome Overview Dashboard
-                            }
-                            if (topic === 'leadership') {
-                                window.toggleQrModal(true);
-                            }
-                            addSystemNotice(`Visual context shifted to: ${(topic || 'overview').toUpperCase()}`);
-                        });
-
-                        // INSTANT RETURN: Informs the Anam engine in 1ms so Iris never pauses speech
-                        return `Visuals updated to ${topic}.`;
+                if (res.ok) {
+                    const data = await res.json();
+                    if (data.sessionToken && agent) {
+                        agent.setAttribute('session-token', data.sessionToken);
                     }
-                });
-
-                // 4. Attach Anam Event Listeners
-                anamClient.addListener(AnamEvent.MESSAGE_RECEIVED, (msg) => {
-                    if (msg && msg.content) {
-                        addMessage(msg.role === 'agent' ? 'agent' : 'user', msg.content);
-                    }
-                });
-
-                anamClient.addListener(AnamEvent.CONNECTION_ESTABLISHED, () => {
-                    sessionStatus.innerHTML = `<span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span><span class="text-emerald-300">Agent Live</span>`;
-                    isSessionActive = true;
-                    idlePoster.classList.add('hidden');
-                    videoEl.classList.remove('hidden');
-                    btnEndSession.classList.remove('hidden');
-                    pulseDot.classList.add('animate-pulse');
-                });
-
-                anamClient.addListener(AnamEvent.SESSION_ENDED, () => {
-                    resetSessionUI();
-                });
-
-                anamClient.addListener(AnamEvent.TALK_STARTED, () => {
-                    pulseDot.classList.remove('bg-blue-500');
-                    pulseDot.classList.add('bg-emerald-400');
-                });
-
-                anamClient.addListener(AnamEvent.TALK_STOPPED, () => {
-                    pulseDot.classList.remove('bg-emerald-400');
-                    pulseDot.classList.add('bg-blue-500');
-                });
-
-                // 5. Stream WebRTC to video element
-                await anamClient.streamToVideoElement("iris-video");
-
+                }
             } catch (err) {
-                console.error("Session failed:", err);
-                sessionStatus.innerHTML = `<span class="w-2 h-2 rounded-full bg-red-400"></span><span class="text-red-300">Connection Failed</span>`;
-                alert(`Iris Connection Error: ${err.message}\n\nPlease verify that your Cloudflare Worker is running (run 'npm run worker:dev' or configure your live worker URL via the 'Worker' button in the top bar).`);
+                console.log("Using direct Anam domain auth:", err);
             }
         }
+        attachWorkerToken();
 
-        // End Call Controller
-        function resetSessionUI() {
-            isSessionActive = false;
-            sessionStatus.innerHTML = `<span class="w-2 h-2 rounded-full bg-emerald-400"></span><span class="text-emerald-300">Agent Ready</span>`;
-            idlePoster.classList.remove('hidden');
-            videoEl.classList.add('hidden');
-            btnEndSession.classList.add('hidden');
-            pulseDot.classList.remove('animate-pulse');
-        }
+        if (agent) {
+            // Client Tool Handler for Visual Showcase
+            agent.addEventListener('anam-agent:tool-call-started', (e) => {
+                console.log("🎯 [Anam Agent Tool Call]:", e.detail);
+                const { toolName, arguments: args } = e.detail;
+                if (toolName === 'update_visual_showcase') {
+                    const topic = (args?.topic || '').toLowerCase();
+                    const topicMap = {
+                        "overview": 0,
+                        "welcome": 0,
+                        "company": 0,
+                        "guidewire": 1,
+                        "apex": 2,
+                        "crux": 2,
+                        "execution": 3,
+                        "build": 3,
+                        "upgrade": 3,
+                        "run": 3,
+                        "leadership": 4,
+                        "followup": 4,
+                        "security": 5,
+                        "governance": 5
+                    };
 
-        window.endIrisSession = function() {
-            if (anamClient) {
-                try {
-                    anamClient.stopStreaming();
-                } catch (e) {
-                    console.warn(e);
+                    requestAnimationFrame(() => {
+                        const targetSlide = topicMap[topic];
+                        if (targetSlide !== undefined) {
+                            window.goToSlide(targetSlide);
+                        } else {
+                            window.goToSlide(0); // Fallback to Welcome Overview Dashboard
+                        }
+                        if (topic === 'leadership') {
+                            window.toggleQrModal(true);
+                        }
+                        addSystemNotice(`Visual context shifted to: ${(topic || 'overview').toUpperCase()}`);
+                    });
                 }
-            }
-            resetSessionUI();
-        };
+            });
 
-        btnStartSession.addEventListener('click', startIrisSession);
-        btnEndSession.addEventListener('click', window.endIrisSession);
-
-        // Mute Microphone Controller
-        btnMute.addEventListener('click', () => {
-            isMuted = !isMuted;
-            if (anamClient && isSessionActive) {
-                try {
-                    anamClient.setAudioMuted(isMuted);
-                } catch (e) {
-                    console.warn(e);
+            // Conversation Transcript Sync
+            agent.addEventListener('anam-agent:message-received', (e) => {
+                if (e.detail && e.detail.content) {
+                    addMessage(e.detail.role === 'agent' ? 'agent' : 'user', e.detail.content);
                 }
-            }
+            });
 
-            if (isMuted) {
+            // Session Life-Cycle
+            agent.addEventListener('anam-agent:session-started', () => {
+                if (sessionStatus) {
+                    sessionStatus.innerHTML = `<span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span><span class="text-emerald-300">Agent Live</span>`;
+                }
+                pulseDot.classList.add('animate-pulse');
+            });
+
+            agent.addEventListener('anam-agent:session-ended', () => {
+                if (sessionStatus) {
+                    sessionStatus.innerHTML = `<span class="w-2 h-2 rounded-full bg-emerald-400"></span><span class="text-emerald-300">Ready</span>`;
+                }
+                pulseDot.classList.remove('animate-pulse');
+            });
+
+            // Mic States
+            agent.addEventListener('anam-agent:mic-muted', () => {
+                isMuted = true;
                 iconMicOn.classList.add('hidden');
                 iconMicOff.classList.remove('hidden');
                 labelMute.textContent = 'Unmute';
                 btnMute.classList.add('text-red-400');
-            } else {
+            });
+
+            agent.addEventListener('anam-agent:mic-unmuted', () => {
+                isMuted = false;
                 iconMicOff.classList.add('hidden');
                 iconMicOn.classList.remove('hidden');
                 labelMute.textContent = 'Mute';
                 btnMute.classList.remove('text-red-400');
-            }
-        });
+            });
+
+            btnMute.addEventListener('click', () => {
+                if (typeof agent.toggleMute === 'function') {
+                    agent.toggleMute();
+                } else if (typeof agent.mute === 'function' && typeof agent.unmute === 'function') {
+                    if (isMuted) agent.unmute(); else agent.mute();
+                }
+            });
+        }
     </script>
 </body>
 </html>
