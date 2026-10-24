@@ -4,33 +4,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <base href="/">
-    <title>CASE3 Iris AI Agent | Standalone Agent (Version 1)</title>
+    <title>CASE3 Iris AI Agent | Standalone Agent</title>
     
     <!-- Tailwind CSS with Typography Plugin -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdn.tailwindcss.com?plugins=typography"></script>
     
-    <!-- Google Fonts: Plus Jakarta Sans & JetBrains Mono -->
+    <!-- Google Fonts: Plus Jakarta Sans -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
     <!-- Anam Agent Web Component Embed Script -->
     <script src="https://unpkg.com/@anam-ai/agent-widget" async></script>
 
     <style>
-        anam-agent {
-            width: 100% !important;
-            height: 100% !important;
-            display: block;
-        }
-
-        /* Ensure Anam sheet and video region take full container height */
-        anam-agent::part(sheet),
-        .anam-sheet {
-            height: 100% !important;
-        }
-
         * {
             box-sizing: border-box;
             scrollbar-width: none;
@@ -45,299 +32,54 @@
             overflow: hidden;
             width: 100vw;
             height: 100vh;
+            margin: 0;
+            padding: 0;
+            background-color: #000000;
         }
 
-        .font-mono {
-            font-family: 'JetBrains Mono', monospace;
+        anam-agent {
+            width: 100% !important;
+            height: 100% !important;
+            display: block;
         }
 
-        .case3-grid-pattern {
-            background-color: #030712;
-            background-image: 
-                radial-gradient(circle at 50% 0%, rgba(30, 58, 138, 0.22) 0%, transparent 60%),
-                linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
-                linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
-            background-size: 100% 100%, 36px 36px, 36px 36px;
+        /* Ensure Anam sheet and video region take full container height */
+        anam-agent::part(sheet),
+        .anam-sheet {
+            height: 100% !important;
+        }
+
+        /* Perfectly sized 3:2 aspect-ratio container fitted to full screen */
+        .agent-container {
+            width: 100%;
+            height: 100%;
+            max-height: 100vh;
+            max-width: calc(100vh * 1.5);
+            aspect-ratio: 3 / 2;
         }
     </style>
 </head>
-<body class="bg-gray-950 text-gray-100 h-screen w-screen overflow-hidden flex flex-col case3-grid-pattern select-none">
+<body class="bg-black text-gray-100 h-screen w-screen overflow-hidden flex items-center justify-center select-none m-0 p-0">
 
     <!-- =================================================================
-         TOP HEADER: CASE3 BRANDING & PARTNER CREDENTIALS
+         VERSION 1: PURE EMBEDDED ANAM AGENT ELEMENT (NO HEADER, NO FOOTER BUTTONS)
          ================================================================= -->
-    <header class="h-14 border-b border-gray-800/80 bg-gray-950/90 backdrop-blur-md px-5 flex items-center justify-between shrink-0 z-30">
+    <main class="w-full h-full flex items-center justify-center overflow-hidden relative bg-black">
         
-        <!-- Left: Case3 Logo & Partner Status -->
-        <div class="flex items-center gap-3">
-            <a href="https://www.case3tech.com/index.html" target="_blank" class="flex items-center gap-2 group">
-                <div class="h-8 px-2.5 py-1 bg-white rounded-lg flex items-center justify-center shadow-md shadow-blue-950 group-hover:ring-2 ring-blue-500 transition">
-                    <img src="https://www.case3tech.com/assets/case3-logo-navy.png" alt="CASE3 Technologies" class="h-5 w-auto object-contain">
-                </div>
-            </a>
-            <div class="h-5 w-px bg-gray-800 hidden sm:block"></div>
-            <div class="hidden sm:flex items-center gap-1.5 text-xs">
-                <span class="px-2 py-0.5 rounded bg-blue-950/80 border border-blue-800/60 text-blue-300 font-semibold tracking-wide text-[11px]">
-                    GUIDEWIRE SELECT
-                </span>
-                <span class="text-gray-400 text-xs">Consulting Partner</span>
-            </div>
+        <!-- Contained Stage: Matches Anam widget's native 3:2 ratio and 100% viewport height -->
+        <div class="agent-container relative flex items-center justify-center overflow-hidden">
+            <anam-agent 
+                id="iris-agent"
+                agent-id="603598a2-e60a-41fd-a5f3-4347900dd2e5" 
+                api-base-url="https://lab.anam.ai"
+                layout="inline">
+            </anam-agent>
         </div>
 
-        <!-- Center: AI Specialist Identity -->
-        <div class="hidden md:flex items-center gap-3 text-xs text-gray-400">
-            <span>AI Ambassador: <strong class="text-white font-medium">Iris</strong></span>
-            <span class="text-gray-700">•</span>
-            <span class="text-gray-300 font-mono text-[11px]">200+ Yrs Guidewire Depth</span>
-        </div>
-
-        <!-- Right: Status Badge & Worker Config -->
-        <div class="flex items-center gap-2.5">
-            <!-- Settings button for Cloudflare Worker URL -->
-            <button id="btn-settings-toggle" class="p-1.5 rounded-lg bg-gray-900 hover:bg-gray-800 text-gray-400 hover:text-white border border-gray-800 transition text-xs flex items-center gap-1.5" title="Configure Cloudflare Worker Token Endpoint">
-                <svg class="w-3.5 h-3.5 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
-                <span class="hidden sm:inline text-[11px] font-mono text-gray-300">Worker</span>
-            </button>
-
-            <!-- Agent Session Status Pill -->
-            <div id="session-status" class="px-2.5 py-1 rounded-full bg-emerald-950/60 border border-emerald-800/60 text-xs font-medium flex items-center gap-2">
-                <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
-                <span class="text-emerald-300">Ready</span>
-            </div>
-        </div>
-    </header>
-
-    <!-- =================================================================
-         VERSION 1: 100% FULL-SCREEN EMBEDDED ANAM AGENT (NO SIDE SCREEN)
-         ================================================================= -->
-    <main class="flex-1 flex items-center justify-center overflow-hidden relative min-h-0 w-full h-full bg-black case3-grid-pattern">
-        
-        <section class="relative w-full h-full flex items-center justify-center overflow-hidden p-2 sm:p-4 md:p-6 lg:p-8">
-            
-            <!-- Video Agent Stage Container:
-                 Constrained to native 3:2 aspect-ratio and viewport height so the Anam web component 
-                 never zooms in or crops Iris's head or chest on widescreen displays -->
-            <div class="relative w-full h-full max-h-[calc(100vh-4.5rem)] max-w-[calc((100vh-4.5rem)*1.5)] aspect-[3/2] flex items-center justify-center overflow-hidden rounded-2xl bg-gradient-to-b from-gray-950 via-gray-900 to-black shadow-2xl border border-gray-800/80">
-                <anam-agent 
-                    id="iris-agent"
-                    agent-id="603598a2-e60a-41fd-a5f3-4347900dd2e5" 
-                    api-base-url="https://lab.anam.ai"
-                    layout="inline">
-                </anam-agent>
-
-                <!-- Ambient Lighting Glow -->
-                <div class="pointer-events-none absolute -bottom-20 left-1/2 -translate-x-1/2 w-3/4 h-56 bg-blue-600/15 rounded-full blur-3xl"></div>
-            </div>
-
-            <!-- Top Left Persona Badge -->
-            <div class="absolute top-4 left-4 z-20 flex items-center gap-2 pointer-events-none">
-                <div class="px-3 py-1.5 rounded-xl bg-gray-950/80 backdrop-blur-md border border-white/10 text-xs font-medium text-gray-200 flex items-center gap-2.5 shadow-xl">
-                    <span id="iris-pulse-dot" class="w-2.5 h-2.5 rounded-full bg-blue-500"></span>
-                    <span class="font-semibold">Iris • Case3 AI Agent</span>
-                </div>
-            </div>
-
-            <!-- Floating Control Bar -->
-            <div class="absolute bottom-5 left-1/2 -translate-x-1/2 z-20 flex items-center gap-3 px-5 py-2.5 bg-gray-900/95 backdrop-blur-xl border border-gray-700/80 rounded-full shadow-2xl">
-                
-                <!-- Mic / Mute Toggle -->
-                <button id="btn-mute" class="p-2 rounded-full hover:bg-gray-800 text-gray-200 hover:text-white transition active:scale-95 flex items-center gap-2 text-xs font-medium" title="Mute Microphone">
-                    <svg id="icon-mic-on" class="w-4 h-4 text-gray-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"></path>
-                    </svg>
-                    <svg id="icon-mic-off" class="w-4 h-4 text-red-400 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"></path>
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4l16 16"></path>
-                    </svg>
-                    <span id="label-mute">Mute</span>
-                </button>
-
-                <div class="h-4 w-px bg-gray-700"></div>
-
-                <!-- Togglable Transcript Slide-Over Drawer Button -->
-                <button id="btn-toggle-transcript" class="flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-blue-600/20 text-blue-400 border border-blue-500/30 hover:bg-blue-600 hover:text-white transition active:scale-95 text-xs font-medium">
-                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"></path>
-                    </svg>
-                    <span id="label-transcript">Open Transcript</span>
-                </button>
-            </div>
-        </section>
-
-        <!-- Slide-Over Live Transcript Drawer for Version 1 -->
-        <div id="panel-transcript" class="fixed top-14 bottom-0 right-0 w-full sm:w-[420px] bg-gray-950/98 backdrop-blur-xl border-l border-gray-800 shadow-2xl flex flex-col z-40 transform translate-x-full transition-transform duration-300 ease-in-out">
-            <!-- Transcript Header -->
-            <div class="p-4 px-5 border-b border-gray-800 bg-gray-900/60 flex justify-between items-center shrink-0">
-                <div class="flex items-center gap-2">
-                    <span class="w-2 h-2 rounded-full bg-blue-400"></span>
-                    <h3 class="font-semibold text-xs text-white uppercase tracking-wider">Live Conversation Transcript</h3>
-                    <span id="message-badge" class="text-[10px] text-gray-400 bg-gray-800 px-2 py-0.5 rounded-full">1 msg</span>
-                </div>
-                <button id="btn-close-transcript" class="text-gray-400 hover:text-white p-1 rounded-lg hover:bg-gray-800 transition">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-                    </svg>
-                </button>
-            </div>
-
-            <!-- Chat Feed -->
-            <div id="transcript-feed" class="flex-1 overflow-y-auto p-4 space-y-3 min-h-0">
-                <div class="flex flex-col gap-1 items-start">
-                    <span class="text-[11px] text-blue-400 font-medium ml-1">Iris (Agent)</span>
-                    <div class="bg-gray-900 border border-gray-800 text-gray-200 px-3.5 py-2 rounded-xl rounded-tl-sm text-xs leading-relaxed max-w-[85%]">
-                        Welcome to Case3 Technologies. My name is Iris. How can I help you navigate your P&C insurance technology needs today?
-                    </div>
-                </div>
-            </div>
-
-            <!-- Message Input -->
-            <form id="chat-form" class="p-3 border-t border-gray-800 bg-gray-900/40 flex gap-2 shrink-0">
-                <input id="chat-input" type="text" placeholder="Type a response or question..." class="flex-1 bg-gray-950 border border-gray-800 rounded-lg px-3 py-2 text-xs text-gray-100 placeholder-gray-500 focus:outline-none focus:border-blue-500">
-                <button type="submit" class="bg-blue-600 hover:bg-blue-500 text-white px-3.5 py-2 rounded-lg text-xs font-medium transition">
-                    Send
-                </button>
-            </form>
-        </div>
     </main>
 
-    <!-- BACKEND WORKER CONFIGURATION MODAL -->
-    <div id="modal-settings" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-4 hidden">
-        <div class="relative bg-gray-950 border border-gray-800 rounded-2xl max-w-md w-full p-6 shadow-2xl">
-            <div class="flex items-center justify-between pb-3 border-b border-gray-800">
-                <div class="flex items-center gap-2">
-                    <span class="w-2.5 h-2.5 rounded-full bg-blue-500"></span>
-                    <h3 class="text-sm font-bold text-white">Backend Worker Endpoint</h3>
-                </div>
-                <button onclick="toggleSettingsModal(false)" class="text-gray-400 hover:text-white p-1 rounded-lg hover:bg-gray-800">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
-                </button>
-            </div>
-
-            <div class="mt-4 space-y-3 text-xs">
-                <div>
-                    <label class="text-gray-300 font-medium block mb-1">Cloudflare Worker URL</label>
-                    <input id="input-worker-url" type="text" placeholder="http://localhost:8787" class="w-full bg-gray-900 border border-gray-700 rounded-lg px-3 py-2 text-gray-100 font-mono text-xs focus:outline-none focus:border-blue-500">
-                    <p class="text-[11px] text-gray-400 mt-1">Use <code class="text-blue-300">http://localhost:8787</code> for local testing, or your deployed Cloudflare Worker URL.</p>
-                </div>
-                
-                <div class="p-3 rounded-lg bg-blue-950/40 border border-blue-800/40 text-[11px] text-gray-300 space-y-1">
-                    <strong class="text-blue-300">Security Architecture:</strong>
-                    <p>The frontend requests a session token from <code class="text-white">POST /api/session-token</code>. Your <code class="text-white">ANAM_API_KEY</code> is safely held in your Worker environment and is never exposed to browser clients.</p>
-                </div>
-            </div>
-
-            <div class="mt-5 flex gap-2 justify-end">
-                <button onclick="saveWorkerSettings()" class="px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-medium text-xs transition">
-                    Save Configuration
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <!-- JAVASCRIPT CONTROLLER: VERSION 1 -->
+    <!-- AUTOMATIC SESSION TOKEN MINTER FOR CLOUDFLARE -->
     <script>
-        let isMuted = false;
-        let isTranscriptOpen = false;
-
-        const panelTranscript = document.getElementById('panel-transcript');
-        const btnToggleTranscript = document.getElementById('btn-toggle-transcript');
-        const btnCloseTranscript = document.getElementById('btn-close-transcript');
-        const labelTranscript = document.getElementById('label-transcript');
-        const sessionStatus = document.getElementById('session-status');
-        const pulseDot = document.getElementById('iris-pulse-dot');
-        const btnMute = document.getElementById('btn-mute');
-        const iconMicOn = document.getElementById('icon-mic-on');
-        const iconMicOff = document.getElementById('icon-mic-off');
-        const labelMute = document.getElementById('label-mute');
-        const agent = document.getElementById('iris-agent');
-
-        // Toggle transcript drawer
-        function toggleTranscript(show) {
-            isTranscriptOpen = (show !== undefined) ? show : !isTranscriptOpen;
-            if (isTranscriptOpen) {
-                panelTranscript.classList.remove('translate-x-full');
-                labelTranscript.textContent = 'Close Transcript';
-                btnToggleTranscript.classList.add('bg-blue-600', 'text-white');
-                btnToggleTranscript.classList.remove('bg-blue-600/20', 'text-blue-400');
-                document.getElementById('transcript-feed').scrollTop = document.getElementById('transcript-feed').scrollHeight;
-            } else {
-                panelTranscript.classList.add('translate-x-full');
-                labelTranscript.textContent = 'Open Transcript';
-                btnToggleTranscript.classList.remove('bg-blue-600', 'text-white');
-                btnToggleTranscript.classList.add('bg-blue-600/20', 'text-blue-400');
-            }
-        }
-
-        btnToggleTranscript.addEventListener('click', () => toggleTranscript());
-        btnCloseTranscript.addEventListener('click', () => toggleTranscript(false));
-
-        // Settings Modal
-        window.toggleSettingsModal = function(show) {
-            const modal = document.getElementById('modal-settings');
-            if (!modal) return;
-            if (show) {
-                document.getElementById('input-worker-url').value = localStorage.getItem('case3_worker_url') || 'http://localhost:8787';
-                modal.classList.remove('hidden');
-            } else {
-                modal.classList.add('hidden');
-            }
-        };
-
-        document.getElementById('btn-settings-toggle').addEventListener('click', () => toggleSettingsModal(true));
-
-        window.saveWorkerSettings = function() {
-            const inputVal = document.getElementById('input-worker-url').value.trim();
-            if (inputVal) {
-                localStorage.setItem('case3_worker_url', inputVal.replace(/\/+$/, ''));
-            }
-            toggleSettingsModal(false);
-        };
-
-        // Transcript Chat Feed
-        const transcriptFeed = document.getElementById('transcript-feed');
-        const chatForm = document.getElementById('chat-form');
-        const chatInput = document.getElementById('chat-input');
-        let messageCount = 1;
-
-        function addMessage(role, text) {
-            const isUser = role === 'user';
-            messageCount++;
-            document.getElementById('message-badge').textContent = `${messageCount} msgs`;
-
-            const wrapper = document.createElement('div');
-            wrapper.className = `flex flex-col gap-1 ${isUser ? 'items-end' : 'items-start'}`;
-
-            const sender = document.createElement('span');
-            sender.className = `text-[10px] font-medium ml-1 ${isUser ? 'text-purple-400 mr-1' : 'text-blue-400'}`;
-            sender.textContent = isUser ? 'You' : 'Iris (Agent)';
-
-            const bubble = document.createElement('div');
-            bubble.className = `px-3.5 py-2 rounded-xl text-xs leading-relaxed max-w-[85%] ${
-                isUser 
-                    ? 'bg-blue-600 text-white rounded-tr-sm' 
-                    : 'bg-gray-900 border border-gray-800 text-gray-200 rounded-tl-sm'
-            }`;
-            bubble.textContent = text;
-
-            wrapper.appendChild(sender);
-            wrapper.appendChild(bubble);
-            transcriptFeed.appendChild(wrapper);
-            transcriptFeed.scrollTop = transcriptFeed.scrollHeight;
-        }
-
-        chatForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            const text = chatInput.value.trim();
-            if (!text) return;
-            addMessage('user', text);
-            chatInput.value = '';
-
-            if (agent && typeof agent.sendTextMessage === 'function') {
-                agent.sendTextMessage(text);
-            }
-        });
-
-        // Worker Token Authentication
         async function attachWorkerToken() {
             try {
                 const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
@@ -352,6 +94,7 @@
                 });
                 if (res.ok) {
                     const data = await res.json();
+                    const agent = document.getElementById('iris-agent');
                     if (data.sessionToken && agent) {
                         agent.setAttribute('session-token', data.sessionToken);
                     }
@@ -361,52 +104,6 @@
             }
         }
         attachWorkerToken();
-
-        if (agent) {
-            agent.addEventListener('anam-agent:message-received', (e) => {
-                if (e.detail && e.detail.content) {
-                    addMessage(e.detail.role === 'agent' ? 'agent' : 'user', e.detail.content);
-                }
-            });
-
-            agent.addEventListener('anam-agent:session-started', () => {
-                if (sessionStatus) {
-                    sessionStatus.innerHTML = `<span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span><span class="text-emerald-300">Agent Live</span>`;
-                }
-                pulseDot.classList.add('animate-pulse');
-            });
-
-            agent.addEventListener('anam-agent:session-ended', () => {
-                if (sessionStatus) {
-                    sessionStatus.innerHTML = `<span class="w-2 h-2 rounded-full bg-emerald-400"></span><span class="text-emerald-300">Ready</span>`;
-                }
-                pulseDot.classList.remove('animate-pulse');
-            });
-
-            agent.addEventListener('anam-agent:mic-muted', () => {
-                isMuted = true;
-                iconMicOn.classList.add('hidden');
-                iconMicOff.classList.remove('hidden');
-                labelMute.textContent = 'Unmute';
-                btnMute.classList.add('text-red-400');
-            });
-
-            agent.addEventListener('anam-agent:mic-unmuted', () => {
-                isMuted = false;
-                iconMicOff.classList.add('hidden');
-                iconMicOn.classList.remove('hidden');
-                labelMute.textContent = 'Mute';
-                btnMute.classList.remove('text-red-400');
-            });
-
-            btnMute.addEventListener('click', () => {
-                if (typeof agent.toggleMute === 'function') {
-                    agent.toggleMute();
-                } else if (typeof agent.mute === 'function' && typeof agent.unmute === 'function') {
-                    if (isMuted) agent.unmute(); else agent.mute();
-                }
-            });
-        }
     </script>
 </body>
 </html>
