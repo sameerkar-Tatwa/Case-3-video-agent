@@ -1,5 +1,5 @@
 // Cloudflare Worker: worker.js
-// Secure Anam Session Token Minter & Visualizer Host for CASE3 Iris Dynamic UI
+// Secure Anam Session Token Minter & Dual Version Host (v1 Agent-Only & v2 Showcase)
 
 export default {
   async fetch(request, env) {
@@ -17,8 +17,26 @@ export default {
     const url = new URL(request.url);
 
     // =========================================================================
-    // 1. VISUALIZER & STATIC ASSETS ROUTING (Directly viewable on /visualizer)
+    // 1. DUAL VERSION & STATIC ASSET ROUTING
     // =========================================================================
+
+    // Route: /version1 or /version1/ -> Serve Version 1 (Agent Only, No Side Screen)
+    if (url.pathname === "/version1" || url.pathname === "/version1/") {
+      if (env.ASSETS) {
+        const assetUrl = new URL("/version1.html", request.url);
+        return env.ASSETS.fetch(new Request(assetUrl, request));
+      }
+    }
+
+    // Route: /version2 or /version2/ -> Serve Version 2 (Iris Agent + Visual Showcase)
+    if (url.pathname === "/version2" || url.pathname === "/version2/") {
+      if (env.ASSETS) {
+        const assetUrl = new URL("/version2.html", request.url);
+        return env.ASSETS.fetch(new Request(assetUrl, request));
+      }
+    }
+
+    // Route: / or /visualizer or /index.html -> Serve default index.html (Version 2)
     if (url.pathname === "/visualizer" || url.pathname === "/visualizer/" || url.pathname === "/" || url.pathname === "/index.html") {
       if (env.ASSETS) {
         const assetUrl = new URL("/index.html", request.url);
@@ -97,7 +115,15 @@ export default {
     // =========================================================================
     if (url.pathname === "/health") {
       return Response.json(
-        { status: "ok", service: "CASE3 Iris Session Token Minter & Visualizer" },
+        { 
+          status: "ok", 
+          service: "CASE3 Iris Session Token Minter & Dual Version Host",
+          versions: {
+            version1: "/version1 (Embedded Anam Agent Only)",
+            version2: "/version2 (Agent + Visual Showcase)",
+            default: "/ (Showcase)"
+          }
+        },
         { headers: corsHeaders }
       );
     }

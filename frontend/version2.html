@@ -1,0 +1,1403 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <base href="/">
+    <title>CASE3 Technologies | AI-Native Guidewire Transformation</title>
+    
+    <!-- Tailwind CSS with Typography Plugin -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.tailwindcss.com?plugins=typography"></script>
+    
+    <!-- Google Fonts: Plus Jakarta Sans & JetBrains Mono -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <!-- Anam Agent Web Component Embed Script -->
+    <script src="https://unpkg.com/@anam-ai/agent-widget" async></script>
+
+    <style>
+        /* Full container fit for the native Anam Agent embed */
+        anam-agent {
+            width: 100% !important;
+            height: 100% !important;
+            display: block;
+        }
+
+        * {
+            box-sizing: border-box;
+            scrollbar-width: none; /* Hide scrollbars for Firefox */
+            -ms-overflow-style: none; /* Hide scrollbars for IE/Edge */
+        }
+        *::-webkit-scrollbar {
+            display: none; /* Hide scrollbars for Chrome, Safari */
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+            overflow: hidden;
+            width: 100vw;
+            height: 100vh;
+        }
+
+        .font-mono {
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        /* Subtle military/carrier precision grid inspired by CASE III naval precision */
+        .case3-grid-pattern {
+            background-color: #030712;
+            background-image: 
+                radial-gradient(circle at 50% 0%, rgba(30, 58, 138, 0.18) 0%, transparent 60%),
+                linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+            background-size: 100% 100%, 36px 36px, 36px 36px;
+        }
+
+        /* Smooth slide animation */
+        .slide-panel {
+            transition: opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1), transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            will-change: opacity, transform;
+        }
+
+        .slide-panel.active {
+            opacity: 1;
+            transform: scale(1) translateY(0);
+            pointer-events: auto;
+            display: flex;
+        }
+
+        .slide-panel.inactive {
+            opacity: 0;
+            transform: scale(0.97) translateY(8px);
+            pointer-events: none;
+            display: none;
+        }
+
+        /* Chevron Process Pipeline Clips (scaled for compact & flexible fit) */
+        .chevron-step {
+            clip-path: polygon(0% 0%, calc(100% - 6px) 0%, 100% 50%, calc(100% - 6px) 100%, 0% 100%, 6px 50%);
+        }
+        .chevron-step-first {
+            clip-path: polygon(0% 0%, calc(100% - 6px) 0%, 100% 50%, calc(100% - 6px) 100%, 0% 100%);
+        }
+        .chevron-step-last {
+            clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%, 6px 50%);
+        }
+    </style>
+</head>
+<body class="bg-gray-950 text-gray-100 h-screen w-screen overflow-hidden flex flex-col case3-grid-pattern select-none">
+
+    <!-- =================================================================
+         TOP HEADER: CASE3 BRANDING & PARTNER CREDENTIALS
+         ================================================================= -->
+    <header class="h-14 border-b border-gray-800/80 bg-gray-950/90 backdrop-blur-md px-5 flex items-center justify-between shrink-0 z-30">
+        
+        <!-- Left: Case3 Logo & Partner Status -->
+        <div class="flex items-center gap-3">
+            <a href="https://www.case3tech.com/index.html" target="_blank" class="flex items-center gap-2 group">
+                <div class="h-8 px-2.5 py-1 bg-white rounded-lg flex items-center justify-center shadow-md shadow-blue-950 group-hover:ring-2 ring-blue-500 transition">
+                    <img src="https://www.case3tech.com/assets/case3-logo-navy.png" alt="CASE3 Technologies" class="h-5 w-auto object-contain">
+                </div>
+            </a>
+            <div class="h-5 w-px bg-gray-800 hidden sm:block"></div>
+            <div class="hidden sm:flex items-center gap-1.5 text-xs">
+                <span class="px-2 py-0.5 rounded bg-blue-950/80 border border-blue-800/60 text-blue-300 font-semibold tracking-wide text-[11px]">
+                    GUIDEWIRE SELECT
+                </span>
+                <span class="text-gray-400 text-xs">Consulting Partner</span>
+            </div>
+        </div>
+
+        <!-- Center: View Switcher (v1 Agent Only / v2 Showcase) & Identity -->
+        <div class="flex items-center gap-3 text-xs">
+            <!-- Mode Switcher Pill -->
+            <div class="flex items-center bg-gray-900/90 border border-gray-800 rounded-lg p-0.5 shadow-inner">
+                <a href="/version1" class="px-2.5 py-1 rounded-md text-gray-400 hover:text-white transition font-medium flex items-center gap-1.5" title="Switch to Agent-Only View">
+                    <span class="w-1.5 h-1.5 rounded-full bg-gray-600"></span>
+                    <span>v1: Agent Only</span>
+                </a>
+                <a href="/version2" class="px-2.5 py-1 rounded-md bg-blue-600 text-white font-semibold shadow-sm flex items-center gap-1.5" title="Currently on Visual Showcase View">
+                    <span class="w-1.5 h-1.5 rounded-full bg-cyan-300 animate-pulse"></span>
+                    <span>v2: Showcase</span>
+                </a>
+            </div>
+
+            <div class="hidden xl:flex items-center gap-2 text-gray-400">
+                <span class="text-gray-700">•</span>
+                <span>AI Ambassador: <strong class="text-white font-medium">Iris</strong></span>
+            </div>
+        </div>
+
+        <!-- Right: Status Badge & Worker Config -->
+        <div class="flex items-center gap-2.5">
+            <!-- Settings button for Cloudflare Worker URL -->
+            <button id="btn-settings-toggle" class="p-1.5 rounded-lg bg-gray-900 hover:bg-gray-800 text-gray-400 hover:text-white border border-gray-800 transition text-xs flex items-center gap-1.5" title="Configure Cloudflare Worker Token Endpoint">
+                <svg class="w-3.5 h-3.5 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                <span class="hidden sm:inline text-[11px] font-mono text-gray-300">Worker</span>
+            </button>
+
+            <!-- Agent Session Status Pill -->
+            <div id="session-status" class="px-2.5 py-1 rounded-full bg-emerald-950/60 border border-emerald-800/60 text-xs font-medium flex items-center gap-2">
+                <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+                <span class="text-emerald-300">Ready</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- =================================================================
+         MAIN SPLIT LAYOUT: 50% LEFT (IRIS AGENT) | 50% RIGHT (MULTI-CARD SHOWCASE)
+         ================================================================= -->
+    <main class="flex-1 flex flex-col md:flex-row overflow-hidden relative min-h-0 w-full h-full">
+
+        <!-- =============================================================
+             LEFT PANEL: DIRECT EMBEDDED ANAM AGENT ELEMENT
+             ============================================================= -->
+        <section class="relative w-full md:w-[65%] h-3/5 md:h-full bg-black flex flex-col items-center justify-center border-b md:border-b-0 md:border-r border-gray-800/90 overflow-hidden">
+            
+            <!-- Direct Anam Web Component Embed (layout="inline", zero placeholders) -->
+            <div class="w-full h-full relative flex items-center justify-center bg-gradient-to-b from-gray-950 via-gray-900 to-black overflow-hidden">
+                <anam-agent 
+                    id="iris-agent"
+                    agent-id="603598a2-e60a-41fd-a5f3-4347900dd2e5" 
+                    api-base-url="https://lab.anam.ai"
+                    layout="inline">
+                </anam-agent>
+
+                <!-- Ambient Lighting Glow -->
+                <div class="pointer-events-none absolute -bottom-16 left-1/2 -translate-x-1/2 w-3/4 h-56 bg-blue-600/10 rounded-full blur-3xl"></div>
+            </div>
+
+            <!-- Top Left Persona Badge -->
+            <div class="absolute top-3.5 left-3.5 z-20 flex items-center gap-2 pointer-events-none">
+                <div class="px-2.5 py-1 rounded-xl bg-gray-950/80 backdrop-blur-md border border-white/10 text-xs font-medium text-gray-200 flex items-center gap-2 shadow-lg">
+                    <span id="iris-pulse-dot" class="w-2 h-2 rounded-full bg-blue-500"></span>
+                    <span>Iris • Case3 AI Agent</span>
+                </div>
+            </div>
+
+            <!-- Floating Control Bar -->
+            <div class="absolute bottom-4 left-1/2 -translate-x-1/2 z-20 flex items-center gap-2.5 px-4 py-2 bg-gray-900/95 backdrop-blur-xl border border-gray-700/80 rounded-full shadow-2xl">
+                
+                <!-- Mic / Mute Toggle -->
+                <button id="btn-mute" class="p-2 rounded-full hover:bg-gray-800 text-gray-200 hover:text-white transition active:scale-95 flex items-center gap-1.5 text-xs font-medium" title="Mute Microphone">
+                    <svg id="icon-mic-on" class="w-4 h-4 text-gray-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"></path>
+                    </svg>
+                    <svg id="icon-mic-off" class="w-4 h-4 text-red-400 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"></path>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4l16 16"></path>
+                    </svg>
+                    <span id="label-mute">Mute</span>
+                </button>
+
+                <div class="h-4 w-px bg-gray-700"></div>
+
+                <!-- Togglable Transcript Drawer Button (Slides over right panel) -->
+                <button id="btn-toggle-transcript" class="flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-600/20 text-blue-400 border border-blue-500/30 hover:bg-blue-600 hover:text-white transition active:scale-95 text-xs font-medium">
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"></path>
+                    </svg>
+                    <span id="label-transcript">Open Transcript</span>
+                </button>
+            </div>
+        </section>
+
+        <!-- =============================================================
+             RIGHT PANEL: ZERO-SCROLL MULTI-CARD SHOWCASE PALETTE
+             (Dynamically updated via Non-Blocking Client Tool)
+             ============================================================= -->
+        <section class="relative w-full md:w-[35%] h-2/5 md:h-full bg-gray-950 flex flex-col overflow-hidden min-h-0">
+            
+            <!-- MAIN VIEWPORT CONTAINER: ZERO SCROLLBAR, SCALED TO FIT -->
+            <div id="panel-elements-showcase" class="absolute inset-0 flex flex-col p-3.5 sm:p-4 lg:p-4.5 overflow-hidden">
+                
+                <!-- CARDS VIEWPORT CONTAINER: Takes 100% of available height -->
+                <div class="flex-1 min-h-0 relative w-full h-full overflow-hidden flex flex-col justify-center">
+                    
+                    <!-- =====================================================
+                         SCREEN 00: Overview (Default Screen)
+                         ===================================================== -->
+                    <div id="slide-0" class="slide-panel active w-full h-full flex flex-col justify-between p-3.5 sm:p-4 lg:p-5 rounded-2xl bg-gradient-to-br from-[#070b14] via-[#091122] to-[#040812] border border-blue-900/30 overflow-hidden relative shadow-2xl">
+                        <!-- Background Glow Accent -->
+                        <div class="absolute -top-24 -right-24 w-60 h-60 bg-blue-600/10 rounded-full blur-3xl pointer-events-none"></div>
+                        
+                        <!-- Top Header: Logo -->
+                        <div class="shrink-0 flex items-center justify-between relative z-10 border-b border-gray-800/60 pb-2">
+                            <span class="text-base font-black tracking-widest text-white uppercase">CASE<span class="text-blue-500 font-mono">3</span></span>
+                            <span class="text-[10px] font-mono text-blue-400 px-2 py-0.5 rounded-full bg-blue-950/60 border border-blue-800/40">Tier-1 P&C Partner</span>
+                        </div>
+
+                        <!-- Main Content: Headline + Compact Planet Crescent -->
+                        <div class="flex-1 min-h-0 flex flex-col justify-center relative z-10 py-2 space-y-2.5">
+                            <div class="flex items-center justify-between gap-3">
+                                <div class="flex-1 min-w-0">
+                                    <div class="text-[10px] font-bold text-blue-400 uppercase tracking-widest mb-1">P&C Technology Partner</div>
+                                    <h1 class="text-lg sm:text-xl font-extrabold text-white tracking-tight leading-tight">
+                                        AI-First Guidewire<br/>
+                                        <span class="bg-gradient-to-r from-blue-200 via-blue-400 to-indigo-300 bg-clip-text text-transparent">Transformation</span>
+                                    </h1>
+                                    <div class="text-[11px] font-semibold text-blue-300 tracking-wider mt-1">
+                                        Build &nbsp;·&nbsp; Upgrade &nbsp;·&nbsp; Run
+                                    </div>
+                                </div>
+
+                                <!-- Compact Glowing Planet Crescent SVG -->
+                                <div class="w-20 h-20 sm:w-24 sm:h-24 shrink-0 relative flex items-center justify-center">
+                                    <svg viewBox="0 0 200 200" class="w-full h-full drop-shadow-[0_0_20px_rgba(59,130,246,0.5)]">
+                                        <defs>
+                                            <radialGradient id="planetBody0" cx="70%" cy="30%" r="60%">
+                                                <stop offset="0%" stop-color="#38bdf8" stop-opacity="0.9"/>
+                                                <stop offset="35%" stop-color="#1d4ed8" stop-opacity="0.7"/>
+                                                <stop offset="70%" stop-color="#0f172a" stop-opacity="0.95"/>
+                                                <stop offset="100%" stop-color="#030712" stop-opacity="1"/>
+                                            </radialGradient>
+                                        </defs>
+                                        <circle cx="100" cy="100" r="75" fill="url(#planetBody0)"/>
+                                        <path d="M 100,25 A 75,75 0 0,1 175,100 A 75,75 0 0,1 100,175 A 68,75 0 0,0 162,100 A 68,75 0 0,0 100,25 Z" fill="#60a5fa" opacity="0.9"/>
+                                        <path d="M 100,25 A 75,75 0 0,1 175,100 A 75,75 0 0,1 100,175" fill="none" stroke="#e0f2fe" stroke-width="2" stroke-linecap="round"/>
+                                    </svg>
+                                </div>
+                            </div>
+
+                            <p class="text-xs text-gray-300 leading-relaxed">
+                                Deep Guidewire expertise, AI-assisted delivery and complete human accountability for outcomes.
+                            </p>
+
+                            <!-- 3 Value Pillars in a Snug Row -->
+                            <div class="grid grid-cols-3 gap-1.5 pt-1">
+                                <div class="p-2 rounded-xl bg-gray-900/80 border border-gray-800 text-center flex flex-col items-center justify-center gap-1">
+                                    <div class="w-6 h-6 rounded-lg bg-blue-950/80 flex items-center justify-center text-blue-400">
+                                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/></svg>
+                                    </div>
+                                    <span class="text-[10px] font-semibold text-gray-200">Guidewire</span>
+                                </div>
+                                <div class="p-2 rounded-xl bg-gray-900/80 border border-gray-800 text-center flex flex-col items-center justify-center gap-1">
+                                    <div class="w-6 h-6 rounded-lg bg-blue-950/80 flex items-center justify-center text-blue-400">
+                                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+                                    </div>
+                                    <span class="text-[10px] font-semibold text-gray-200">AI Delivery</span>
+                                </div>
+                                <div class="p-2 rounded-xl bg-gray-900/80 border border-gray-800 text-center flex flex-col items-center justify-center gap-1">
+                                    <div class="w-6 h-6 rounded-lg bg-blue-950/80 flex items-center justify-center text-blue-400">
+                                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>
+                                    </div>
+                                    <span class="text-[10px] font-semibold text-gray-200">Outcomes</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Bottom Strip -->
+                        <div class="shrink-0 flex items-center justify-between pt-2 border-t border-gray-800/60 text-[10px] text-gray-500 font-mono">
+                            <span>Enterprise P&C Modernization</span>
+                            <span class="text-blue-400 font-semibold">Tier-1 Ready</span>
+                        </div>
+                    </div>
+
+
+                    <!-- =====================================================
+                         SCREEN 01: Guidewire Platform
+                         ===================================================== -->
+                    <div id="slide-1" class="slide-panel inactive w-full h-full flex flex-col justify-between p-3.5 sm:p-4 lg:p-5 rounded-2xl bg-gradient-to-br from-[#070b14] via-[#091122] to-[#040812] border border-blue-900/30 overflow-hidden relative shadow-2xl">
+                        <!-- Top Header -->
+                        <div class="shrink-0 space-y-1 relative z-10 border-b border-gray-800/60 pb-2">
+                            <div class="flex items-center justify-between">
+                                <span class="text-base font-black tracking-widest text-white uppercase">CASE<span class="text-blue-500 font-mono">3</span></span>
+                                <span class="text-[10px] font-mono text-cyan-400 px-2 py-0.5 rounded-full bg-cyan-950/50 border border-cyan-800/40">CoreSuite</span>
+                            </div>
+                            <div class="text-[10px] font-bold text-blue-400 uppercase tracking-widest">Our Guidewire Expertise</div>
+                            <h2 class="text-base sm:text-lg font-bold text-white tracking-tight">The Core Platform for P&C Insurers</h2>
+                        </div>
+
+                        <!-- Stacked Clean Cards: 3 CoreSuite + 1 Cloud (No horizontal squeezing!) -->
+                        <div class="flex-1 min-h-0 flex flex-col justify-center gap-2 py-2 relative z-10">
+                            <!-- PolicyCenter Card -->
+                            <div class="p-2.5 rounded-xl bg-gray-900/80 border border-gray-800 hover:border-blue-500/50 transition flex items-center justify-between gap-2.5">
+                                <div class="flex items-center gap-2.5 min-w-0">
+                                    <div class="w-7 h-7 rounded-lg bg-blue-950 border border-blue-800/60 flex items-center justify-center text-blue-400 shrink-0">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                                    </div>
+                                    <div class="min-w-0">
+                                        <h3 class="text-xs font-bold text-white truncate">PolicyCenter</h3>
+                                        <p class="text-[10px] text-gray-400 truncate">Policy admin & product modeling</p>
+                                    </div>
+                                </div>
+                                <span class="text-[9px] font-mono text-blue-400 px-1.5 py-0.5 rounded bg-blue-950/60 border border-blue-800/40 shrink-0">Underwriting</span>
+                            </div>
+
+                            <!-- ClaimCenter Card -->
+                            <div class="p-2.5 rounded-xl bg-gray-900/80 border border-gray-800 hover:border-blue-500/50 transition flex items-center justify-between gap-2.5">
+                                <div class="flex items-center gap-2.5 min-w-0">
+                                    <div class="w-7 h-7 rounded-lg bg-blue-950 border border-blue-800/60 flex items-center justify-center text-blue-400 shrink-0">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17V7m0 10a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h2a2 2 0 012 2m0 10a2 2 0 002 2h2a2 2 0 002-2M9 7a2 2 0 012-2h2a2 2 0 012 2m0 10V7m0 10a2 2 0 002 2h2a2 2 0 002-2V7a2 2 0 00-2-2h-2a2 2 0 00-2 2"/></svg>
+                                    </div>
+                                    <div class="min-w-0">
+                                        <h3 class="text-xs font-bold text-white truncate">ClaimCenter</h3>
+                                        <p class="text-[10px] text-gray-400 truncate">End-to-end claims lifecycle</p>
+                                    </div>
+                                </div>
+                                <span class="text-[9px] font-mono text-blue-400 px-1.5 py-0.5 rounded bg-blue-950/60 border border-blue-800/40 shrink-0">FNOL Auto</span>
+                            </div>
+
+                            <!-- BillingCenter Card -->
+                            <div class="p-2.5 rounded-xl bg-gray-900/80 border border-gray-800 hover:border-blue-500/50 transition flex items-center justify-between gap-2.5">
+                                <div class="flex items-center gap-2.5 min-w-0">
+                                    <div class="w-7 h-7 rounded-lg bg-blue-950 border border-blue-800/60 flex items-center justify-center text-blue-400 shrink-0">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"/></svg>
+                                    </div>
+                                    <div class="min-w-0">
+                                        <h3 class="text-xs font-bold text-white truncate">BillingCenter</h3>
+                                        <p class="text-[10px] text-gray-400 truncate">Flexible integrated billing</p>
+                                    </div>
+                                </div>
+                                <span class="text-[9px] font-mono text-blue-400 px-1.5 py-0.5 rounded bg-blue-950/60 border border-blue-800/40 shrink-0">Invoicing</span>
+                            </div>
+
+                            <!-- Guidewire Cloud Card -->
+                            <div class="p-2.5 rounded-xl bg-gradient-to-r from-blue-950/70 via-gray-900/80 to-indigo-950/60 border border-blue-800/40 flex items-center justify-between gap-2.5">
+                                <div class="flex items-center gap-2.5 min-w-0">
+                                    <div class="w-7 h-7 rounded-lg bg-blue-900/70 border border-blue-700/50 flex items-center justify-center text-blue-300 shrink-0">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 00-9.78 2.096A4.001 4.001 0 003 15z"/></svg>
+                                    </div>
+                                    <div class="min-w-0">
+                                        <h3 class="text-xs font-bold text-white truncate">Guidewire Cloud</h3>
+                                        <p class="text-[10px] text-gray-300 truncate">Modern, scalable GWCP infrastructure</p>
+                                    </div>
+                                </div>
+                                <span class="text-[9px] font-mono text-cyan-300 px-1.5 py-0.5 rounded bg-cyan-950/60 border border-cyan-800/40 shrink-0">Cloud APIs</span>
+                            </div>
+                        </div>
+
+                        <!-- Bottom Strip -->
+                        <div class="shrink-0 flex items-center justify-between pt-2 border-t border-gray-800/60 text-[10px] text-gray-500 font-mono">
+                            <span>Case3 Core Platform Suite</span>
+                            <span class="text-blue-400">GWCP Certified</span>
+                        </div>
+                    </div>
+
+
+                    <!-- =====================================================
+                         SCREEN 02: Build & Advisory
+                         ===================================================== -->
+                    <div id="slide-2" class="slide-panel inactive w-full h-full flex flex-col justify-between p-3.5 sm:p-4 lg:p-5 rounded-2xl bg-gradient-to-br from-[#070b14] via-[#091122] to-[#040812] border border-blue-900/30 overflow-hidden relative shadow-2xl">
+                        <!-- Top Header -->
+                        <div class="shrink-0 space-y-1 relative z-10 border-b border-gray-800/60 pb-2">
+                            <div class="flex items-center justify-between">
+                                <span class="text-base font-black tracking-widest text-white uppercase">CASE<span class="text-blue-500 font-mono">3</span></span>
+                                <span class="text-[10px] font-mono text-blue-400 px-2 py-0.5 rounded-full bg-blue-950/60 border border-blue-800/40">Build</span>
+                            </div>
+                            <h2 class="text-base sm:text-lg font-bold text-white tracking-tight">From Vision to Value with Guidewire</h2>
+                            <p class="text-[11px] text-gray-300 leading-tight">
+                                Implementation, APD modeling, configuration and advisory aligned to outcomes.
+                            </p>
+                        </div>
+
+                        <!-- 5 Clean Connected Process Milestones (Vertical List) -->
+                        <div class="flex-1 min-h-0 flex flex-col justify-center gap-1.5 py-2 relative z-10">
+                            <div class="flex items-center justify-between p-2 rounded-xl bg-gray-900/70 border border-gray-800">
+                                <div class="flex items-center gap-2">
+                                    <span class="w-5 h-5 rounded-lg bg-blue-950 text-blue-300 font-mono font-bold text-[10px] flex items-center justify-center">01</span>
+                                    <span class="text-xs font-bold text-white">Discover & Plan</span>
+                                </div>
+                                <span class="text-[10px] font-mono text-gray-400">Inception</span>
+                            </div>
+                            <div class="flex items-center justify-between p-2 rounded-xl bg-gray-900/70 border border-gray-800">
+                                <div class="flex items-center gap-2">
+                                    <span class="w-5 h-5 rounded-lg bg-blue-950 text-blue-300 font-mono font-bold text-[10px] flex items-center justify-center">02</span>
+                                    <span class="text-xs font-bold text-white">Product Modelling</span>
+                                </div>
+                                <span class="text-[10px] font-mono text-gray-400">APD Lines</span>
+                            </div>
+                            <div class="flex items-center justify-between p-2 rounded-xl bg-gray-900/70 border border-gray-800">
+                                <div class="flex items-center gap-2">
+                                    <span class="w-5 h-5 rounded-lg bg-blue-950 text-blue-300 font-mono font-bold text-[10px] flex items-center justify-center">03</span>
+                                    <span class="text-xs font-bold text-white">Configure & Integrate</span>
+                                </div>
+                                <span class="text-[10px] font-mono text-gray-400">APIs</span>
+                            </div>
+                            <div class="flex items-center justify-between p-2 rounded-xl bg-gray-900/70 border border-gray-800">
+                                <div class="flex items-center gap-2">
+                                    <span class="w-5 h-5 rounded-lg bg-blue-950 text-blue-300 font-mono font-bold text-[10px] flex items-center justify-center">04</span>
+                                    <span class="text-xs font-bold text-white">Test & Validate</span>
+                                </div>
+                                <span class="text-[10px] font-mono text-gray-400">Automation</span>
+                            </div>
+                            <div class="flex items-center justify-between p-2 rounded-xl bg-blue-950/40 border border-blue-800/60">
+                                <div class="flex items-center gap-2">
+                                    <span class="w-5 h-5 rounded-lg bg-blue-600 text-white font-mono font-bold text-[10px] flex items-center justify-center">05</span>
+                                    <span class="text-xs font-bold text-blue-200">Deploy & Cutover</span>
+                                </div>
+                                <span class="text-[10px] font-mono text-emerald-400">Go-Live</span>
+                            </div>
+                        </div>
+
+                        <!-- Bottom Strip -->
+                        <div class="shrink-0 flex items-center justify-between pt-2 border-t border-gray-800/60 text-[10px] text-gray-500 font-mono">
+                            <span>Accelerated Blueprints</span>
+                            <span class="text-blue-400">Zero-Rework Delivery</span>
+                        </div>
+                    </div>
+
+
+                    <!-- =====================================================
+                         SCREEN 03: Upgrade Pathway
+                         ===================================================== -->
+                    <div id="slide-3" class="slide-panel inactive w-full h-full flex flex-col justify-between p-3.5 sm:p-4 lg:p-5 rounded-2xl bg-gradient-to-br from-[#070b14] via-[#091122] to-[#040812] border border-blue-900/30 overflow-hidden relative shadow-2xl">
+                        <!-- Top Header -->
+                        <div class="shrink-0 space-y-1 relative z-10 border-b border-gray-800/60 pb-2">
+                            <div class="flex items-center justify-between">
+                                <span class="text-base font-black tracking-widest text-white uppercase">CASE<span class="text-blue-500 font-mono">3</span></span>
+                                <span class="text-[10px] font-mono text-cyan-400 px-2 py-0.5 rounded-full bg-cyan-950/60 border border-cyan-800/40">Upgrade</span>
+                            </div>
+                            <h2 class="text-base sm:text-lg font-bold text-white tracking-tight">Reduce Risk. Move Forward with Confidence.</h2>
+                            <p class="text-[11px] text-gray-300 leading-tight">
+                                Disciplined Guidewire cloud upgrades with AI-assisted execution.
+                            </p>
+                        </div>
+
+                        <!-- 5 Clean Connected Upgrade Milestones -->
+                        <div class="flex-1 min-h-0 flex flex-col justify-center gap-1.5 py-2 relative z-10">
+                            <div class="flex items-center justify-between p-2 rounded-xl bg-gray-900/70 border border-gray-800">
+                                <div class="flex items-center gap-2">
+                                    <span class="w-5 h-5 rounded-lg bg-cyan-950 text-cyan-300 font-mono font-bold text-[10px] flex items-center justify-center">01</span>
+                                    <span class="text-xs font-bold text-white">Plan & Assess</span>
+                                </div>
+                                <span class="text-[10px] font-mono text-gray-400">Readiness</span>
+                            </div>
+                            <div class="flex items-center justify-between p-2 rounded-xl bg-gray-900/70 border border-gray-800">
+                                <div class="flex items-center gap-2">
+                                    <span class="w-5 h-5 rounded-lg bg-cyan-950 text-cyan-300 font-mono font-bold text-[10px] flex items-center justify-center">02</span>
+                                    <span class="text-xs font-bold text-white">Impact Analysis</span>
+                                </div>
+                                <span class="text-[10px] font-mono text-gray-400">CRUX Scan</span>
+                            </div>
+                            <div class="flex items-center justify-between p-2 rounded-xl bg-gray-900/70 border border-gray-800">
+                                <div class="flex items-center gap-2">
+                                    <span class="w-5 h-5 rounded-lg bg-cyan-950 text-cyan-300 font-mono font-bold text-[10px] flex items-center justify-center">03</span>
+                                    <span class="text-xs font-bold text-white">Remediate & Modernise</span>
+                                </div>
+                                <span class="text-[10px] font-mono text-gray-400">Gosu/APIs</span>
+                            </div>
+                            <div class="flex items-center justify-between p-2 rounded-xl bg-gray-900/70 border border-gray-800">
+                                <div class="flex items-center gap-2">
+                                    <span class="w-5 h-5 rounded-lg bg-cyan-950 text-cyan-300 font-mono font-bold text-[10px] flex items-center justify-center">04</span>
+                                    <span class="text-xs font-bold text-white">Regression Testing</span>
+                                </div>
+                                <span class="text-[10px] font-mono text-gray-400">Auto-Suite</span>
+                            </div>
+                            <div class="flex items-center justify-between p-2 rounded-xl bg-cyan-950/40 border border-cyan-800/60">
+                                <div class="flex items-center gap-2">
+                                    <span class="w-5 h-5 rounded-lg bg-cyan-600 text-white font-mono font-bold text-[10px] flex items-center justify-center">05</span>
+                                    <span class="text-xs font-bold text-cyan-200">Cutover Support</span>
+                                </div>
+                                <span class="text-[10px] font-mono text-emerald-400">Zero Risk</span>
+                            </div>
+                        </div>
+
+                        <!-- Bottom Strip -->
+                        <div class="shrink-0 flex items-center justify-between pt-2 border-t border-gray-800/60 text-[10px] text-gray-500 font-mono">
+                            <span>Case3 Upgrade Accelerator</span>
+                            <span class="text-cyan-400">Deterministic Cutover</span>
+                        </div>
+                    </div>
+
+
+                    <!-- =====================================================
+                         SCREEN 04: Run & Platform Operations
+                         ===================================================== -->
+                    <div id="slide-4" class="slide-panel inactive w-full h-full flex flex-col justify-between p-3.5 sm:p-4 lg:p-5 rounded-2xl bg-gradient-to-br from-[#070b14] via-[#091122] to-[#040812] border border-blue-900/30 overflow-hidden relative shadow-2xl">
+                        <!-- Top Header with Infinity Symbol -->
+                        <div class="shrink-0 flex items-start justify-between relative z-10 border-b border-gray-800/60 pb-2">
+                            <div class="space-y-0.5 max-w-[220px]">
+                                <span class="text-base font-black tracking-widest text-white uppercase">CASE<span class="text-blue-500 font-mono">3</span></span>
+                                <div class="text-[10px] font-bold text-blue-400 uppercase tracking-widest">Run</div>
+                                <h2 class="text-base sm:text-lg font-bold text-white tracking-tight leading-tight">Stable Operations. Continuous Improvement.</h2>
+                            </div>
+                            <!-- Scaled Infinity Loop Graphic -->
+                            <div class="w-16 h-10 flex items-center justify-center shrink-0">
+                                <svg viewBox="0 0 200 100" class="w-full h-full">
+                                    <defs>
+                                        <linearGradient id="infGrad4" x1="0%" y1="0%" x2="100%" y2="100%">
+                                            <stop offset="0%" stop-color="#38bdf8"/>
+                                            <stop offset="50%" stop-color="#2563eb"/>
+                                            <stop offset="100%" stop-color="#60a5fa"/>
+                                        </linearGradient>
+                                    </defs>
+                                    <path d="M 50,50 C 15,15 15,85 50,50 C 85,15 115,85 150,50 C 185,15 185,85 150,50 C 115,15 85,85 50,50 Z" 
+                                          fill="none" 
+                                          stroke="url(#infGrad4)" 
+                                          stroke-width="7"/>
+                                </svg>
+                            </div>
+                        </div>
+
+                        <!-- 4 Operational Cards in 2x2 Grid (Generous space per card!) -->
+                        <div class="flex-1 min-h-0 flex flex-col justify-center py-2 relative z-10">
+                            <div class="grid grid-cols-2 gap-2">
+                                <div class="p-2.5 rounded-xl bg-gray-900/80 border border-gray-800 flex flex-col items-center text-center gap-1.5">
+                                    <div class="w-7 h-7 rounded-lg bg-blue-950 border border-blue-800/60 flex items-center justify-center text-blue-400">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/></svg>
+                                    </div>
+                                    <span class="text-xs font-bold text-gray-200 leading-tight">Platform Ops</span>
+                                </div>
+                                <div class="p-2.5 rounded-xl bg-gray-900/80 border border-gray-800 flex flex-col items-center text-center gap-1.5">
+                                    <div class="w-7 h-7 rounded-lg bg-blue-950 border border-blue-800/60 flex items-center justify-center text-blue-400">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+                                    </div>
+                                    <span class="text-xs font-bold text-gray-200 leading-tight">Incident Mgmt</span>
+                                </div>
+                                <div class="p-2.5 rounded-xl bg-gray-900/80 border border-gray-800 flex flex-col items-center text-center gap-1.5">
+                                    <div class="w-7 h-7 rounded-lg bg-blue-950 border border-blue-800/60 flex items-center justify-center text-blue-400">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+                                    </div>
+                                    <span class="text-xs font-bold text-gray-200 leading-tight">Observability</span>
+                                </div>
+                                <div class="p-2.5 rounded-xl bg-gray-900/80 border border-gray-800 flex flex-col items-center text-center gap-1.5">
+                                    <div class="w-7 h-7 rounded-lg bg-blue-950 border border-blue-800/60 flex items-center justify-center text-blue-400">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+                                    </div>
+                                    <span class="text-xs font-bold text-gray-200 leading-tight">Continuous Opt</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Bottom Strip -->
+                        <div class="shrink-0 flex items-center justify-between pt-2 border-t border-gray-800/60 text-[10px] text-gray-500 font-mono">
+                            <span>Platform Uptime Guarantee</span>
+                            <span class="text-blue-400">24/7 Reliability</span>
+                        </div>
+                    </div>
+
+
+                    <!-- =====================================================
+                         SCREEN 05: CASE3 APEX
+                         ===================================================== -->
+                    <div id="slide-5" class="slide-panel inactive w-full h-full flex flex-col justify-between p-3.5 sm:p-4 lg:p-5 rounded-2xl bg-gradient-to-br from-[#070b14] via-[#091122] to-[#040812] border border-blue-900/30 overflow-hidden relative shadow-2xl">
+                        <!-- Top Header -->
+                        <div class="shrink-0 space-y-1 relative z-10 border-b border-gray-800/60 pb-2">
+                            <div class="flex items-center justify-between">
+                                <span class="text-base font-black tracking-widest text-white uppercase">CASE<span class="text-blue-500 font-mono">3</span></span>
+                                <span class="text-[10px] font-mono text-purple-400 px-2 py-0.5 rounded-full bg-purple-950/60 border border-purple-800/40">APEX</span>
+                            </div>
+                            <h2 class="text-base sm:text-lg font-bold text-white tracking-tight">AI for Enterprise Execution</h2>
+                            <p class="text-[11px] text-gray-300 leading-tight">
+                                APEX orchestrates specialized agents across Build, Upgrade & Run.
+                            </p>
+                        </div>
+
+                        <!-- Centered Orbital Triangle Graphic + Badges -->
+                        <div class="flex-1 min-h-0 flex flex-col items-center justify-center relative z-10 py-1">
+                            <div class="w-full max-h-36 flex items-center justify-center">
+                                <svg viewBox="0 0 280 180" class="w-full h-full max-h-32">
+                                    <path d="M 140,30 L 65,140 L 215,140 Z" fill="none" stroke="#1e3a8a" stroke-width="1.5" stroke-dasharray="4 3"/>
+                                    <circle cx="140" cy="100" r="28" fill="#2563eb" opacity="0.15"/>
+                                    
+                                    <!-- Top Node: BUILD -->
+                                    <g transform="translate(140, 30)">
+                                        <circle cx="0" cy="0" r="15" fill="#0f172a" stroke="#3b82f6" stroke-width="1.5"/>
+                                        <text x="0" y="22" font-size="8" font-family="monospace" fill="#93c5fd" font-weight="bold" text-anchor="middle">Build</text>
+                                    </g>
+                                    <!-- Bottom-Left: UPGRADE -->
+                                    <g transform="translate(65, 140)">
+                                        <circle cx="0" cy="0" r="15" fill="#0f172a" stroke="#3b82f6" stroke-width="1.5"/>
+                                        <text x="0" y="22" font-size="8" font-family="monospace" fill="#93c5fd" font-weight="bold" text-anchor="middle">Upgrade</text>
+                                    </g>
+                                    <!-- Bottom-Right: RUN -->
+                                    <g transform="translate(215, 140)">
+                                        <circle cx="0" cy="0" r="15" fill="#0f172a" stroke="#3b82f6" stroke-width="1.5"/>
+                                        <text x="0" y="22" font-size="8" font-family="monospace" fill="#93c5fd" font-weight="bold" text-anchor="middle">Run</text>
+                                    </g>
+                                    <!-- CENTER: APEX -->
+                                    <g transform="translate(140, 100)">
+                                        <circle cx="0" cy="0" r="18" fill="#2563eb" stroke="#93c5fd" stroke-width="2"/>
+                                        <text x="0" y="4" font-size="9" font-family="sans-serif" font-weight="900" fill="#ffffff" text-anchor="middle">APEX</text>
+                                    </g>
+                                </svg>
+                            </div>
+
+                            <!-- 4 Badges in 2x2 Grid -->
+                            <div class="grid grid-cols-2 gap-1.5 w-full pt-2">
+                                <span class="px-2 py-1 rounded-lg bg-blue-950/60 border border-blue-800/40 text-[10px] text-blue-300 text-center font-medium">Enterprise Context</span>
+                                <span class="px-2 py-1 rounded-lg bg-blue-950/60 border border-blue-800/40 text-[10px] text-blue-300 text-center font-medium">Automation</span>
+                                <span class="px-2 py-1 rounded-lg bg-blue-950/60 border border-blue-800/40 text-[10px] text-blue-300 text-center font-medium">Expert Review</span>
+                                <span class="px-2 py-1 rounded-lg bg-blue-950/60 border border-blue-800/40 text-[10px] text-blue-300 text-center font-medium">Outcomes</span>
+                            </div>
+                        </div>
+
+                        <!-- Bottom Strip -->
+                        <div class="shrink-0 flex items-center justify-between pt-2 border-t border-gray-800/60 text-[10px] text-gray-500 font-mono">
+                            <span>Governed Agentic Loop</span>
+                            <span class="text-blue-400">SOC2 Type II</span>
+                        </div>
+                    </div>
+
+
+                    <!-- =====================================================
+                         SCREEN 06: CRUX – System Understanding
+                         ===================================================== -->
+                    <div id="slide-6" class="slide-panel inactive w-full h-full flex flex-col justify-between p-3.5 sm:p-4 lg:p-5 rounded-2xl bg-gradient-to-br from-[#070b14] via-[#091122] to-[#040812] border border-blue-900/30 overflow-hidden relative shadow-2xl">
+                        <!-- Top Header -->
+                        <div class="shrink-0 space-y-1 relative z-10 border-b border-gray-800/60 pb-2">
+                            <div class="flex items-center justify-between">
+                                <span class="text-base font-black tracking-widest text-white uppercase">CASE<span class="text-blue-500 font-mono">3</span></span>
+                                <span class="text-[10px] font-mono text-cyan-400 px-2 py-0.5 rounded-full bg-cyan-950/60 border border-cyan-800/40">CRUX</span>
+                            </div>
+                            <h2 class="text-base sm:text-lg font-bold text-white tracking-tight">Deeper Understanding for Smarter Decisions</h2>
+                            <p class="text-[11px] text-gray-300 leading-tight">
+                                Maps systems, dependencies and architecture to assess change impact.
+                            </p>
+                        </div>
+
+                        <!-- Circuit Hierarchy View Scaled for ~380px -->
+                        <div class="flex-1 min-h-0 flex items-center justify-center relative z-10 py-1">
+                            <div class="w-full flex items-center justify-between gap-2.5">
+                                <!-- Hub (Left) -->
+                                <div class="w-11 h-11 rounded-xl bg-gradient-to-br from-blue-600 to-indigo-800 p-0.5 shadow-md flex items-center justify-center shrink-0">
+                                    <div class="w-full h-full rounded-xl bg-[#091122] flex flex-col items-center justify-center">
+                                        <svg class="w-4 h-4 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/></svg>
+                                        <span class="text-[8px] font-mono font-bold text-blue-300">CRUX</span>
+                                    </div>
+                                </div>
+
+                                <!-- Connecting Circuit Lines SVG -->
+                                <div class="w-7 h-40 flex items-center shrink-0">
+                                    <svg viewBox="0 0 30 160" class="w-full h-full">
+                                        <path d="M 0,80 L 15,80 L 15,16 L 30,16" fill="none" stroke="#3b82f6" stroke-width="1.5"/>
+                                        <path d="M 0,80 L 15,80 L 15,48 L 30,48" fill="none" stroke="#3b82f6" stroke-width="1.5"/>
+                                        <path d="M 0,80 L 30,80" fill="none" stroke="#3b82f6" stroke-width="1.5"/>
+                                        <path d="M 0,80 L 15,80 L 15,112 L 30,112" fill="none" stroke="#3b82f6" stroke-width="1.5"/>
+                                        <path d="M 0,80 L 15,80 L 15,144 L 30,144" fill="none" stroke="#3b82f6" stroke-width="1.5"/>
+                                    </svg>
+                                </div>
+
+                                <!-- 5 Stacked Nodes on Right -->
+                                <div class="flex-1 min-w-0 flex flex-col gap-1.5">
+                                    <div class="px-2.5 py-1 rounded-lg bg-gray-900/80 border border-gray-800 flex items-center gap-2">
+                                        <div class="w-1.5 h-1.5 rounded-full bg-blue-400"></div>
+                                        <span class="text-[11px] font-semibold text-gray-200 truncate">Applications</span>
+                                    </div>
+                                    <div class="px-2.5 py-1 rounded-lg bg-gray-900/80 border border-gray-800 flex items-center gap-2">
+                                        <div class="w-1.5 h-1.5 rounded-full bg-blue-400"></div>
+                                        <span class="text-[11px] font-semibold text-gray-200 truncate">Code & Config</span>
+                                    </div>
+                                    <div class="px-2.5 py-1 rounded-lg bg-gray-900/80 border border-gray-800 flex items-center gap-2">
+                                        <div class="w-1.5 h-1.5 rounded-full bg-blue-400"></div>
+                                        <span class="text-[11px] font-semibold text-gray-200 truncate">Integrations</span>
+                                    </div>
+                                    <div class="px-2.5 py-1 rounded-lg bg-gray-900/80 border border-gray-800 flex items-center gap-2">
+                                        <div class="w-1.5 h-1.5 rounded-full bg-blue-400"></div>
+                                        <span class="text-[11px] font-semibold text-gray-200 truncate">Dependencies</span>
+                                    </div>
+                                    <div class="px-2.5 py-1 rounded-lg bg-gray-900/80 border border-gray-800 flex items-center gap-2">
+                                        <div class="w-1.5 h-1.5 rounded-full bg-cyan-400"></div>
+                                        <span class="text-[11px] font-semibold text-gray-200 truncate">Architecture Evidence</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Bottom Strip -->
+                        <div class="shrink-0 flex items-center justify-between pt-2 border-t border-gray-800/60 text-[10px] text-gray-500 font-mono">
+                            <span>Knowledge Graph Core</span>
+                            <span class="text-blue-400">Impact Assessment</span>
+                        </div>
+                    </div>
+
+
+                    <!-- =====================================================
+                         SCREEN 07: Governance & Human Accountability
+                         ===================================================== -->
+                    <div id="slide-7" class="slide-panel inactive w-full h-full flex flex-col justify-between p-3.5 sm:p-4 lg:p-5 rounded-2xl bg-gradient-to-br from-[#070b14] via-[#091122] to-[#040812] border border-blue-900/30 overflow-hidden relative shadow-2xl">
+                        <!-- Top Header -->
+                        <div class="shrink-0 space-y-1 relative z-10 border-b border-gray-800/60 pb-2">
+                            <div class="flex items-center justify-between">
+                                <span class="text-base font-black tracking-widest text-white uppercase">CASE<span class="text-blue-500 font-mono">3</span></span>
+                                <span class="text-[10px] font-mono text-emerald-400 px-2 py-0.5 rounded-full bg-emerald-950/60 border border-emerald-800/40">Governance</span>
+                            </div>
+                            <h2 class="text-base sm:text-lg font-bold text-white tracking-tight">Human Accountability at Every Step</h2>
+                            <p class="text-[11px] text-gray-300 leading-tight">
+                                AI-assisted execution with clear oversight, controls and accountability.
+                            </p>
+                        </div>
+
+                        <!-- 5 Clean Connected Step Progression Cards -->
+                        <div class="flex-1 min-h-0 flex flex-col justify-center gap-1.5 py-2 relative z-10">
+                            <div class="flex items-center justify-between p-2 rounded-xl bg-gray-900/70 border border-gray-800">
+                                <div class="flex items-center gap-2">
+                                    <div class="w-6 h-6 rounded-lg bg-blue-950 border border-blue-800/60 flex items-center justify-center text-blue-400 text-xs font-bold">1</div>
+                                    <span class="text-xs font-bold text-white">Defined Scope</span>
+                                </div>
+                                <span class="text-[10px] text-gray-400 font-mono">Boundaries</span>
+                            </div>
+                            <div class="flex items-center justify-between p-2 rounded-xl bg-gray-900/70 border border-gray-800">
+                                <div class="flex items-center gap-2">
+                                    <div class="w-6 h-6 rounded-lg bg-blue-950 border border-blue-800/60 flex items-center justify-center text-blue-400 text-xs font-bold">2</div>
+                                    <span class="text-xs font-bold text-white">AI-Assisted Work</span>
+                                </div>
+                                <span class="text-[10px] text-gray-400 font-mono">Synthesis</span>
+                            </div>
+                            <div class="flex items-center justify-between p-2 rounded-xl bg-gray-900/70 border border-gray-800">
+                                <div class="flex items-center gap-2">
+                                    <div class="w-6 h-6 rounded-lg bg-blue-950 border border-blue-800/60 flex items-center justify-center text-blue-400 text-xs font-bold">3</div>
+                                    <span class="text-xs font-bold text-white">Expert Review</span>
+                                </div>
+                                <span class="text-[10px] text-gray-400 font-mono">Architects</span>
+                            </div>
+                            <div class="flex items-center justify-between p-2 rounded-xl bg-emerald-950/40 border border-emerald-800/60">
+                                <div class="flex items-center gap-2">
+                                    <div class="w-6 h-6 rounded-lg bg-emerald-600 text-white flex items-center justify-center text-xs font-bold">4</div>
+                                    <span class="text-xs font-bold text-emerald-200">Approved Action</span>
+                                </div>
+                                <span class="text-[10px] text-emerald-400 font-mono">Signed</span>
+                            </div>
+                            <div class="flex items-center justify-between p-2 rounded-xl bg-gray-900/70 border border-gray-800">
+                                <div class="flex items-center gap-2">
+                                    <div class="w-6 h-6 rounded-lg bg-blue-950 border border-blue-800/60 flex items-center justify-center text-blue-400 text-xs font-bold">5</div>
+                                    <span class="text-xs font-bold text-white">Audit Trail & Evidence</span>
+                                </div>
+                                <span class="text-[10px] text-gray-400 font-mono">Immutable</span>
+                            </div>
+                        </div>
+
+                        <!-- Bottom Strip -->
+                        <div class="shrink-0 flex items-center justify-between pt-2 border-t border-gray-800/60 text-[10px] text-gray-500 font-mono">
+                            <span>Every modification verified</span>
+                            <span class="text-emerald-400 font-semibold">100% Human Signed</span>
+                        </div>
+                    </div>
+
+
+                    <!-- =====================================================
+                         SCREEN 08: Follow-up & Next Steps
+                         ===================================================== -->
+                    <div id="slide-8" class="slide-panel inactive w-full h-full flex flex-col justify-between p-3.5 sm:p-4 lg:p-5 rounded-2xl bg-gradient-to-br from-[#070b14] via-[#091122] to-[#040812] border border-blue-900/30 overflow-hidden relative shadow-2xl">
+                        <!-- Top Header -->
+                        <div class="shrink-0 space-y-1 relative z-10 border-b border-gray-800/60 pb-2">
+                            <div class="flex items-center justify-between">
+                                <span class="text-base font-black tracking-widest text-white uppercase">CASE<span class="text-blue-500 font-mono">3</span></span>
+                                <span class="text-[10px] font-mono text-blue-400 px-2 py-0.5 rounded-full bg-blue-950/60 border border-blue-800/40">Engagement</span>
+                            </div>
+                            <h2 class="text-base sm:text-lg font-bold text-white tracking-tight">Let's Continue the Conversation</h2>
+                            <p class="text-[11px] text-gray-300 leading-tight">
+                                Speak with a Case3 specialist to explore your specific needs.
+                            </p>
+                        </div>
+
+                        <!-- 3 Specialist Engagement Cards + Mountain Peak Graphic -->
+                        <div class="flex-1 min-h-0 flex flex-col justify-center gap-2 py-2 relative z-10">
+                            <div class="p-2.5 rounded-xl bg-gray-900/80 border border-gray-800 flex items-center gap-2.5">
+                                <div class="w-7 h-7 rounded-lg bg-blue-950 border border-blue-800/60 flex items-center justify-center text-blue-400 shrink-0">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/></svg>
+                                </div>
+                                <div class="min-w-0">
+                                    <div class="text-xs font-bold text-white">Technical Experts</div>
+                                    <div class="text-[10px] text-gray-400">Architecture & code assessment</div>
+                                </div>
+                            </div>
+                            <div class="p-2.5 rounded-xl bg-gray-900/80 border border-gray-800 flex items-center gap-2.5">
+                                <div class="w-7 h-7 rounded-lg bg-blue-950 border border-blue-800/60 flex items-center justify-center text-blue-400 shrink-0">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
+                                </div>
+                                <div class="min-w-0">
+                                    <div class="text-xs font-bold text-white">Delivery Leaders</div>
+                                    <div class="text-[10px] text-gray-400">Execution pathways & timelines</div>
+                                </div>
+                            </div>
+                            <div class="p-2.5 rounded-xl bg-gray-900/80 border border-gray-800 flex items-center gap-2.5">
+                                <div class="w-7 h-7 rounded-lg bg-blue-950 border border-blue-800/60 flex items-center justify-center text-blue-400 shrink-0">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>
+                                </div>
+                                <div class="min-w-0">
+                                    <div class="text-xs font-bold text-white">Executive Conversations</div>
+                                    <div class="text-[10px] text-gray-400">Strategic roadmap & commercials</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Bottom Strip -->
+                        <div class="shrink-0 flex items-center justify-between pt-2 border-t border-gray-800/60 text-[10px] text-gray-500 font-mono">
+                            <span>Direct Leadership Contact</span>
+                            <span class="text-blue-400">info@case3.io</span>
+                        </div>
+                    </div>
+
+
+                    <!-- =====================================================
+                         SCREEN 09: Executive ID Card & QR Access
+                         ===================================================== -->
+                    <div id="slide-9" class="slide-panel inactive w-full h-full flex flex-col justify-between p-3.5 sm:p-4 lg:p-5 rounded-2xl bg-gradient-to-br from-[#070b14] via-[#091122] to-[#040812] border border-blue-900/30 overflow-hidden relative shadow-2xl">
+                        <!-- Top Header -->
+                        <div class="shrink-0 space-y-0.5 relative z-10 border-b border-gray-800/60 pb-2">
+                            <div class="flex items-center justify-between">
+                                <span class="text-base font-black tracking-widest text-white uppercase">CASE<span class="text-blue-500 font-mono">3</span></span>
+                                <span class="text-[10px] font-mono text-emerald-400 px-2 py-0.5 rounded-full bg-emerald-950/60 border border-emerald-800/40">Verified Leader</span>
+                            </div>
+                            <h2 class="text-base sm:text-lg font-bold text-white tracking-tight">Direct Practice Leadership Access</h2>
+                        </div>
+
+                        <!-- Stacked Layout: Executive Profile + Scannable QR -->
+                        <div class="flex-1 min-h-0 flex flex-col justify-center gap-2.5 py-1.5 relative z-10">
+                            <!-- Executive Badge -->
+                            <div class="p-3 rounded-xl bg-gradient-to-br from-gray-900/90 via-blue-950/40 to-gray-950/90 border border-blue-800/50 shadow-md">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-11 h-11 rounded-xl bg-gradient-to-tr from-blue-600 via-indigo-600 to-cyan-400 p-0.5 shrink-0 shadow">
+                                        <div class="w-full h-full rounded-xl bg-gray-950 flex items-center justify-center text-sm font-bold text-white font-mono">
+                                            MM
+                                        </div>
+                                    </div>
+                                    <div class="min-w-0">
+                                        <h3 class="text-sm font-bold text-white flex items-center gap-1.5">
+                                            <span>Manas Mishra</span>
+                                            <span class="text-[9px] font-mono px-1.5 py-0.2 rounded bg-blue-500/20 text-blue-300 border border-blue-500/30">CAIO</span>
+                                        </h3>
+                                        <p class="text-[11px] text-blue-300 font-medium truncate">Chief AI Officer & Guidewire Practice Lead</p>
+                                        <p class="text-[10px] text-gray-400 font-mono truncate">contactus@case3tech.com</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- QR Code Box & Actions -->
+                            <div class="p-3 rounded-xl bg-gray-900/80 border border-gray-800 flex items-center justify-between gap-3 shadow-md">
+                                <div class="p-1.5 bg-white rounded-lg shrink-0 shadow">
+                                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=120x120&data=https%3A%2F%2Fwww.linkedin.com%2Fin%2Fmanasranjanmishra" 
+                                         alt="Scan to Connect with Manas Mishra" 
+                                         class="w-16 h-16 object-contain rounded">
+                                </div>
+                                <div class="flex-1 min-w-0 space-y-1.5">
+                                    <div class="text-[10px] font-mono text-blue-400 uppercase font-semibold">Scan to Connect on LinkedIn</div>
+                                    <a href="https://www.linkedin.com/in/manasranjanmishra" target="_blank" rel="noopener noreferrer" class="py-1 px-2.5 rounded-lg bg-blue-600 hover:bg-blue-500 text-white font-medium text-xs inline-flex items-center gap-1.5 transition">
+                                        <svg class="w-3 h-3 fill-current" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+                                        <span>Open LinkedIn</span>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Bottom Strip -->
+                        <div class="shrink-0 flex items-center justify-between pt-2 border-t border-gray-800/60 text-[10px] text-gray-500 font-mono">
+                            <span>Executive Advisory</span>
+                            <span class="text-blue-400">NDA Protected</span>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- =========================================================
+                     BOTTOM CONTROLS: 10-SCREEN QUICK SWITCHER & 10 DOTS
+                     ========================================================= -->
+                <div class="shrink-0 mt-3 pt-2.5 border-t border-gray-800/80 flex flex-col gap-2">
+                    
+                    <!-- Quick Visual Screen Switcher Strip for Instant Testing -->
+                    <div class="flex items-center gap-1.5 overflow-x-auto pb-1 text-[11px] no-scrollbar">
+                        <span class="text-[10px] uppercase font-mono text-gray-500 shrink-0 mr-1">Visual:</span>
+                        <button onclick="goToSlide(0)" id="pill-nav-0" class="px-2.5 py-1 rounded-md font-mono text-xs transition shrink-0 bg-blue-600 text-white font-bold shadow-sm">0: Overview</button>
+                        <button onclick="goToSlide(1)" id="pill-nav-1" class="px-2.5 py-1 rounded-md font-mono text-xs transition shrink-0 bg-gray-900 text-gray-400 hover:text-white border border-gray-800">1: Platform</button>
+                        <button onclick="goToSlide(2)" id="pill-nav-2" class="px-2.5 py-1 rounded-md font-mono text-xs transition shrink-0 bg-gray-900 text-gray-400 hover:text-white border border-gray-800">2: Build</button>
+                        <button onclick="goToSlide(3)" id="pill-nav-3" class="px-2.5 py-1 rounded-md font-mono text-xs transition shrink-0 bg-gray-900 text-gray-400 hover:text-white border border-gray-800">3: Upgrade</button>
+                        <button onclick="goToSlide(4)" id="pill-nav-4" class="px-2.5 py-1 rounded-md font-mono text-xs transition shrink-0 bg-gray-900 text-gray-400 hover:text-white border border-gray-800">4: Run</button>
+                        <button onclick="goToSlide(5)" id="pill-nav-5" class="px-2.5 py-1 rounded-md font-mono text-xs transition shrink-0 bg-gray-900 text-gray-400 hover:text-white border border-gray-800">5: APEX</button>
+                        <button onclick="goToSlide(6)" id="pill-nav-6" class="px-2.5 py-1 rounded-md font-mono text-xs transition shrink-0 bg-gray-900 text-gray-400 hover:text-white border border-gray-800">6: CRUX</button>
+                        <button onclick="goToSlide(7)" id="pill-nav-7" class="px-2.5 py-1 rounded-md font-mono text-xs transition shrink-0 bg-gray-900 text-gray-400 hover:text-white border border-gray-800">7: Governance</button>
+                        <button onclick="goToSlide(8)" id="pill-nav-8" class="px-2.5 py-1 rounded-md font-mono text-xs transition shrink-0 bg-gray-900 text-gray-400 hover:text-white border border-gray-800">8: Next</button>
+                        <button onclick="goToSlide(9)" id="pill-nav-9" class="px-2.5 py-1 rounded-md font-mono text-xs transition shrink-0 bg-gray-900 text-gray-400 hover:text-white border border-gray-800">9: ID & QR</button>
+                    </div>
+
+                    <!-- Bottom Bar: 9 Dots Indicator, Slide Number & Arrows -->
+                    <div class="flex items-center justify-between text-xs text-gray-400">
+                        <!-- Left: Slide Dots Indicator (9 Slides) -->
+                        <div class="flex items-center gap-1.5">
+                            <button onclick="goToSlide(0)" id="dot-0" class="w-2.5 h-2.5 rounded-full bg-blue-500 transition-all shadow-sm"></button>
+                            <button onclick="goToSlide(1)" id="dot-1" class="w-2 h-2 rounded-full bg-gray-700 hover:bg-gray-500 transition-all"></button>
+                            <button onclick="goToSlide(2)" id="dot-2" class="w-2 h-2 rounded-full bg-gray-700 hover:bg-gray-500 transition-all"></button>
+                            <button onclick="goToSlide(3)" id="dot-3" class="w-2 h-2 rounded-full bg-gray-700 hover:bg-gray-500 transition-all"></button>
+                            <button onclick="goToSlide(4)" id="dot-4" class="w-2 h-2 rounded-full bg-gray-700 hover:bg-gray-500 transition-all"></button>
+                            <button onclick="goToSlide(5)" id="dot-5" class="w-2 h-2 rounded-full bg-gray-700 hover:bg-gray-500 transition-all"></button>
+                            <button onclick="goToSlide(6)" id="dot-6" class="w-2 h-2 rounded-full bg-gray-700 hover:bg-gray-500 transition-all"></button>
+                            <button onclick="goToSlide(7)" id="dot-7" class="w-2 h-2 rounded-full bg-gray-700 hover:bg-gray-500 transition-all"></button>
+                            <button onclick="goToSlide(8)" id="dot-8" class="w-2 h-2 rounded-full bg-gray-700 hover:bg-gray-500 transition-all"></button>
+                            <button onclick="goToSlide(9)" id="dot-9" class="w-2 h-2 rounded-full bg-gray-700 hover:bg-gray-500 transition-all"></button>
+                            <span id="slide-number" class="text-xs font-mono text-gray-500 ml-2">Slide 1 of 10</span>
+                        </div>
+
+                        <!-- Right: Arrows and Auto-Play -->
+                        <div class="flex items-center gap-2">
+                            <button onclick="autoAdvanceSlides()" id="btn-auto-play" class="text-blue-400 hover:text-blue-300 font-medium text-xs flex items-center gap-1">
+                                <span>Auto-Tour</span>
+                                <span>▶</span>
+                            </button>
+                            <div class="h-3.5 w-px bg-gray-800"></div>
+                            <button id="btn-prev-slide" class="p-1 rounded-lg bg-gray-900 hover:bg-gray-800 text-gray-300 hover:text-white border border-gray-800 transition" title="Previous Slide (←)">
+                                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
+                            </button>
+                            <button id="btn-next-slide" class="p-1 rounded-lg bg-gray-900 hover:bg-gray-800 text-gray-300 hover:text-white border border-gray-800 transition" title="Next Slide (→)">
+                                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- =========================================================
+                 VIEW B: TOGGLABLE LIVE TRANSCRIPT DRAWER
+                 ========================================================= -->
+            <div id="panel-transcript" class="absolute inset-0 flex flex-col bg-gray-950 hidden transition-all duration-300 z-30">
+                <!-- Transcript Header -->
+                <div class="p-3.5 px-5 border-b border-gray-800 bg-gray-900/60 flex justify-between items-center shrink-0">
+                    <div class="flex items-center gap-2">
+                        <span class="w-2 h-2 rounded-full bg-blue-400"></span>
+                        <h3 class="font-semibold text-xs text-white uppercase tracking-wider">Live Conversation Transcript</h3>
+                        <span id="message-badge" class="text-[10px] text-gray-400 bg-gray-800 px-2 py-0.5 rounded-full">1 msg</span>
+                    </div>
+                    <!-- Close button returns back to the Visual Showcase -->
+                    <button id="btn-close-transcript" class="text-gray-400 hover:text-white p-1 rounded-lg hover:bg-gray-800 transition">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                    </button>
+                </div>
+
+                <!-- Chat Feed -->
+                <div id="transcript-feed" class="flex-1 overflow-y-auto p-4 space-y-3 min-h-0">
+                    <div class="flex flex-col gap-1 items-start">
+                        <span class="text-[11px] text-blue-400 font-medium ml-1">Iris (Agent)</span>
+                        <div class="bg-gray-900 border border-gray-800 text-gray-200 px-3.5 py-2 rounded-xl rounded-tl-sm text-xs leading-relaxed max-w-[85%]">
+                            Welcome to Case3 Technologies. My name is Iris. How can I help you navigate your P&C insurance technology needs today?
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Message Input -->
+                <form id="chat-form" class="p-3 border-t border-gray-800 bg-gray-900/40 flex gap-2 shrink-0">
+                    <input id="chat-input" type="text" placeholder="Type a response or question..." class="flex-1 bg-gray-950 border border-gray-800 rounded-lg px-3 py-1.5 text-xs text-gray-100 placeholder-gray-500 focus:outline-none focus:border-blue-500">
+                    <button type="submit" class="bg-blue-600 hover:bg-blue-500 text-white px-3 py-1.5 rounded-lg text-xs font-medium transition">
+                        Send
+                    </button>
+                </form>
+            </div>
+
+        </section>
+    </main>
+
+    <!-- =================================================================
+         EXECUTIVE QR CODE MODAL (Triggered via Tool 'leadership' or Click)
+         ================================================================= -->
+    <div id="modal-qr" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-4 hidden">
+        <div class="relative bg-gray-950 border border-gray-800 rounded-2xl max-w-sm w-full p-6 flex flex-col items-center text-center shadow-2xl">
+            <!-- Close Button -->
+            <button onclick="toggleQrModal(false)" class="absolute top-3.5 right-3.5 text-gray-400 hover:text-white p-1 rounded-lg hover:bg-gray-800 transition">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+            </button>
+
+            <!-- Leader Avatar / Badge -->
+            <div class="w-16 h-16 rounded-full border-2 border-blue-500 p-0.5 mb-2.5 shadow-lg overflow-hidden">
+                <img src="assets/manas-mishra-id.jpg" alt="Manas Mishra" class="w-full h-full object-cover">
+            </div>
+            
+            <h3 class="text-base font-bold text-white">Manas Mishra</h3>
+            <p class="text-xs text-blue-400 font-medium mt-0.5">Chief AI Officer • CASE3 Technologies</p>
+
+            <!-- High-Contrast QR Code Card -->
+            <div class="mt-4 p-4 bg-white rounded-xl shadow-inner flex flex-col items-center">
+                <img src="https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=https%3A%2F%2Fwww.linkedin.com%2Fin%2Fmanasranjanmishra" 
+                     alt="Scan to Connect with Manas Mishra" 
+                     class="w-36 h-36 object-contain rounded">
+                <span class="text-[10px] text-gray-800 font-mono mt-2 font-bold tracking-wide">SCAN TO CONNECT ON LINKEDIN</span>
+            </div>
+
+            <div class="mt-4 flex items-center gap-2 w-full">
+                <a href="https://www.linkedin.com/in/manasranjanmishra" target="_blank" class="flex-1 py-2 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-xs font-semibold flex items-center justify-center gap-1.5 transition shadow">
+                    <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+                    <span>LinkedIn</span>
+                </a>
+                <button onclick="toggleQrModal(false)" class="px-4 py-2 rounded-xl bg-gray-800 hover:bg-gray-700 text-gray-200 text-xs font-medium transition">
+                    Close
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- =================================================================
+         BACKEND WORKER CONFIGURATION MODAL
+         ================================================================= -->
+    <div id="modal-settings" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-4 hidden">
+        <div class="relative bg-gray-950 border border-gray-800 rounded-2xl max-w-md w-full p-6 shadow-2xl">
+            <div class="flex items-center justify-between pb-3 border-b border-gray-800">
+                <div class="flex items-center gap-2">
+                    <span class="w-2.5 h-2.5 rounded-full bg-blue-500"></span>
+                    <h3 class="text-sm font-bold text-white">Backend Worker Endpoint</h3>
+                </div>
+                <button onclick="toggleSettingsModal(false)" class="text-gray-400 hover:text-white p-1 rounded-lg hover:bg-gray-800">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                </button>
+            </div>
+
+            <div class="mt-4 space-y-3 text-xs">
+                <div>
+                    <label class="text-gray-300 font-medium block mb-1">Cloudflare Worker URL</label>
+                    <input id="input-worker-url" type="text" placeholder="http://localhost:8787" class="w-full bg-gray-900 border border-gray-700 rounded-lg px-3 py-2 text-gray-100 font-mono text-xs focus:outline-none focus:border-blue-500">
+                    <p class="text-[11px] text-gray-400 mt-1">Use <code class="text-blue-300">http://localhost:8787</code> for local testing, or your deployed Cloudflare Worker URL.</p>
+                </div>
+                
+                <div class="p-3 rounded-lg bg-blue-950/40 border border-blue-800/40 text-[11px] text-gray-300 space-y-1">
+                    <strong class="text-blue-300">Security Architecture:</strong>
+                    <p>The frontend requests a session token from <code class="text-white">POST /api/session-token</code>. Your <code class="text-white">ANAM_API_KEY</code> is safely held in your Worker environment and is never exposed to browser clients.</p>
+                </div>
+            </div>
+
+            <div class="mt-5 flex gap-2 justify-end">
+                <button onclick="saveWorkerSettings()" class="px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-medium text-xs transition">
+                    Save Configuration
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- =========================================================
+         JAVASCRIPT CONTROLLER: NATIVE ANAM AGENT & SHOWCASE CONTROLLER
+         ========================================================= -->
+    <script>
+        // Global slideshow state
+        let currentSlide = 0;
+        const totalSlides = 10;
+        let autoTimer = null;
+        let isMuted = false;
+
+        // Elements
+        const panelElements = document.getElementById('panel-elements-showcase');
+        const panelTranscript = document.getElementById('panel-transcript');
+        const btnToggleTranscript = document.getElementById('btn-toggle-transcript');
+        const btnCloseTranscript = document.getElementById('btn-close-transcript');
+        const labelTranscript = document.getElementById('label-transcript');
+        const sessionStatus = document.getElementById('session-status');
+        const pulseDot = document.getElementById('iris-pulse-dot');
+        const btnMute = document.getElementById('btn-mute');
+        const iconMicOn = document.getElementById('icon-mic-on');
+        const iconMicOff = document.getElementById('icon-mic-off');
+        const labelMute = document.getElementById('label-mute');
+        const slideNumberText = document.getElementById('slide-number');
+        const agent = document.getElementById('iris-agent');
+
+        // =========================================================
+        // 1. SLIDESHOW / CAROUSEL CONTROLLER
+        // =========================================================
+        window.goToSlide = function(index) {
+            if (index < 0) index = totalSlides - 1;
+            if (index >= totalSlides) index = 0;
+            currentSlide = index;
+
+            for (let i = 0; i < totalSlides; i++) {
+                const slide = document.getElementById(`slide-${i}`);
+                const dot = document.getElementById(`dot-${i}`);
+                const pill = document.getElementById(`pill-nav-${i}`);
+
+                if (i === currentSlide) {
+                    if (slide) {
+                        slide.classList.remove('inactive');
+                        slide.classList.add('active');
+                    }
+                    if (dot) dot.className = 'w-2.5 h-2.5 rounded-full bg-blue-500 transition-all shadow-sm';
+                    if (pill) pill.className = 'px-2.5 py-1 rounded-md font-mono text-xs transition shrink-0 bg-blue-600 text-white font-bold shadow-sm';
+                } else {
+                    if (slide) {
+                        slide.classList.remove('active');
+                        slide.classList.add('inactive');
+                    }
+                    if (dot) dot.className = 'w-2 h-2 rounded-full bg-gray-700 hover:bg-gray-500 transition-all';
+                    if (pill) pill.className = 'px-2.5 py-1 rounded-md font-mono text-xs transition shrink-0 bg-gray-900 text-gray-400 hover:text-white border border-gray-800';
+                }
+            }
+
+            if (slideNumberText) {
+                slideNumberText.textContent = `Slide ${currentSlide + 1} of ${totalSlides}`;
+            }
+        };
+
+        document.getElementById('btn-prev-slide').addEventListener('click', () => {
+            goToSlide(currentSlide - 1);
+        });
+
+        document.getElementById('btn-next-slide').addEventListener('click', () => {
+            goToSlide(currentSlide + 1);
+        });
+
+        // Keyboard arrow navigation for easy visual trial
+        document.addEventListener('keydown', (e) => {
+            if (document.activeElement && (document.activeElement.tagName === 'INPUT' || document.activeElement.tagName === 'TEXTAREA')) {
+                return;
+            }
+            if (e.key === 'ArrowRight') {
+                goToSlide(currentSlide + 1);
+            } else if (e.key === 'ArrowLeft') {
+                goToSlide(currentSlide - 1);
+            } else if (e.key >= '0' && e.key <= '9') {
+                goToSlide(parseInt(e.key, 10));
+            }
+        });
+
+        // Auto-Tour controller
+        window.autoAdvanceSlides = function() {
+            const btn = document.getElementById('btn-auto-play');
+            if (autoTimer) {
+                clearInterval(autoTimer);
+                autoTimer = null;
+                btn.innerHTML = '<span>Auto-Tour</span> <span>▶</span>';
+            } else {
+                autoTimer = setInterval(() => {
+                    goToSlide(currentSlide + 1);
+                }, 5000);
+                btn.innerHTML = '<span>Pause</span> <span>⏸</span>';
+            }
+        };
+
+        // =========================================================
+        // 2. MODAL CONTROLLERS (QR & SETTINGS)
+        // =========================================================
+        window.toggleQrModal = function(show) {
+            const modal = document.getElementById('modal-qr');
+            if (!modal) return;
+            if (show) {
+                modal.classList.remove('hidden');
+            } else {
+                modal.classList.add('hidden');
+            }
+        };
+
+        window.toggleSettingsModal = function(show) {
+            const modal = document.getElementById('modal-settings');
+            if (!modal) return;
+            if (show) {
+                document.getElementById('input-worker-url').value = localStorage.getItem('case3_worker_url') || 'http://localhost:8787';
+                modal.classList.remove('hidden');
+            } else {
+                modal.classList.add('hidden');
+            }
+        };
+
+        document.getElementById('btn-settings-toggle').addEventListener('click', () => toggleSettingsModal(true));
+
+        window.saveWorkerSettings = function() {
+            const inputVal = document.getElementById('input-worker-url').value.trim();
+            if (inputVal) {
+                localStorage.setItem('case3_worker_url', inputVal.replace(/\/+$/, ''));
+            }
+            toggleSettingsModal(false);
+        };
+
+        // =========================================================
+        // 3. TOGGLE TRANSCRIPT DRAWER
+        // =========================================================
+        function toggleTranscript(show) {
+            const shouldOpen = (show !== undefined) ? show : panelTranscript.classList.contains('hidden');
+            
+            if (shouldOpen) {
+                panelElements.classList.add('hidden');
+                panelTranscript.classList.remove('hidden');
+                labelTranscript.textContent = 'Close Transcript';
+                btnToggleTranscript.classList.add('bg-blue-600', 'text-white');
+                btnToggleTranscript.classList.remove('bg-blue-600/20', 'text-blue-400');
+                document.getElementById('transcript-feed').scrollTop = document.getElementById('transcript-feed').scrollHeight;
+            } else {
+                panelTranscript.classList.add('hidden');
+                panelElements.classList.remove('hidden');
+                labelTranscript.textContent = 'Open Transcript';
+                btnToggleTranscript.classList.remove('bg-blue-600', 'text-white');
+                btnToggleTranscript.classList.add('bg-blue-600/20', 'text-blue-400');
+            }
+        }
+
+        btnToggleTranscript.addEventListener('click', () => toggleTranscript());
+        btnCloseTranscript.addEventListener('click', () => toggleTranscript(false));
+
+        // =========================================================
+        // 4. TRANSCRIPT FEED CONTROLLER
+        // =========================================================
+        const transcriptFeed = document.getElementById('transcript-feed');
+        const chatForm = document.getElementById('chat-form');
+        const chatInput = document.getElementById('chat-input');
+        let messageCount = 1;
+
+        function addMessage(role, text) {
+            const isUser = role === 'user';
+            messageCount++;
+            document.getElementById('message-badge').textContent = `${messageCount} msgs`;
+
+            const wrapper = document.createElement('div');
+            wrapper.className = `flex flex-col gap-1 ${isUser ? 'items-end' : 'items-start'}`;
+
+            const sender = document.createElement('span');
+            sender.className = `text-[10px] font-medium ml-1 ${isUser ? 'text-purple-400 mr-1' : 'text-blue-400'}`;
+            sender.textContent = isUser ? 'You' : 'Iris (Agent)';
+
+            const bubble = document.createElement('div');
+            bubble.className = `px-3.5 py-2 rounded-xl text-xs leading-relaxed max-w-[85%] ${
+                isUser 
+                    ? 'bg-blue-600 text-white rounded-tr-sm' 
+                    : 'bg-gray-900 border border-gray-800 text-gray-200 rounded-tl-sm'
+            }`;
+            bubble.textContent = text;
+
+            wrapper.appendChild(sender);
+            wrapper.appendChild(bubble);
+            transcriptFeed.appendChild(wrapper);
+            transcriptFeed.scrollTop = transcriptFeed.scrollHeight;
+        }
+
+        function addSystemNotice(text) {
+            const notice = document.createElement('div');
+            notice.className = 'flex justify-center my-1.5';
+            notice.innerHTML = `<span class="px-2.5 py-0.5 rounded-full bg-blue-950/80 border border-blue-800/60 text-[10px] font-mono text-blue-300">⚡ ${text}</span>`;
+            transcriptFeed.appendChild(notice);
+            transcriptFeed.scrollTop = transcriptFeed.scrollHeight;
+        }
+
+        chatForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const text = chatInput.value.trim();
+            if (!text) return;
+            addMessage('user', text);
+            chatInput.value = '';
+
+            if (agent && typeof agent.sendTextMessage === 'function') {
+                agent.sendTextMessage(text);
+            }
+        });
+
+        // =========================================================
+        // 5. NATIVE ANAM AGENT DOM HOOKS & NON-BLOCKING CLIENT TOOL PIPELINE
+        // =========================================================
+        async function attachWorkerToken() {
+            try {
+                const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+                const defaultWorkerUrl = (window.location.protocol.startsWith('http') && !isLocal)
+                    ? window.location.origin
+                    : "http://localhost:8787";
+                const workerUrl = localStorage.getItem('case3_worker_url') || defaultWorkerUrl;
+
+                const res = await fetch(`${workerUrl}/api/session-token`, { 
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" }
+                });
+                if (res.ok) {
+                    const data = await res.json();
+                    if (data.sessionToken && agent) {
+                        agent.setAttribute('session-token', data.sessionToken);
+                    }
+                }
+            } catch (err) {
+                console.log("Using direct Anam domain auth:", err);
+            }
+        }
+        attachWorkerToken();
+
+        if (agent) {
+            // Client Tool Handler for Visual Showcase
+            agent.addEventListener('anam-agent:tool-call-started', (e) => {
+                console.log("🎯 [Anam Agent Tool Call]:", e.detail);
+                const { toolName, arguments: args } = e.detail;
+                if (toolName === 'update_visual_showcase') {
+                    const topic = (args?.topic || '').toLowerCase();
+                    const topicMap = {
+                        // V2 9-Screen Topic Map
+                        "overview": 0,
+                        "welcome": 0,
+                        "company": 0,
+                        "default": 0,
+                        "guidewire": 1,
+                        "platform": 1,
+                        "coresuite": 1,
+                        "build": 2,
+                        "advisory": 2,
+                        "implementation": 2,
+                        "upgrade": 3,
+                        "migration": 3,
+                        "pathway": 3,
+                        "run": 4,
+                        "operations": 4,
+                        "maintenance": 4,
+                        "apex": 5,
+                        "ai": 5,
+                        "agents": 5,
+                        "crux": 6,
+                        "understanding": 6,
+                        "system": 6,
+                        "governance": 7,
+                        "human": 7,
+                        "security": 7,
+                        "accountability": 7,
+                        "followup": 8,
+                        "next": 8,
+                        "leadership": 9,
+                        "executive": 9,
+                        "id": 9,
+                        "qr": 9,
+                        "contact": 9,
+                        "manas": 9
+                    };
+
+                    requestAnimationFrame(() => {
+                        const targetSlide = topicMap[topic];
+                        if (targetSlide !== undefined) {
+                            window.goToSlide(targetSlide);
+                        } else {
+                            window.goToSlide(0); // Fallback to Welcome Overview Dashboard
+                        }
+                        if (topic === 'leadership') {
+                            window.toggleQrModal(true);
+                        }
+                        addSystemNotice(`Visual context shifted to: ${(topic || 'overview').toUpperCase()}`);
+                    });
+                }
+            });
+
+            // Conversation Transcript Sync
+            agent.addEventListener('anam-agent:message-received', (e) => {
+                if (e.detail && e.detail.content) {
+                    addMessage(e.detail.role === 'agent' ? 'agent' : 'user', e.detail.content);
+                }
+            });
+
+            // Session Life-Cycle
+            agent.addEventListener('anam-agent:session-started', () => {
+                if (sessionStatus) {
+                    sessionStatus.innerHTML = `<span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span><span class="text-emerald-300">Agent Live</span>`;
+                }
+                pulseDot.classList.add('animate-pulse');
+            });
+
+            agent.addEventListener('anam-agent:session-ended', () => {
+                if (sessionStatus) {
+                    sessionStatus.innerHTML = `<span class="w-2 h-2 rounded-full bg-emerald-400"></span><span class="text-emerald-300">Ready</span>`;
+                }
+                pulseDot.classList.remove('animate-pulse');
+            });
+
+            // Mic States
+            agent.addEventListener('anam-agent:mic-muted', () => {
+                isMuted = true;
+                iconMicOn.classList.add('hidden');
+                iconMicOff.classList.remove('hidden');
+                labelMute.textContent = 'Unmute';
+                btnMute.classList.add('text-red-400');
+            });
+
+            agent.addEventListener('anam-agent:mic-unmuted', () => {
+                isMuted = false;
+                iconMicOff.classList.add('hidden');
+                iconMicOn.classList.remove('hidden');
+                labelMute.textContent = 'Mute';
+                btnMute.classList.remove('text-red-400');
+            });
+
+            btnMute.addEventListener('click', () => {
+                if (typeof agent.toggleMute === 'function') {
+                    agent.toggleMute();
+                } else if (typeof agent.mute === 'function' && typeof agent.unmute === 'function') {
+                    if (isMuted) agent.unmute(); else agent.mute();
+                }
+            });
+        }
+    </script>
+</body>
+</html>
