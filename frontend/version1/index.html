@@ -25,6 +25,12 @@
             display: block;
         }
 
+        /* Ensure Anam sheet and video region take full container height */
+        anam-agent::part(sheet),
+        .anam-sheet {
+            height: 100% !important;
+        }
+
         * {
             box-sizing: border-box;
             scrollbar-width: none;
@@ -78,23 +84,11 @@
             </div>
         </div>
 
-        <!-- Center: Version Switcher (v1 Agent Only / v2 Showcase) -->
-        <div class="flex items-center gap-3 text-xs">
-            <div class="flex items-center bg-gray-900/90 border border-gray-800 rounded-lg p-0.5 shadow-inner">
-                <a href="/version1" class="px-2.5 py-1 rounded-md bg-blue-600 text-white font-semibold shadow-sm flex items-center gap-1.5" title="Currently on Agent-Only View">
-                    <span class="w-1.5 h-1.5 rounded-full bg-cyan-300 animate-pulse"></span>
-                    <span>v1: Agent Only</span>
-                </a>
-                <a href="/version2" class="px-2.5 py-1 rounded-md text-gray-400 hover:text-white transition font-medium flex items-center gap-1.5" title="Switch to Visual Showcase View">
-                    <span class="w-1.5 h-1.5 rounded-full bg-gray-600"></span>
-                    <span>v2: Showcase</span>
-                </a>
-            </div>
-
-            <div class="hidden xl:flex items-center gap-2 text-gray-400">
-                <span class="text-gray-700">•</span>
-                <span>AI Ambassador: <strong class="text-white font-medium">Iris</strong></span>
-            </div>
+        <!-- Center: AI Specialist Identity -->
+        <div class="hidden md:flex items-center gap-3 text-xs text-gray-400">
+            <span>AI Ambassador: <strong class="text-white font-medium">Iris</strong></span>
+            <span class="text-gray-700">•</span>
+            <span class="text-gray-300 font-mono text-[11px]">200+ Yrs Guidewire Depth</span>
         </div>
 
         <!-- Right: Status Badge & Worker Config -->
@@ -116,12 +110,14 @@
     <!-- =================================================================
          VERSION 1: 100% FULL-SCREEN EMBEDDED ANAM AGENT (NO SIDE SCREEN)
          ================================================================= -->
-    <main class="flex-1 flex overflow-hidden relative min-h-0 w-full h-full bg-black">
+    <main class="flex-1 flex items-center justify-center overflow-hidden relative min-h-0 w-full h-full bg-black case3-grid-pattern">
         
-        <section class="relative w-full h-full bg-black flex flex-col items-center justify-center overflow-hidden">
+        <section class="relative w-full h-full flex items-center justify-center overflow-hidden p-2 sm:p-4 md:p-6 lg:p-8">
             
-            <!-- Direct Anam Web Component Embed (layout="inline", zero placeholders) -->
-            <div class="w-full h-full relative flex items-center justify-center bg-gradient-to-b from-gray-950 via-gray-900 to-black overflow-hidden">
+            <!-- Video Agent Stage Container:
+                 Constrained to native 3:2 aspect-ratio and viewport height so the Anam web component 
+                 never zooms in or crops Iris's head or chest on widescreen displays -->
+            <div class="relative w-full h-full max-h-[calc(100vh-4.5rem)] max-w-[calc((100vh-4.5rem)*1.5)] aspect-[3/2] flex items-center justify-center overflow-hidden rounded-2xl bg-gradient-to-b from-gray-950 via-gray-900 to-black shadow-2xl border border-gray-800/80">
                 <anam-agent 
                     id="iris-agent"
                     agent-id="603598a2-e60a-41fd-a5f3-4347900dd2e5" 
@@ -130,7 +126,7 @@
                 </anam-agent>
 
                 <!-- Ambient Lighting Glow -->
-                <div class="pointer-events-none absolute -bottom-24 left-1/2 -translate-x-1/2 w-4/5 h-72 bg-blue-600/15 rounded-full blur-3xl"></div>
+                <div class="pointer-events-none absolute -bottom-20 left-1/2 -translate-x-1/2 w-3/4 h-56 bg-blue-600/15 rounded-full blur-3xl"></div>
             </div>
 
             <!-- Top Left Persona Badge -->
@@ -138,7 +134,6 @@
                 <div class="px-3 py-1.5 rounded-xl bg-gray-950/80 backdrop-blur-md border border-white/10 text-xs font-medium text-gray-200 flex items-center gap-2.5 shadow-xl">
                     <span id="iris-pulse-dot" class="w-2.5 h-2.5 rounded-full bg-blue-500"></span>
                     <span class="font-semibold">Iris • Case3 AI Agent</span>
-                    <span class="text-[10px] font-mono text-blue-400 bg-blue-950/60 px-2 py-0.5 rounded-md border border-blue-800/40">Version 1</span>
                 </div>
             </div>
 
