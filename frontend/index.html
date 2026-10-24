@@ -76,15 +76,15 @@
             display: none;
         }
 
-        /* Chevron Process Pipeline Clips */
+        /* Chevron Process Pipeline Clips (scaled for compact & flexible fit) */
         .chevron-step {
-            clip-path: polygon(0% 0%, calc(100% - 10px) 0%, 100% 50%, calc(100% - 10px) 100%, 0% 100%, 10px 50%);
+            clip-path: polygon(0% 0%, calc(100% - 6px) 0%, 100% 50%, calc(100% - 6px) 100%, 0% 100%, 6px 50%);
         }
         .chevron-step-first {
-            clip-path: polygon(0% 0%, calc(100% - 10px) 0%, 100% 50%, calc(100% - 10px) 100%, 0% 100%);
+            clip-path: polygon(0% 0%, calc(100% - 6px) 0%, 100% 50%, calc(100% - 6px) 100%, 0% 100%);
         }
         .chevron-step-last {
-            clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%, 10px 50%);
+            clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%, 6px 50%);
         }
     </style>
 </head>
@@ -199,7 +199,7 @@
         <section class="relative w-full md:w-[35%] h-2/5 md:h-full bg-gray-950 flex flex-col overflow-hidden min-h-0">
             
             <!-- MAIN VIEWPORT CONTAINER: ZERO SCROLLBAR, SCALED TO FIT -->
-            <div id="panel-elements-showcase" class="absolute inset-0 flex flex-col p-4 sm:p-5 overflow-hidden">
+            <div id="panel-elements-showcase" class="absolute inset-0 flex flex-col p-3 sm:p-3.5 lg:p-4 overflow-hidden">
                 
                 <!-- CARDS VIEWPORT CONTAINER: Takes 100% of available height -->
                 <div class="flex-1 min-h-0 relative w-full h-full overflow-hidden flex flex-col justify-center">
@@ -207,7 +207,7 @@
                     <!-- =====================================================
                          SCREEN 00: Overview (Default Screen)
                          ===================================================== -->
-                    <div id="slide-0" class="slide-panel active w-full h-full flex flex-col justify-between p-6 sm:p-8 rounded-2xl bg-gradient-to-br from-[#070b14] via-[#091122] to-[#040812] border border-blue-900/30 overflow-hidden relative shadow-2xl">
+                    <div id="slide-0" class="slide-panel active w-full h-full flex flex-col justify-between p-4 sm:p-5 rounded-2xl bg-gradient-to-br from-[#070b14] via-[#091122] to-[#040812] border border-blue-900/30 overflow-hidden relative shadow-2xl">
                         <!-- Background Glow Accent -->
                         <div class="absolute -top-24 -left-24 w-72 h-72 bg-blue-600/10 rounded-full blur-3xl pointer-events-none"></div>
                         
@@ -220,25 +220,25 @@
                         </div>
 
                         <!-- Main Split Content: Headline & Text on Left, Glowing Planet Crescent on Right -->
-                        <div class="flex-1 min-h-0 grid grid-cols-1 md:grid-cols-12 gap-6 items-center relative z-10 py-2">
+                        <div class="flex-1 min-h-0 grid grid-cols-1 md:grid-cols-12 gap-3 items-center relative z-10 py-1">
                             <!-- Left Info Column -->
-                            <div class="md:col-span-7 flex flex-col justify-center space-y-3">
-                                <h1 class="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-white tracking-tight leading-tight">
+                            <div class="md:col-span-7 flex flex-col justify-center space-y-1.5">
+                                <h1 class="text-xl sm:text-2xl font-extrabold text-white tracking-tight leading-tight">
                                     AI-first<br/>
                                     <span class="bg-gradient-to-r from-blue-200 via-blue-400 to-indigo-300 bg-clip-text text-transparent">P&C insurance</span><br/>
                                     technology partner
                                 </h1>
-                                <div class="text-xs sm:text-sm font-semibold text-blue-400 tracking-wider uppercase">
+                                <div class="text-[11px] sm:text-xs font-semibold text-blue-400 tracking-wider uppercase">
                                     Build &nbsp;·&nbsp; Upgrade &nbsp;·&nbsp; Run
                                 </div>
-                                <p class="text-xs sm:text-sm text-gray-300 leading-relaxed max-w-md">
+                                <p class="text-[11px] sm:text-xs text-gray-300 leading-relaxed">
                                     Deep Guidewire expertise, AI-assisted delivery and accountability for outcomes.
                                 </p>
                             </div>
 
                             <!-- Right Visual Column: Glowing Crescent Planet -->
-                            <div class="md:col-span-5 h-full flex items-center justify-center relative min-h-[160px]">
-                                <div class="relative w-48 h-48 sm:w-60 sm:h-60 flex items-center justify-center">
+                            <div class="md:col-span-5 h-full flex items-center justify-center relative min-h-[130px]">
+                                <div class="relative w-36 h-36 sm:w-44 sm:h-44 flex items-center justify-center">
                                     <!-- Radial Atmosphere Glow Behind -->
                                     <div class="absolute inset-0 rounded-full bg-gradient-to-tr from-blue-600/20 via-cyan-500/10 to-transparent blur-2xl"></div>
                                     <!-- Crescent Planet SVG -->
@@ -288,29 +288,29 @@
                         </div>
 
                         <!-- Bottom 3 Pillars Row -->
-                        <div class="shrink-0 grid grid-cols-1 sm:grid-cols-3 gap-3 relative z-10 pt-2 border-t border-gray-800/60">
+                        <div class="shrink-0 grid grid-cols-1 sm:grid-cols-3 gap-2 relative z-10 pt-2 border-t border-gray-800/60">
                             <!-- Pillar 1 -->
-                            <div class="flex items-center gap-2.5 px-3.5 py-2.5 rounded-xl bg-gray-900/60 border border-gray-800/80 hover:border-blue-500/40 transition">
-                                <div class="w-7 h-7 rounded-lg bg-blue-950/80 border border-blue-800/60 flex items-center justify-center text-blue-400 shrink-0">
-                                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                            <div class="flex items-center gap-2 px-2.5 py-2 rounded-xl bg-gray-900/60 border border-gray-800/80 hover:border-blue-500/40 transition">
+                                <div class="w-6 h-6 rounded-lg bg-blue-950/80 border border-blue-800/60 flex items-center justify-center text-blue-400 shrink-0">
+                                    <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
                                 </div>
-                                <span class="text-xs font-semibold text-gray-200">Guidewire Expertise</span>
+                                <span class="text-[11px] font-semibold text-gray-200">Guidewire Depth</span>
                             </div>
 
                             <!-- Pillar 2 -->
-                            <div class="flex items-center gap-2.5 px-3.5 py-2.5 rounded-xl bg-gray-900/60 border border-gray-800/80 hover:border-blue-500/40 transition">
-                                <div class="w-7 h-7 rounded-lg bg-blue-950/80 border border-blue-800/60 flex items-center justify-center text-blue-400 shrink-0">
-                                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                            <div class="flex items-center gap-2 px-2.5 py-2 rounded-xl bg-gray-900/60 border border-gray-800/80 hover:border-blue-500/40 transition">
+                                <div class="w-6 h-6 rounded-lg bg-blue-950/80 border border-blue-800/60 flex items-center justify-center text-blue-400 shrink-0">
+                                    <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
                                 </div>
-                                <span class="text-xs font-semibold text-gray-200">AI-Assisted Delivery</span>
+                                <span class="text-[11px] font-semibold text-gray-200">AI-Assisted</span>
                             </div>
 
                             <!-- Pillar 3 -->
-                            <div class="flex items-center gap-2.5 px-3.5 py-2.5 rounded-xl bg-gray-900/60 border border-gray-800/80 hover:border-blue-500/40 transition">
-                                <div class="w-7 h-7 rounded-lg bg-blue-950/80 border border-blue-800/60 flex items-center justify-center text-blue-400 shrink-0">
-                                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>
+                            <div class="flex items-center gap-2 px-2.5 py-2 rounded-xl bg-gray-900/60 border border-gray-800/80 hover:border-blue-500/40 transition">
+                                <div class="w-6 h-6 rounded-lg bg-blue-950/80 border border-blue-800/60 flex items-center justify-center text-blue-400 shrink-0">
+                                    <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>
                                 </div>
-                                <span class="text-xs font-semibold text-gray-200">Outcome Focused</span>
+                                <span class="text-[11px] font-semibold text-gray-200">Outcome First</span>
                             </div>
                         </div>
                     </div>
@@ -319,7 +319,7 @@
                     <!-- =====================================================
                          SCREEN 01: Guidewire Platform
                          ===================================================== -->
-                    <div id="slide-1" class="slide-panel inactive w-full h-full flex flex-col justify-between p-6 sm:p-8 rounded-2xl bg-gradient-to-br from-[#070b14] via-[#091122] to-[#040812] border border-blue-900/30 overflow-hidden relative shadow-2xl">
+                    <div id="slide-1" class="slide-panel inactive w-full h-full flex flex-col justify-between p-4 sm:p-5 rounded-2xl bg-gradient-to-br from-[#070b14] via-[#091122] to-[#040812] border border-blue-900/30 overflow-hidden relative shadow-2xl">
                         <!-- Top Header -->
                         <div class="shrink-0 space-y-1 relative z-10">
                             <div class="flex items-center justify-between">
@@ -333,37 +333,37 @@
                         <!-- Platform Cards Grid: 3 Top CoreSuite + 1 Full Width Bottom Cloud -->
                         <div class="flex-1 min-h-0 flex flex-col justify-center gap-3.5 py-3 relative z-10">
                             <!-- Top Row: 3 Equal CoreSuite Cards -->
-                            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3.5">
+                            <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
                                 <!-- Card 1: PolicyCenter -->
-                                <div class="p-4 rounded-xl bg-gray-900/70 border border-gray-800 hover:border-blue-500/50 transition flex flex-col justify-between gap-3 group">
-                                    <div class="w-9 h-9 rounded-lg bg-blue-950/80 border border-blue-800/60 flex items-center justify-center text-blue-400 group-hover:scale-105 transition">
-                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                                <div class="p-3 rounded-xl bg-gray-900/70 border border-gray-800 hover:border-blue-500/50 transition flex flex-col justify-between gap-2 group">
+                                    <div class="w-7 h-7 rounded-lg bg-blue-950/80 border border-blue-800/60 flex items-center justify-center text-blue-400 group-hover:scale-105 transition">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
                                     </div>
                                     <div>
-                                        <h3 class="text-sm font-bold text-white mb-1">PolicyCenter</h3>
-                                        <p class="text-xs text-gray-400 leading-relaxed">Policy administration for modern insurers</p>
+                                        <h3 class="text-xs font-bold text-white mb-0.5">PolicyCenter</h3>
+                                        <p class="text-[10px] text-gray-400 leading-tight">Underwriting & policy admin</p>
                                     </div>
                                 </div>
 
                                 <!-- Card 2: ClaimCenter -->
-                                <div class="p-4 rounded-xl bg-gray-900/70 border border-gray-800 hover:border-blue-500/50 transition flex flex-col justify-between gap-3 group">
-                                    <div class="w-9 h-9 rounded-lg bg-blue-950/80 border border-blue-800/60 flex items-center justify-center text-blue-400 group-hover:scale-105 transition">
-                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17V7m0 10a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h2a2 2 0 012 2m0 10a2 2 0 002 2h2a2 2 0 002-2M9 7a2 2 0 012-2h2a2 2 0 012 2m0 10V7m0 10a2 2 0 002 2h2a2 2 0 002-2V7a2 2 0 00-2-2h-2a2 2 0 00-2 2"/></svg>
+                                <div class="p-3 rounded-xl bg-gray-900/70 border border-gray-800 hover:border-blue-500/50 transition flex flex-col justify-between gap-2 group">
+                                    <div class="w-7 h-7 rounded-lg bg-blue-950/80 border border-blue-800/60 flex items-center justify-center text-blue-400 group-hover:scale-105 transition">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17V7m0 10a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h2a2 2 0 012 2m0 10a2 2 0 002 2h2a2 2 0 002-2M9 7a2 2 0 012-2h2a2 2 0 012 2m0 10V7m0 10a2 2 0 002 2h2a2 2 0 002-2V7a2 2 0 00-2-2h-2a2 2 0 00-2 2"/></svg>
                                     </div>
                                     <div>
-                                        <h3 class="text-sm font-bold text-white mb-1">ClaimCenter</h3>
-                                        <p class="text-xs text-gray-400 leading-relaxed">End-to-end claims management</p>
+                                        <h3 class="text-xs font-bold text-white mb-0.5">ClaimCenter</h3>
+                                        <p class="text-[10px] text-gray-400 leading-tight">End-to-end claims lifecycle</p>
                                     </div>
                                 </div>
 
                                 <!-- Card 3: BillingCenter -->
-                                <div class="p-4 rounded-xl bg-gray-900/70 border border-gray-800 hover:border-blue-500/50 transition flex flex-col justify-between gap-3 group">
-                                    <div class="w-9 h-9 rounded-lg bg-blue-950/80 border border-blue-800/60 flex items-center justify-center text-blue-400 group-hover:scale-105 transition">
-                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"/></svg>
+                                <div class="p-3 rounded-xl bg-gray-900/70 border border-gray-800 hover:border-blue-500/50 transition flex flex-col justify-between gap-2 group">
+                                    <div class="w-7 h-7 rounded-lg bg-blue-950/80 border border-blue-800/60 flex items-center justify-center text-blue-400 group-hover:scale-105 transition">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"/></svg>
                                     </div>
                                     <div>
-                                        <h3 class="text-sm font-bold text-white mb-1">BillingCenter</h3>
-                                        <p class="text-xs text-gray-400 leading-relaxed">Flexible and integrated billing</p>
+                                        <h3 class="text-xs font-bold text-white mb-0.5">BillingCenter</h3>
+                                        <p class="text-[10px] text-gray-400 leading-tight">Flexible integrated billing</p>
                                     </div>
                                 </div>
                             </div>
@@ -394,7 +394,7 @@
                     <!-- =====================================================
                          SCREEN 02: Build & Advisory
                          ===================================================== -->
-                    <div id="slide-2" class="slide-panel inactive w-full h-full flex flex-col justify-between p-6 sm:p-8 rounded-2xl bg-gradient-to-br from-[#070b14] via-[#091122] to-[#040812] border border-blue-900/30 overflow-hidden relative shadow-2xl">
+                    <div id="slide-2" class="slide-panel inactive w-full h-full flex flex-col justify-between p-4 sm:p-5 rounded-2xl bg-gradient-to-br from-[#070b14] via-[#091122] to-[#040812] border border-blue-900/30 overflow-hidden relative shadow-2xl">
                         <!-- Top-Right Luminous Curved Energy Wave SVG -->
                         <div class="absolute top-0 right-0 w-2/3 h-52 pointer-events-none opacity-60">
                             <svg viewBox="0 0 400 200" class="w-full h-full">
@@ -437,31 +437,31 @@
                                 End-to-End Implementation Lifecycle
                             </div>
                             <!-- Chevron Steps Container -->
-                            <div class="grid grid-cols-5 gap-1.5 w-full items-stretch">
+                            <div class="grid grid-cols-5 gap-1 w-full items-stretch">
                                 <!-- Step 1 -->
-                                <div class="chevron-step-first bg-gradient-to-r from-blue-950/90 to-blue-900/60 border-y border-l border-blue-800/60 p-3 sm:p-4 flex flex-col justify-center items-center text-center shadow-md">
-                                    <span class="text-[10px] font-mono text-blue-300 font-bold mb-1">01</span>
-                                    <span class="text-xs sm:text-sm font-bold text-white leading-tight">Discover<br/>& Plan</span>
+                                <div class="chevron-step-first bg-gradient-to-r from-blue-950/90 to-blue-900/60 border-y border-l border-blue-800/60 py-2.5 px-1 flex flex-col justify-center items-center text-center shadow-md">
+                                    <span class="text-[9px] font-mono text-blue-300 font-bold mb-0.5">01</span>
+                                    <span class="text-[10px] font-bold text-white leading-tight">Discover<br/>& Plan</span>
                                 </div>
                                 <!-- Step 2 -->
-                                <div class="chevron-step bg-gradient-to-r from-blue-900/70 to-indigo-950/70 border-y border-blue-800/50 p-3 sm:p-4 flex flex-col justify-center items-center text-center shadow-md">
-                                    <span class="text-[10px] font-mono text-blue-300 font-bold mb-1">02</span>
-                                    <span class="text-xs sm:text-sm font-bold text-white leading-tight">Product<br/>Modelling</span>
+                                <div class="chevron-step bg-gradient-to-r from-blue-900/70 to-indigo-950/70 border-y border-blue-800/50 py-2.5 px-1 flex flex-col justify-center items-center text-center shadow-md">
+                                    <span class="text-[9px] font-mono text-blue-300 font-bold mb-0.5">02</span>
+                                    <span class="text-[10px] font-bold text-white leading-tight">Product<br/>Model</span>
                                 </div>
                                 <!-- Step 3 -->
-                                <div class="chevron-step bg-gradient-to-r from-indigo-950/70 to-blue-950/80 border-y border-blue-800/50 p-3 sm:p-4 flex flex-col justify-center items-center text-center shadow-md">
-                                    <span class="text-[10px] font-mono text-blue-300 font-bold mb-1">03</span>
-                                    <span class="text-xs sm:text-sm font-bold text-white leading-tight">Configure<br/>& Integrate</span>
+                                <div class="chevron-step bg-gradient-to-r from-indigo-950/70 to-blue-950/80 border-y border-blue-800/50 py-2.5 px-1 flex flex-col justify-center items-center text-center shadow-md">
+                                    <span class="text-[9px] font-mono text-blue-300 font-bold mb-0.5">03</span>
+                                    <span class="text-[10px] font-bold text-white leading-tight">Configure<br/>& Integr.</span>
                                 </div>
                                 <!-- Step 4 -->
-                                <div class="chevron-step bg-gradient-to-r from-blue-950/80 to-blue-900/60 border-y border-blue-800/50 p-3 sm:p-4 flex flex-col justify-center items-center text-center shadow-md">
-                                    <span class="text-[10px] font-mono text-blue-300 font-bold mb-1">04</span>
-                                    <span class="text-xs sm:text-sm font-bold text-white leading-tight">Test<br/>& Validate</span>
+                                <div class="chevron-step bg-gradient-to-r from-blue-950/80 to-blue-900/60 border-y border-blue-800/50 py-2.5 px-1 flex flex-col justify-center items-center text-center shadow-md">
+                                    <span class="text-[9px] font-mono text-blue-300 font-bold mb-0.5">04</span>
+                                    <span class="text-[10px] font-bold text-white leading-tight">Test &<br/>Validate</span>
                                 </div>
                                 <!-- Step 5 -->
-                                <div class="chevron-step-last bg-gradient-to-r from-blue-900/70 to-blue-950/95 border-y border-r border-blue-800/60 p-3 sm:p-4 flex flex-col justify-center items-center text-center shadow-md">
-                                    <span class="text-[10px] font-mono text-blue-300 font-bold mb-1">05</span>
-                                    <span class="text-xs sm:text-sm font-bold text-white leading-tight">Deploy<br/>& Transition</span>
+                                <div class="chevron-step-last bg-gradient-to-r from-blue-900/70 to-blue-950/95 border-y border-r border-blue-800/60 py-2.5 px-1 flex flex-col justify-center items-center text-center shadow-md">
+                                    <span class="text-[9px] font-mono text-blue-300 font-bold mb-0.5">05</span>
+                                    <span class="text-[10px] font-bold text-white leading-tight">Deploy &<br/>Cutover</span>
                                 </div>
                             </div>
                         </div>
@@ -477,7 +477,7 @@
                     <!-- =====================================================
                          SCREEN 03: Upgrade Pathway
                          ===================================================== -->
-                    <div id="slide-3" class="slide-panel inactive w-full h-full flex flex-col justify-between p-6 sm:p-8 rounded-2xl bg-gradient-to-br from-[#070b14] via-[#091122] to-[#040812] border border-blue-900/30 overflow-hidden relative shadow-2xl">
+                    <div id="slide-3" class="slide-panel inactive w-full h-full flex flex-col justify-between p-4 sm:p-5 rounded-2xl bg-gradient-to-br from-[#070b14] via-[#091122] to-[#040812] border border-blue-900/30 overflow-hidden relative shadow-2xl">
                         <!-- Top Header -->
                         <div class="shrink-0 space-y-1 relative z-10 max-w-xl">
                             <div class="flex items-center justify-between">
@@ -543,21 +543,21 @@
 
                         <!-- 5-Step Chevron Pipeline -->
                         <div class="shrink-0 py-2 relative z-10">
-                            <div class="grid grid-cols-5 gap-1.5 w-full items-stretch">
-                                <div class="chevron-step-first bg-gradient-to-r from-blue-950/90 to-blue-900/60 border-y border-l border-blue-800/60 p-2.5 sm:p-3 flex flex-col justify-center items-center text-center">
-                                    <span class="text-xs sm:text-sm font-bold text-white leading-tight">Plan &<br/>Assess</span>
+                            <div class="grid grid-cols-5 gap-1 w-full items-stretch">
+                                <div class="chevron-step-first bg-gradient-to-r from-blue-950/90 to-blue-900/60 border-y border-l border-blue-800/60 py-2.5 px-1 flex flex-col justify-center items-center text-center">
+                                    <span class="text-[10px] font-bold text-white leading-tight">Plan &<br/>Assess</span>
                                 </div>
-                                <div class="chevron-step bg-gradient-to-r from-blue-900/70 to-indigo-950/70 border-y border-blue-800/50 p-2.5 sm:p-3 flex flex-col justify-center items-center text-center">
-                                    <span class="text-xs sm:text-sm font-bold text-white leading-tight">Impact<br/>Analysis</span>
+                                <div class="chevron-step bg-gradient-to-r from-blue-900/70 to-indigo-950/70 border-y border-blue-800/50 py-2.5 px-1 flex flex-col justify-center items-center text-center">
+                                    <span class="text-[10px] font-bold text-white leading-tight">Impact<br/>Scan</span>
                                 </div>
-                                <div class="chevron-step bg-gradient-to-r from-indigo-950/70 to-blue-950/80 border-y border-blue-800/50 p-2.5 sm:p-3 flex flex-col justify-center items-center text-center">
-                                    <span class="text-xs sm:text-sm font-bold text-white leading-tight">Remediate<br/>& Modernise</span>
+                                <div class="chevron-step bg-gradient-to-r from-indigo-950/70 to-blue-950/80 border-y border-blue-800/50 py-2.5 px-1 flex flex-col justify-center items-center text-center">
+                                    <span class="text-[10px] font-bold text-white leading-tight">Remediate<br/>Code</span>
                                 </div>
-                                <div class="chevron-step bg-gradient-to-r from-blue-950/80 to-blue-900/60 border-y border-blue-800/50 p-2.5 sm:p-3 flex flex-col justify-center items-center text-center">
-                                    <span class="text-xs sm:text-sm font-bold text-white leading-tight">Regression<br/>Testing</span>
+                                <div class="chevron-step bg-gradient-to-r from-blue-950/80 to-blue-900/60 border-y border-blue-800/50 py-2.5 px-1 flex flex-col justify-center items-center text-center">
+                                    <span class="text-[10px] font-bold text-white leading-tight">Auto-Test<br/>Suite</span>
                                 </div>
-                                <div class="chevron-step-last bg-gradient-to-r from-blue-900/70 to-blue-950/95 border-y border-r border-blue-800/60 p-2.5 sm:p-3 flex flex-col justify-center items-center text-center">
-                                    <span class="text-xs sm:text-sm font-bold text-white leading-tight">Cutover<br/>Support</span>
+                                <div class="chevron-step-last bg-gradient-to-r from-blue-900/70 to-blue-950/95 border-y border-r border-blue-800/60 py-2.5 px-1 flex flex-col justify-center items-center text-center">
+                                    <span class="text-[10px] font-bold text-white leading-tight">Cutover<br/>Go-Live</span>
                                 </div>
                             </div>
                         </div>
@@ -573,7 +573,7 @@
                     <!-- =====================================================
                          SCREEN 04: Run & Platform Operations
                          ===================================================== -->
-                    <div id="slide-4" class="slide-panel inactive w-full h-full flex flex-col justify-between p-6 sm:p-8 rounded-2xl bg-gradient-to-br from-[#070b14] via-[#091122] to-[#040812] border border-blue-900/30 overflow-hidden relative shadow-2xl">
+                    <div id="slide-4" class="slide-panel inactive w-full h-full flex flex-col justify-between p-4 sm:p-5 rounded-2xl bg-gradient-to-br from-[#070b14] via-[#091122] to-[#040812] border border-blue-900/30 overflow-hidden relative shadow-2xl">
                         <!-- Top Header with Infinity Symbol Graphic in Top-Right -->
                         <div class="shrink-0 flex items-start justify-between relative z-10">
                             <div class="space-y-1 max-w-lg">
@@ -586,7 +586,7 @@
                             </div>
 
                             <!-- Luminous Blue Infinity Loop Graphic -->
-                            <div class="w-32 h-20 sm:w-44 sm:h-24 flex items-center justify-center shrink-0">
+                            <div class="w-20 h-14 sm:w-28 sm:h-16 flex items-center justify-center shrink-0">
                                 <svg viewBox="0 0 200 100" class="w-full h-full">
                                     <defs>
                                         <linearGradient id="infGrad" x1="0%" y1="0%" x2="100%" y2="100%">
@@ -613,10 +613,10 @@
 
                         <!-- 4 Operational Cards in a Clean 4-Col Grid -->
                         <div class="flex-1 min-h-0 flex flex-col justify-center py-4 relative z-10">
-                            <div class="grid grid-cols-2 sm:grid-cols-4 gap-3.5">
+                            <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
                                 <!-- Card 1 -->
                                 <div class="p-3.5 rounded-xl bg-gray-900/70 border border-gray-800 hover:border-blue-500/50 transition flex flex-col justify-between items-center text-center gap-3">
-                                    <div class="w-9 h-9 rounded-lg bg-blue-950/80 border border-blue-800/60 flex items-center justify-center text-blue-400">
+                                    <div class="w-7 h-7 rounded-lg bg-blue-950/80 border border-blue-800/60 flex items-center justify-center text-blue-400">
                                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/></svg>
                                     </div>
                                     <span class="text-xs font-bold text-gray-200">Platform Operations</span>
@@ -624,7 +624,7 @@
 
                                 <!-- Card 2 -->
                                 <div class="p-3.5 rounded-xl bg-gray-900/70 border border-gray-800 hover:border-blue-500/50 transition flex flex-col justify-between items-center text-center gap-3">
-                                    <div class="w-9 h-9 rounded-lg bg-blue-950/80 border border-blue-800/60 flex items-center justify-center text-blue-400">
+                                    <div class="w-7 h-7 rounded-lg bg-blue-950/80 border border-blue-800/60 flex items-center justify-center text-blue-400">
                                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
                                     </div>
                                     <span class="text-xs font-bold text-gray-200">Incident Management</span>
@@ -632,7 +632,7 @@
 
                                 <!-- Card 3 -->
                                 <div class="p-3.5 rounded-xl bg-gray-900/70 border border-gray-800 hover:border-blue-500/50 transition flex flex-col justify-between items-center text-center gap-3">
-                                    <div class="w-9 h-9 rounded-lg bg-blue-950/80 border border-blue-800/60 flex items-center justify-center text-blue-400">
+                                    <div class="w-7 h-7 rounded-lg bg-blue-950/80 border border-blue-800/60 flex items-center justify-center text-blue-400">
                                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
                                     </div>
                                     <span class="text-xs font-bold text-gray-200">Observability & Monitoring</span>
@@ -640,7 +640,7 @@
 
                                 <!-- Card 4 -->
                                 <div class="p-3.5 rounded-xl bg-gray-900/70 border border-gray-800 hover:border-blue-500/50 transition flex flex-col justify-between items-center text-center gap-3">
-                                    <div class="w-9 h-9 rounded-lg bg-blue-950/80 border border-blue-800/60 flex items-center justify-center text-blue-400">
+                                    <div class="w-7 h-7 rounded-lg bg-blue-950/80 border border-blue-800/60 flex items-center justify-center text-blue-400">
                                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
                                     </div>
                                     <span class="text-xs font-bold text-gray-200">Continuous Improvement</span>
@@ -659,7 +659,7 @@
                     <!-- =====================================================
                          SCREEN 05: CASE3 APEX
                          ===================================================== -->
-                    <div id="slide-5" class="slide-panel inactive w-full h-full flex flex-col justify-between p-6 sm:p-8 rounded-2xl bg-gradient-to-br from-[#070b14] via-[#091122] to-[#040812] border border-blue-900/30 overflow-hidden relative shadow-2xl">
+                    <div id="slide-5" class="slide-panel inactive w-full h-full flex flex-col justify-between p-4 sm:p-5 rounded-2xl bg-gradient-to-br from-[#070b14] via-[#091122] to-[#040812] border border-blue-900/30 overflow-hidden relative shadow-2xl">
                         <!-- Top Header -->
                         <div class="shrink-0 space-y-1 relative z-10 max-w-md">
                             <span class="text-lg font-black tracking-widest text-white uppercase">CASE<span class="text-blue-500 font-mono">3</span></span>
@@ -747,7 +747,7 @@
                     <!-- =====================================================
                          SCREEN 06: CRUX – System Understanding
                          ==================================================== -->
-                    <div id="slide-6" class="slide-panel inactive w-full h-full flex flex-col justify-between p-6 sm:p-8 rounded-2xl bg-gradient-to-br from-[#070b14] via-[#091122] to-[#040812] border border-blue-900/30 overflow-hidden relative shadow-2xl">
+                    <div id="slide-6" class="slide-panel inactive w-full h-full flex flex-col justify-between p-4 sm:p-5 rounded-2xl bg-gradient-to-br from-[#070b14] via-[#091122] to-[#040812] border border-blue-900/30 overflow-hidden relative shadow-2xl">
                         <!-- Top Header -->
                         <div class="shrink-0 space-y-1 relative z-10 max-w-md">
                             <span class="text-lg font-black tracking-widest text-white uppercase">CASE<span class="text-blue-500 font-mono">3</span></span>
@@ -825,7 +825,7 @@
                     <!-- =====================================================
                          SCREEN 07: Governance & Human Accountability
                          ===================================================== -->
-                    <div id="slide-7" class="slide-panel inactive w-full h-full flex flex-col justify-between p-6 sm:p-8 rounded-2xl bg-gradient-to-br from-[#070b14] via-[#091122] to-[#040812] border border-blue-900/30 overflow-hidden relative shadow-2xl">
+                    <div id="slide-7" class="slide-panel inactive w-full h-full flex flex-col justify-between p-4 sm:p-5 rounded-2xl bg-gradient-to-br from-[#070b14] via-[#091122] to-[#040812] border border-blue-900/30 overflow-hidden relative shadow-2xl">
                         <!-- Top Header -->
                         <div class="shrink-0 space-y-1 relative z-10 max-w-xl">
                             <span class="text-lg font-black tracking-widest text-white uppercase">CASE<span class="text-blue-500 font-mono">3</span></span>
@@ -840,8 +840,8 @@
                         <div class="flex-1 min-h-0 flex flex-col justify-center py-4 relative z-10">
                             <div class="flex items-center justify-between w-full max-w-4xl mx-auto gap-2">
                                 <!-- Step 1 -->
-                                <div class="flex-1 flex flex-col items-center text-center gap-2.5 group">
-                                    <div class="w-12 h-12 rounded-xl bg-gray-900/80 border border-blue-800/60 flex items-center justify-center text-blue-400 group-hover:border-blue-400 transition shadow-md">
+                                <div class="flex-1 flex flex-col items-center text-center gap-1.5 group">
+                                    <div class="w-9 h-9 rounded-xl bg-gray-900/80 border border-blue-800/60 flex items-center justify-center text-blue-400 group-hover:border-blue-400 transition shadow-md">
                                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
                                     </div>
                                     <span class="text-xs font-bold text-white">Defined<br/>Scope</span>
@@ -852,7 +852,7 @@
 
                                 <!-- Step 2 -->
                                 <div class="flex-1 flex flex-col items-center text-center gap-2.5 group">
-                                    <div class="w-12 h-12 rounded-xl bg-gray-900/80 border border-blue-800/60 flex items-center justify-center text-blue-400 group-hover:border-blue-400 transition shadow-md">
+                                    <div class="w-9 h-9 rounded-xl bg-gray-900/80 border border-blue-800/60 flex items-center justify-center text-blue-400 group-hover:border-blue-400 transition shadow-md">
                                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
                                     </div>
                                     <span class="text-xs font-bold text-white">AI-Assisted<br/>Work</span>
@@ -863,7 +863,7 @@
 
                                 <!-- Step 3 -->
                                 <div class="flex-1 flex flex-col items-center text-center gap-2.5 group">
-                                    <div class="w-12 h-12 rounded-xl bg-gray-900/80 border border-blue-800/60 flex items-center justify-center text-blue-400 group-hover:border-blue-400 transition shadow-md">
+                                    <div class="w-9 h-9 rounded-xl bg-gray-900/80 border border-blue-800/60 flex items-center justify-center text-blue-400 group-hover:border-blue-400 transition shadow-md">
                                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
                                     </div>
                                     <span class="text-xs font-bold text-white">Expert<br/>Review</span>
@@ -874,7 +874,7 @@
 
                                 <!-- Step 4 -->
                                 <div class="flex-1 flex flex-col items-center text-center gap-2.5 group">
-                                    <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-emerald-950/80 to-blue-950/80 border border-emerald-600/60 flex items-center justify-center text-emerald-400 group-hover:border-emerald-400 transition shadow-md">
+                                    <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-emerald-950/80 to-blue-950/80 border border-emerald-600/60 flex items-center justify-center text-emerald-400 group-hover:border-emerald-400 transition shadow-md">
                                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
                                     </div>
                                     <span class="text-xs font-bold text-emerald-300">Approved<br/>Action</span>
@@ -885,7 +885,7 @@
 
                                 <!-- Step 5 -->
                                 <div class="flex-1 flex flex-col items-center text-center gap-2.5 group">
-                                    <div class="w-12 h-12 rounded-xl bg-gray-900/80 border border-blue-800/60 flex items-center justify-center text-blue-400 group-hover:border-blue-400 transition shadow-md">
+                                    <div class="w-9 h-9 rounded-xl bg-gray-900/80 border border-blue-800/60 flex items-center justify-center text-blue-400 group-hover:border-blue-400 transition shadow-md">
                                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
                                     </div>
                                     <span class="text-xs font-bold text-white">Audit Trail<br/>& Evidence</span>
@@ -904,7 +904,7 @@
                     <!-- =====================================================
                          SCREEN 08: Follow-up & Next Steps
                          ===================================================== -->
-                    <div id="slide-8" class="slide-panel inactive w-full h-full flex flex-col justify-between p-6 sm:p-8 rounded-2xl bg-gradient-to-br from-[#070b14] via-[#091122] to-[#040812] border border-blue-900/30 overflow-hidden relative shadow-2xl">
+                    <div id="slide-8" class="slide-panel inactive w-full h-full flex flex-col justify-between p-4 sm:p-5 rounded-2xl bg-gradient-to-br from-[#070b14] via-[#091122] to-[#040812] border border-blue-900/30 overflow-hidden relative shadow-2xl">
                         <!-- Top Header -->
                         <div class="shrink-0 space-y-1 relative z-10 max-w-md">
                             <span class="text-lg font-black tracking-widest text-white uppercase">CASE<span class="text-blue-500 font-mono">3</span></span>
@@ -980,7 +980,7 @@
                     <!-- =====================================================
                          SCREEN 09: Executive ID Card & QR Access
                          ===================================================== -->
-                    <div id="slide-9" class="slide-panel inactive w-full h-full flex flex-col justify-between p-6 sm:p-8 rounded-2xl bg-gradient-to-br from-[#070b14] via-[#091122] to-[#040812] border border-blue-900/30 overflow-hidden relative shadow-2xl">
+                    <div id="slide-9" class="slide-panel inactive w-full h-full flex flex-col justify-between p-4 sm:p-5 rounded-2xl bg-gradient-to-br from-[#070b14] via-[#091122] to-[#040812] border border-blue-900/30 overflow-hidden relative shadow-2xl">
                         <!-- Ambient Radial Glow Behind -->
                         <div class="absolute -top-20 -right-20 w-80 h-80 bg-blue-600/15 rounded-full blur-3xl pointer-events-none"></div>
 
