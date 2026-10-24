@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <base href="/">
+    <title>CASE3 Iris AI Agent | Standalone Agent (v1)</title>
+    
+    <!-- Tailwind CSS with Typography Plugin -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts: Plus Jakarta Sans -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Anam Agent Web Component Embed Script -->
+    <script src="https://unpkg.com/@anam-ai/agent-widget" async></script>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+        *::-webkit-scrollbar {
+            display: none;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+            overflow: hidden;
+            width: 100vw;
+            height: 100vh;
+            margin: 0;
+            padding: 0;
+            background-color: #000000;
+        }
+
+        anam-agent {
+            width: 100% !important;
+            height: 100% !important;
+            display: block;
+        }
+
+        /* Ensure Anam sheet and video region take full container height */
+        anam-agent::part(sheet),
+        .anam-sheet {
+            height: 100% !important;
+        }
+
+        /* Perfectly sized 3:2 aspect-ratio container fitted to full screen */
+        .agent-container {
+            width: 100%;
+            height: 100%;
+            max-height: 100vh;
+            max-width: calc(100vh * 1.5);
+            aspect-ratio: 3 / 2;
+        }
+    </style>
+</head>
+<body class="bg-black text-gray-100 h-screen w-screen overflow-hidden flex items-center justify-center select-none m-0 p-0">
+
+    <!-- =================================================================
+         V1: PURE EMBEDDED ANAM AGENT ELEMENT (NO HEADER, NO FOOTER BUTTONS)
+         ================================================================= -->
+    <main class="w-full h-full flex items-center justify-center overflow-hidden relative bg-black">
+        
+        <!-- Contained Stage: Matches Anam widget's native 3:2 ratio and 100% viewport height -->
+        <div class="agent-container relative flex items-center justify-center overflow-hidden">
+            <anam-agent 
+                id="iris-agent"
+                agent-id="603598a2-e60a-41fd-a5f3-4347900dd2e5" 
+                api-base-url="https://lab.anam.ai"
+                layout="inline">
+            </anam-agent>
+        </div>
+
+    </main>
+
+    <!-- AUTOMATIC SESSION TOKEN MINTER FOR CLOUDFLARE -->
+    <script>
+        async function attachWorkerToken() {
+            try {
+                const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+                const defaultWorkerUrl = (window.location.protocol.startsWith('http') && !isLocal)
+                    ? window.location.origin
+                    : "http://localhost:8787";
+                const workerUrl = localStorage.getItem('case3_worker_url') || defaultWorkerUrl;
+
+                const res = await fetch(`${workerUrl}/api/session-token`, { 
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" }
+                });
+                if (res.ok) {
+                    const data = await res.json();
+                    const agent = document.getElementById('iris-agent');
+                    if (data.sessionToken && agent) {
+                        agent.setAttribute('session-token', data.sessionToken);
+                    }
+                }
+            } catch (err) {
+                console.log("Using direct Anam domain auth:", err);
+            }
+        }
+        attachWorkerToken();
+    </script>
+</body>
+</html>

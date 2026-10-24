@@ -20,18 +20,18 @@ export default {
     // 1. DUAL VERSION & STATIC ASSET ROUTING
     // =========================================================================
 
-    // Route: /version1 or /version1/ -> Serve Version 1 (Agent Only, No Side Screen)
-    if (url.pathname === "/version1" || url.pathname === "/version1/") {
+    // Route: /v1, /v1/, /version1, /version1/ -> Serve v1 (Embedded Anam Agent Only)
+    if (url.pathname === "/v1" || url.pathname === "/v1/" || url.pathname === "/version1" || url.pathname === "/version1/") {
       if (env.ASSETS) {
-        const assetUrl = new URL("/version1.html", request.url);
+        const assetUrl = new URL("/v1.html", request.url);
         return env.ASSETS.fetch(new Request(assetUrl, request));
       }
     }
 
-    // Route: /version2 or /version2/ -> Serve Version 2 (Iris Agent + Visual Showcase)
-    if (url.pathname === "/version2" || url.pathname === "/version2/") {
+    // Route: /v2, /v2/, /version2, /version2/ -> Serve v2 (Iris Agent + Visual Showcase)
+    if (url.pathname === "/v2" || url.pathname === "/v2/" || url.pathname === "/version2" || url.pathname === "/version2/") {
       if (env.ASSETS) {
-        const assetUrl = new URL("/version2.html", request.url);
+        const assetUrl = new URL("/v2.html", request.url);
         return env.ASSETS.fetch(new Request(assetUrl, request));
       }
     }
@@ -119,9 +119,9 @@ export default {
           status: "ok", 
           service: "CASE3 Iris Session Token Minter & Dual Version Host",
           versions: {
-            version1: "/version1 (Embedded Anam Agent Only)",
-            version2: "/version2 (Agent + Visual Showcase)",
-            default: "/ (Showcase)"
+            v1: "/v1 (Embedded Anam Agent Only)",
+            v2: "/v2 (Agent + Visual Showcase)",
+            default: "/ (Showcase v2)"
           }
         },
         { headers: corsHeaders }
